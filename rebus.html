@@ -22,17 +22,20 @@
       font-size: 3rem;
       margin-bottom: 2rem;
     }
+    .question-box {
+      background: rgba(255, 255, 255, 0.05);
+      border: 2px solid #8e44ad;
+      border-radius: 20px;
+      padding: 30px;
+      max-width: 700px;
+      margin-bottom: 2rem;
+    }
     .rebus-box {
       display: flex;
       justify-content: center;
       align-items: center;
       gap: 2rem;
-      background: rgba(255, 255, 255, 0.05);
-      border: 2px solid #8e44ad;
-      border-radius: 20px;
-      padding: 20px;
-      margin: 2rem;
-      max-width: 800px;
+      margin-bottom: 1.5rem;
     }
     .rebus-box img {
       width: 200px;
@@ -40,12 +43,6 @@
       object-fit: contain;
       border-radius: 12px;
       border: 2px solid #fff;
-    }
-    .input-container {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      margin-top: 2rem;
     }
     input[type="text"] {
       padding: 15px;
@@ -56,10 +53,11 @@
       max-width: 400px;
       background: #ffffff;
       color: #000000;
-      margin-bottom: 1rem;
+      margin-top: 1rem;
       text-align: center;
     }
     button {
+      margin-top: 1rem;
       padding: 12px 30px;
       font-size: 1.1rem;
       background-color: #8e44ad;
@@ -80,10 +78,22 @@
     .message strong {
       color: #ff6699;
     }
-    .message a {
+    .code-fragment {
+      margin-top: 0.5rem;
+      font-size: 1.3rem;
+      color: #ffcccc;
+    }
+    .code-fragment code {
+      color: #ffcccc;
+      font-weight: bold;
+    }
+    .next-button {
+      margin-top: 2rem;
+    }
+    .next-button a {
       display: inline-block;
-      margin-top: 1rem;
-      padding: 12px 24px;
+      padding: 12px 30px;
+      font-size: 1.1rem;
       background-color: #b30000;
       color: white;
       border-radius: 30px;
@@ -91,33 +101,41 @@
       font-weight: bold;
       transition: background-color 0.3s ease;
     }
-    .message a:hover {
+    .next-button a:hover {
       background-color: #d32f2f;
     }
   </style>
 </head>
 <body>
-  <h1>Énigme 2 - Rebus</h1>
-  <div class="rebus-box">
-    <img src="giphy.gif" alt="Dragon">
-    <img src="dragon.gif" alt="Applaudir">
-  </div>
-  <div class="input-container">
+  <h1>🧩 Énigme 2 - Rébus</h1>
+  <div class="question-box">
+    <div class="rebus-box">
+      <img src="giphy.gif" alt="Dragon">
+      <img src="dragon.gif" alt="Applaudir">
+    </div>
     <input type="text" id="reponse" placeholder="Ta réponse ici">
     <button onclick="verifierReponse()">Valider</button>
   </div>
   <div class="message" id="message"></div>
+  <div class="code-fragment" id="code-fragment"></div>
+  <div class="next-button" id="next"></div>
 
   <script>
     function verifierReponse() {
       const reponse = document.getElementById('reponse').value.trim().toLowerCase();
-      const bonneReponse = "imagine dragons";
       const message = document.getElementById('message');
+      const codeFragment = document.getElementById('code-fragment');
+      const nextButton = document.getElementById('next');
+      const bonneReponse = "imagine dragons";
 
       if (reponse === bonneReponse) {
-        message.innerHTML = "<strong>Bravo !</strong> Tu as trouvé la bonne réponse.<br>Voici ta partie de code : <code>CHOU</code><br><a href='page3.html'>Passer à l'étape suivante</a>";
+        message.innerHTML = "<strong>Bravo !</strong> Tu as trouvé la bonne réponse.";
+        codeFragment.innerHTML = "<br>Voici ta partie de code : <code>CHOU</code>";
+        nextButton.innerHTML = "<a href='page3.html'>Passer à l'étape suivante</a>";
       } else {
         message.textContent = "Mauvaise réponse... essaie encore !";
+        codeFragment.innerHTML = "";
+        nextButton.innerHTML = "";
       }
     }
   </script>
