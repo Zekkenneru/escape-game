@@ -108,9 +108,9 @@
       font-size: 1.3rem;
       color: #ffcccc;
     }
-    .code-fragment span {
+    .code-fragment code {
+      color: #ffcccc;
       font-weight: bold;
-      color: #00ffc8;
     }
     .gif-container img {
       width: 500px;
@@ -163,7 +163,7 @@
 
       if (rep.includes("carbonara") || rep.includes("pâtes à la carbonara")) {
         message.innerHTML = "<strong>Bravo !</strong> Tu as trouvé la bonne réponse.";
-        codeFragment.innerHTML = "<br>Voici ta partie de code : <span>B</span>";
+        codeFragment.innerHTML = "<br>Voici ta partie de code : <code>B</code>";
         gifContainer.innerHTML = "<img src='chef.gif' alt='GIF Chef'>";
         nextButton.innerHTML = "<a href='code.html'>Passer à l'étape suivante</a>";
       } else {
