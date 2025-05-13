@@ -106,7 +106,7 @@
     .code-fragment {
       margin-top: 0.5rem;
       font-size: 1.3rem;
-      color: #ffffff;
+      color: #ffcccc;
     }
     .code-fragment span {
       font-weight: bold;
@@ -163,7 +163,7 @@
 
       if (rep.includes("carbonara") || rep.includes("pâtes à la carbonara")) {
         message.innerHTML = "<strong>Bravo !</strong> Tu as trouvé la bonne réponse.";
-        codeFragment.innerHTML = "Voici ta partie de code : <span>B</span>";
+        codeFragment.innerHTML = "<br>Voici ta partie de code : <span>B</span>";
         gifContainer.innerHTML = "<img src='chef.gif' alt='GIF Chef'>";
         nextButton.innerHTML = "<a href='code.html'>Passer à l'étape suivante</a>";
       } else {
