@@ -9,7 +9,7 @@
       margin: 0;
       padding: 0;
       background: radial-gradient(#1a0000, #000000);
-      font-family: 'Georgia', serif;
+      font-family: 'Playfair Display', serif;
       color: #ffffff;
       display: flex;
       flex-direction: column;
@@ -17,7 +17,6 @@
       align-items: center;
       min-height: 100vh;
       text-align: center;
-      position: relative;
     }
     h1 {
       font-size: 3rem;
@@ -99,7 +98,10 @@
     .message {
       margin-top: 2rem;
       font-size: 1.2rem;
-      color: #ffffff;
+      color: #ffcccc;
+    }
+    .message strong {
+      color: #ff6699;
     }
     .code-fragment {
       margin-top: 0.5rem;
@@ -123,14 +125,15 @@
       display: inline-block;
       padding: 12px 30px;
       font-size: 1.1rem;
-      background-color: #8e44ad;
+      background-color: #b30000;
       color: white;
-      border-radius: 50px;
+      border-radius: 30px;
       text-decoration: none;
+      font-weight: bold;
       transition: background-color 0.3s ease;
     }
     .next-button a:hover {
-      background-color: #a86bd1;
+      background-color: #d32f2f;
     }
   </style>
 </head>
@@ -164,7 +167,7 @@
         gifContainer.innerHTML = "<img src='chef.gif' alt='GIF Chef'>";
         nextButton.innerHTML = "<a href='code.html'>Passer à l'étape suivante</a>";
       } else {
-        message.innerHTML = "Hmm… tu es sûr ? 😅";
+        message.innerHTML = "Mauvaise réponse... essaie encore !";
         codeFragment.innerHTML = "";
         gifContainer.innerHTML = "";
         nextButton.innerHTML = "";
