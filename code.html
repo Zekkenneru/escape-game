@@ -1,15 +1,55 @@
-
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-  <meta charset="UTF-8"/>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Mot de passe final</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Code Final</title>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      background: radial-gradient(#1a0000, #000);
+      font-family: 'Georgia', serif;
+      color: #ffffff;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      text-align: center;
+    }
+    h1 {
+      font-size: 3rem;
+      margin-bottom: 2rem;
+    }
+    .code-box {
+      background: rgba(255, 255, 255, 0.05);
+      border: 2px solid #8e44ad;
+      border-radius: 20px;
+      padding: 40px;
+      max-width: 700px;
+    }
+    .code-box p {
+      font-size: 1.6rem;
+      margin-bottom: 2rem;
+    }
+    .password {
+      font-size: 2rem;
+      background-color: #ffffff;
+      color: #b30000;
+      padding: 12px 24px;
+      border-radius: 50px;
+      font-weight: bold;
+      letter-spacing: 1px;
+      box-shadow: 0 0 15px rgba(255, 0, 0, 0.3);
+    }
+  </style>
 </head>
-<body style="background:#111;color:#fff;font-family:sans-serif;text-align:center;padding:40px;">
-  <h1>Bravo, tu as fini le jeu !</h1>
-  <p>Voici le mot de passe pour ouvrir le PDF :</p>
-  <h2 style="font-size:2em;color:#00e6ac;">HBCHOU&lt;3!</h2>
-  <p>📎 Le fichier PDF est dans l'email que tu as reçu.</p>
+<body>
+  <h1>🎁 Félicitations !</h1>
+  <div class="code-box">
+    <p>Voici le mot de passe pour déverrouiller ton cadeau :</p>
+    <div class="password">HBCHOU&lt;3!</div>
+  </div>
 </body>
 </html>
