@@ -75,20 +75,32 @@
     .message {
       margin-top: 2rem;
       font-size: 1.2rem;
-      color: #00ffcc;
+      color: #ffcccc;
     }
-    a {
-      color: #ffd700;
-      text-decoration: underline;
+    .message strong {
+      color: #ff6699;
+    }
+    .message a {
+      display: inline-block;
+      margin-top: 1rem;
+      padding: 12px 24px;
+      background-color: #b30000;
+      color: white;
+      border-radius: 30px;
+      text-decoration: none;
       font-weight: bold;
+      transition: background-color 0.3s ease;
+    }
+    .message a:hover {
+      background-color: #d32f2f;
     }
   </style>
 </head>
 <body>
   <h1>Énigme 2</h1>
   <div class="rebus-box">
-    <img src="dragon.gif" alt="Dragon">
-    <img src="giphy.gif" alt="Applaudir">
+    <img src="giphy.gif" alt="Dragon">
+    <img src="dragon.gif" alt="Applaudir">
   </div>
   <div class="input-container">
     <input type="text" id="reponse" placeholder="Ta réponse ici">
@@ -103,7 +115,7 @@
       const message = document.getElementById('message');
 
       if (reponse === bonneReponse) {
-        message.innerHTML = "<strong>Bravo !</strong> Tu as trouvé la bonne réponse.<br>Voici ta partie de code : <code>CHOU</code><br><br><a href='page3.html'>Passer à l'étape suivante</a>";
+        message.innerHTML = "<strong>Bravo !</strong> Tu as trouvé la bonne réponse.<br>Voici ta partie de code : <code>CHOU</code><br><a href='page3.html'>Passer à l'étape suivante</a>";
       } else {
         message.textContent = "Mauvaise réponse... essaie encore !";
       }
