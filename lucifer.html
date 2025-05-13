@@ -1,23 +1,105 @@
-
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-  <meta charset="UTF-8"/>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Lucifer</title>
-</head>
-<body style="background:#111;color:#fff;font-family:sans-serif;text-align:center;padding:40px;">
-  <h1>Lucifer : Tu veux y aller ?</h1>
-  <img src="4a7e7e836641a472552171c94d449aa4.gif" width="300"/>
-  <br/><br/>
-  <button onclick="oui()">Oui</button> <button onclick="non()">Non</button>
-  <div id="message" style="margin-top:20px;"></div>
-  <script>
-    function oui() {
-      window.location.href = 'code.html';
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Lucifer - Dernière énigme</title>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      background: radial-gradient(#1a0000, #000000);
+      font-family: 'Playfair Display', serif;
+      color: #ffffff;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      text-align: center;
     }
-    function non() {
-      document.getElementById("message").innerHTML = "<img src='https://media.giphy.com/media/ROF8OQvDmxytW/giphy.gif' width='200'/><br>😢 Oh non...";
+    h1 {
+      font-size: 3rem;
+      margin-bottom: 2rem;
+    }
+    .lucifer-box {
+      background: rgba(255, 255, 255, 0.05);
+      border: 2px solid #8e44ad;
+      border-radius: 20px;
+      padding: 30px;
+      max-width: 800px;
+      margin-bottom: 2rem;
+    }
+    .lucifer-box img {
+      width: 100%;
+      max-width: 500px;
+      border-radius: 12px;
+      border: 2px solid #fff;
+      margin-bottom: 1.5rem;
+    }
+    .btn-group {
+      display: flex;
+      gap: 2rem;
+      margin-top: 1rem;
+    }
+    .btn-group button {
+      padding: 12px 30px;
+      font-size: 1.1rem;
+      background-color: #8e44ad;
+      color: white;
+      border: none;
+      border-radius: 50px;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+    .btn-group button:hover {
+      background-color: #a86bd1;
+    }
+    .message {
+      margin-top: 2rem;
+      font-size: 1.2rem;
+      color: #ffcccc;
+    }
+    .message img {
+      width: 200px;
+      margin-top: 1rem;
+    }
+    .message a {
+      display: inline-block;
+      margin-top: 1rem;
+      padding: 12px 24px;
+      background-color: #b30000;
+      color: white;
+      border-radius: 30px;
+      text-decoration: none;
+      font-weight: bold;
+      transition: background-color 0.3s ease;
+    }
+    .message a:hover {
+      background-color: #d32f2f;
+    }
+  </style>
+</head>
+<body>
+  <h1>Lucifer : Dernière question</h1>
+  <div class="lucifer-box">
+    <img src="lucifer_gif.gif" alt="Lucifer Morningstar">
+    <p>Tu veux y aller ?</p>
+    <div class="btn-group">
+      <button onclick="handleResponse('oui')">Oui</button>
+      <button onclick="handleResponse('non')">Non</button>
+    </div>
+  </div>
+  <div class="message" id="message"></div>
+
+  <script>
+    function handleResponse(rep) {
+      const msg = document.getElementById('message');
+      if (rep === 'oui') {
+        window.location.href = 'code.html';
+      } else {
+        msg.innerHTML = "<p>😢 Oh non... vraiment ?</p><img src='https://media.giphy.com/media/ROF8OQvDmxytW/giphy.gif' alt='Crying'>";
+      }
     }
   </script>
 </body>
