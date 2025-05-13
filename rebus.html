@@ -1,26 +1,111 @@
-
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Énigme 2</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Énigme 2 - Rébus</title>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      background: radial-gradient(#1a0000, #000000);
+      font-family: 'Playfair Display', serif;
+      color: #ffffff;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      text-align: center;
+    }
+    h1 {
+      font-size: 3rem;
+      margin-bottom: 2rem;
+    }
+    .rebus-box {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 2rem;
+      background: rgba(255, 255, 255, 0.05);
+      border: 2px solid #8e44ad;
+      border-radius: 20px;
+      padding: 20px;
+      margin: 2rem;
+      max-width: 800px;
+    }
+    .rebus-box img {
+      width: 200px;
+      height: 200px;
+      object-fit: contain;
+      border-radius: 12px;
+      border: 2px solid #fff;
+    }
+    .input-container {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      margin-top: 2rem;
+    }
+    input[type="text"] {
+      padding: 15px;
+      font-size: 1.2rem;
+      border-radius: 50px;
+      border: none;
+      width: 80%;
+      max-width: 400px;
+      background: #ffffff;
+      color: #000000;
+      margin-bottom: 1rem;
+      text-align: center;
+    }
+    button {
+      padding: 12px 30px;
+      font-size: 1.1rem;
+      background-color: #8e44ad;
+      color: white;
+      border: none;
+      border-radius: 50px;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+    button:hover {
+      background-color: #a86bd1;
+    }
+    .message {
+      margin-top: 2rem;
+      font-size: 1.2rem;
+      color: #00ffcc;
+    }
+    a {
+      color: #ffd700;
+      text-decoration: underline;
+      font-weight: bold;
+    }
+  </style>
 </head>
-<body style="background:#111;color:#fff;font-family:sans-serif;text-align:center;padding:40px;">
+<body>
   <h1>Énigme 2</h1>
-  <p>Que représente ce rébus ?</p>
-  <img src="giphy.gif" width="200"/> <img src="dragon.gif" width="200"/>
-  <br/><br/>
-  <input type="text" id="reponse" placeholder="Réponse ?"/>
-  <button onclick="verifier()">Valider</button>
-  <div id="message"></div>
+  <div class="rebus-box">
+    <img src="dragon.gif" alt="Dragon">
+    <img src="giphy.gif" alt="Applaudir">
+  </div>
+  <div class="input-container">
+    <input type="text" id="reponse" placeholder="Ta réponse ici">
+    <button onclick="verifierReponse()">Valider</button>
+  </div>
+  <div class="message" id="message"></div>
+
   <script>
-    function verifier() {
-      const rep = document.getElementById("reponse").value.trim().toLowerCase();
-      if (rep === "imagine dragons") {
-        document.getElementById("message").innerHTML = "Bravo ! Code : <b>CHOU</b><br><a href='page3.html'>Énigme suivante</a>";
+    function verifierReponse() {
+      const reponse = document.getElementById('reponse').value.trim().toLowerCase();
+      const bonneReponse = "imagine dragons";
+      const message = document.getElementById('message');
+
+      if (reponse === bonneReponse) {
+        message.innerHTML = "<strong>Bravo !</strong> Tu as trouvé la bonne réponse.<br>Voici ta partie de code : <code>CHOU</code><br><br><a href='page3.html'>Passer à l'étape suivante</a>";
       } else {
-        document.getElementById("message").innerText = "Essaie encore...";
+        message.textContent = "Mauvaise réponse... essaie encore !";
       }
     }
   </script>
