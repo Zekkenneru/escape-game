@@ -38,24 +38,37 @@
     }
     .ronflex-bulle {
       position: absolute;
-      top: -40px;
-      right: -40px;
-      width: 120px;
-      text-align: center;
+      top: -60px;
+      right: -60px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
     }
     .ronflex-bulle img {
-      width: 100px;
+      width: 90px;
+      height: auto;
       border-radius: 12px;
       border: 2px solid #fff;
     }
-    .ronflex-bulle span {
-      display: block;
+    .bulle-texte {
       margin-top: 5px;
-      font-size: 0.9rem;
-      background-color: rgba(255, 255, 255, 0.1);
-      padding: 4px 8px;
+      background-color: #4b2b36;
       border-radius: 12px;
+      padding: 8px 12px;
+      max-width: 120px;
+      font-size: 0.85rem;
+      position: relative;
       color: #ffcccc;
+    }
+    .bulle-texte::before {
+      content: '';
+      position: absolute;
+      bottom: -10px;
+      left: 20px;
+      width: 0;
+      height: 0;
+      border: 10px solid transparent;
+      border-top-color: #4b2b36;
     }
     input[type="text"] {
       padding: 15px;
@@ -101,7 +114,7 @@
   <div class="question-box">
     <div class="ronflex-bulle">
       <img src="ronflex.jpg" alt="Ronflex">
-      <span>Moi qui attend de pouvoir regoûter ce délice</span>
+      <div class="bulle-texte">Moi qui attend de pouvoir regoûter ce délice</div>
     </div>
     <p>Quel est le plat dont je rêve d'envie que tu me refasses ?</p>
     <input type="text" id="reponse" placeholder="Ta réponse ici">
@@ -126,4 +139,3 @@
   </script>
 </body>
 </html>
-
