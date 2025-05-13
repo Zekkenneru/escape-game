@@ -99,7 +99,7 @@
     .message {
       margin-top: 2rem;
       font-size: 1.3rem;
-      color: #ffcccc;
+      color: #ffffff;
     }
     .code-fragment {
       margin-top: 0.5rem;
@@ -120,14 +120,14 @@
       display: inline-block;
       padding: 12px 30px;
       font-size: 1.1rem;
-      background-color: #b30000;
+      background-color: #8e44ad;
       color: white;
       border-radius: 50px;
       text-decoration: none;
       transition: background-color 0.3s ease;
     }
     .next-button a:hover {
-      background-color: #d32f2f;
+      background-color: #a86bd1;
     }
   </style>
 </head>
@@ -156,10 +156,10 @@
       const codeFragment = document.getElementById("code-fragment");
 
       if (rep.includes("carbonara") || rep.includes("pâtes à la carbonara")) {
-        message.innerHTML = "<strong>Bravo !</strong> C’est bien ça 😋";
+        message.innerHTML = "<strong>Bravo !</strong> Tu as trouvé la bonne réponse.";
         codeFragment.innerHTML = "Voici ta partie de code : <span style='color:#00ffc8;'>B</span>";
         gifContainer.innerHTML = "<img src='chef.gif' alt='GIF Chef'>";
-        nextButton.innerHTML = "<a href='code.html'>Étape suivante →</a>";
+        nextButton.innerHTML = "<a href='code.html'>Passer à l'étape suivante</a>";
       } else {
         message.innerHTML = "Hmm… tu es sûr ? 😅";
         codeFragment.innerHTML = "";
