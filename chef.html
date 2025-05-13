@@ -107,6 +107,22 @@
       margin-top: 2rem;
       border: 2px solid #fff;
     }
+    .next-button {
+      margin-top: 2rem;
+    }
+    .next-button a {
+      display: inline-block;
+      padding: 12px 30px;
+      font-size: 1.1rem;
+      background-color: #b30000;
+      color: white;
+      border-radius: 50px;
+      text-decoration: none;
+      transition: background-color 0.3s ease;
+    }
+    .next-button a:hover {
+      background-color: #d32f2f;
+    }
   </style>
 </head>
 <body>
@@ -122,18 +138,22 @@
   </div>
   <div class="message" id="message"></div>
   <div class="gif-container" id="gif"></div>
+  <div class="next-button" id="next"></div>
 
   <script>
     function verifierReponse() {
       const rep = document.getElementById("reponse").value.toLowerCase().trim();
       const message = document.getElementById("message");
       const gifContainer = document.getElementById("gif");
+      const nextButton = document.getElementById("next");
       if (rep.includes("carbonara") || rep.includes("pâtes à la carbonara")) {
         message.innerHTML = "<strong>Bravo !</strong> C’est bien ça 😋";
         gifContainer.innerHTML = "<img src='chef.gif' alt='GIF Chef'>";
+        nextButton.innerHTML = "<a href='code.html'>Étape suivante →</a>";
       } else {
         message.innerHTML = "Hmm… tu es sûr ? 😅";
         gifContainer.innerHTML = "";
+        nextButton.innerHTML = "";
       }
     }
   </script>
