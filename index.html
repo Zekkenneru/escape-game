@@ -1,24 +1,101 @@
-
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Énigme 1</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Énigme 1 - Paroles de chanson</title>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      background: radial-gradient(#1a0000, #000000);
+      font-family: 'Playfair Display', serif;
+      color: #ffffff;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      text-align: center;
+    }
+    h1 {
+      font-size: 3rem;
+      margin-bottom: 1rem;
+    }
+    blockquote {
+      font-size: 1.6rem;
+      font-style: italic;
+      line-height: 1.5;
+      border-left: 4px solid #b30000;
+      padding-left: 20px;
+      max-width: 700px;
+      margin: 2rem auto;
+    }
+    .input-container {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      margin-top: 2rem;
+    }
+    input[type="text"] {
+      padding: 15px;
+      font-size: 1.2rem;
+      border-radius: 50px;
+      border: none;
+      width: 80%;
+      max-width: 400px;
+      background: #ffffff;
+      color: #000000;
+      margin-bottom: 1rem;
+      text-align: center;
+    }
+    button {
+      padding: 12px 30px;
+      font-size: 1.1rem;
+      background-color: #8e44ad;
+      color: white;
+      border: none;
+      border-radius: 50px;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+    button:hover {
+      background-color: #a86bd1;
+    }
+    .message {
+      margin-top: 2rem;
+      font-size: 1.2rem;
+      color: #00ffcc;
+    }
+    a {
+      color: #ffd700;
+      text-decoration: underline;
+      font-weight: bold;
+    }
+  </style>
 </head>
-<body style="background:#111;color:#fff;font-family:sans-serif;text-align:center;padding:40px;">
+<body>
   <h1>Énigme 1</h1>
-  <p><em>"I've told a million lies but now I tell a single truth,<br>There's you in everything I do"</em></p>
-  <input type="text" id="reponse" placeholder="Titre de la chanson"/>
-  <button onclick="verifier()">Valider</button>
-  <div id="message"></div>
+  <blockquote>
+    "I've told a million lies but now I tell a single truth,<br>
+    There's you in everything I do"
+  </blockquote>
+  <div class="input-container">
+    <input type="text" id="reponse" placeholder="Titre de la chanson">
+    <button onclick="verifierReponse()">Valider</button>
+  </div>
+  <div class="message" id="message"></div>
+
   <script>
-    function verifier() {
-      const rep = document.getElementById("reponse").value.trim().toLowerCase();
-      if (rep === "i bet my life") {
-        document.getElementById("message").innerHTML = "Bravo ! Code : <b>HB</b><br><a href='rebus.html'>Énigme suivante</a>";
+    function verifierReponse() {
+      const reponse = document.getElementById('reponse').value.trim().toLowerCase();
+      const bonneReponse = "i bet my life";
+      const message = document.getElementById('message');
+
+      if (reponse === bonneReponse) {
+        message.innerHTML = "<strong>Bravo !</strong> Tu as trouvé la bonne réponse.<br>Voici ta partie de code : <code>HB</code><br><br><a href='rebus.html'>Passer à l'étape suivante</a>";
       } else {
-        document.getElementById("message").innerText = "Mauvaise réponse, réessaie !";
+        message.textContent = "Mauvaise réponse... essaie encore !";
       }
     }
   </script>
