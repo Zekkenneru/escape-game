@@ -101,6 +101,12 @@
       font-size: 1.3rem;
       color: #ffcccc;
     }
+    .code-fragment {
+      margin-top: 0.5rem;
+      font-size: 1.5rem;
+      color: #00ffc8;
+      font-weight: bold;
+    }
     .gif-container img {
       width: 500px;
       border-radius: 20px;
@@ -137,6 +143,7 @@
     <button onclick="verifierReponse()">Valider</button>
   </div>
   <div class="message" id="message"></div>
+  <div class="code-fragment" id="code-fragment"></div>
   <div class="gif-container" id="gif"></div>
   <div class="next-button" id="next"></div>
 
@@ -146,12 +153,16 @@
       const message = document.getElementById("message");
       const gifContainer = document.getElementById("gif");
       const nextButton = document.getElementById("next");
+      const codeFragment = document.getElementById("code-fragment");
+
       if (rep.includes("carbonara") || rep.includes("pâtes à la carbonara")) {
         message.innerHTML = "<strong>Bravo !</strong> C’est bien ça 😋";
+        codeFragment.innerHTML = "Voici ta partie de code : <span style='color:#00ffc8;'>B</span>";
         gifContainer.innerHTML = "<img src='chef.gif' alt='GIF Chef'>";
         nextButton.innerHTML = "<a href='code.html'>Étape suivante →</a>";
       } else {
         message.innerHTML = "Hmm… tu es sûr ? 😅";
+        codeFragment.innerHTML = "";
         gifContainer.innerHTML = "";
         nextButton.innerHTML = "";
       }
