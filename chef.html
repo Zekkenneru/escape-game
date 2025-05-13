@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Énigme - Plat préféré</title>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      background: radial-gradient(#1a0000, #000000);
+      font-family: 'Georgia', serif;
+      color: #ffffff;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      text-align: center;
+      position: relative;
+    }
+    h1 {
+      font-size: 3rem;
+      margin-bottom: 2rem;
+    }
+    .question-box {
+      background: rgba(255, 255, 255, 0.05);
+      border: 2px solid #8e44ad;
+      border-radius: 20px;
+      padding: 30px;
+      max-width: 700px;
+      margin-bottom: 2rem;
+      position: relative;
+    }
+    .question-box p {
+      font-size: 1.6rem;
+      margin: 0;
+    }
+    .ronflex-bulle {
+      position: absolute;
+      top: -40px;
+      right: -40px;
+      width: 120px;
+      text-align: center;
+    }
+    .ronflex-bulle img {
+      width: 100px;
+      border-radius: 12px;
+      border: 2px solid #fff;
+    }
+    .ronflex-bulle span {
+      display: block;
+      margin-top: 5px;
+      font-size: 0.9rem;
+      background-color: rgba(255, 255, 255, 0.1);
+      padding: 4px 8px;
+      border-radius: 12px;
+      color: #ffcccc;
+    }
+    input[type="text"] {
+      padding: 15px;
+      font-size: 1.2rem;
+      border-radius: 50px;
+      border: none;
+      width: 80%;
+      max-width: 400px;
+      background: #ffffff;
+      color: #000000;
+      margin-top: 1rem;
+      text-align: center;
+    }
+    button {
+      margin-top: 1rem;
+      padding: 12px 30px;
+      font-size: 1.1rem;
+      background-color: #8e44ad;
+      color: white;
+      border: none;
+      border-radius: 50px;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+    button:hover {
+      background-color: #a86bd1;
+    }
+    .message {
+      margin-top: 2rem;
+      font-size: 1.2rem;
+      color: #ffcccc;
+    }
+    .gif-container img {
+      width: 400px;
+      border-radius: 20px;
+      margin-top: 2rem;
+      border: 2px solid #fff;
+    }
+  </style>
+</head>
+<body>
+  <h1>🍝 Énigme - Plat préféré</h1>
+  <div class="question-box">
+    <div class="ronflex-bulle">
+      <img src="ronflex.jpg" alt="Ronflex">
+      <span>Moi qui attend de pouvoir regoûter ce délice</span>
+    </div>
+    <p>Quel est le plat dont je rêve d'envie que tu me refasses ?</p>
+    <input type="text" id="reponse" placeholder="Ta réponse ici">
+    <button onclick="verifierReponse()">Valider</button>
+  </div>
+  <div class="message" id="message"></div>
+  <div class="gif-container" id="gif"></div>
+
+  <script>
+    function verifierReponse() {
+      const rep = document.getElementById("reponse").value.toLowerCase().trim();
+      const message = document.getElementById("message");
+      const gifContainer = document.getElementById("gif");
+      if (rep.includes("carbonara") || rep.includes("pâtes à la carbonara")) {
+        message.innerHTML = "<strong>Bravo !</strong> C’est bien ça 😋";
+        gifContainer.innerHTML = "<img src='chef.gif' alt='GIF Chef'>";
+      } else {
+        message.innerHTML = "Hmm… tu es sûr ? 😅";
+        gifContainer.innerHTML = "";
+      }
+    }
+  </script>
+</body>
+</html>
