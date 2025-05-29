@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Énigme - Plat préféré</title>
+ <link rel="stylesheet" href="global.css">
+  <style>
+    /* Spécifique à Ronflex */
+    .ronflex-bulle {
+      position: absolute;
+      top: -40px;
+      right: -200px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+    .ronflex-bulle img {
+      width: 140px;
+      height: auto;
+      border-radius: 12px;
+      border: 2px solid #fff;
+    }
+    .bulle-texte {
+      margin-top: 5px;
+      background-color: #4b2b36;
+      border-radius: 12px;
+      padding: 10px 14px;
+      max-width: 150px;
+      font-size: 0.95rem;
+      position: relative;
+      color: #ffcccc;
+    }
+    .bulle-texte::before {
+      content: '';
+      position: absolute;
+      bottom: -10px;
+      left: 30px;
+      width: 0;
+      height: 0;
+      border: 10px solid transparent;
+      border-top-color: #4b2b36;
+    }
+  </style>
+</head>
+<body>
+  <h1>🍝 Énigme - Plat préféré</h1>
+  <div class="question-box">
+    <div class="ronflex-bulle">
+      <img src="ronflex.jpg" alt="Ronflex">
+      <div class="bulle-texte">Moi qui attend de pouvoir regoûter ce délice</div>
+    </div>
+    <p>Quel est le plat dont je rêve d'envie que tu me refasses ?</p>
+    <input type="text" id="reponse" placeholder="Ta réponse ici">
+    <button onclick="verifierReponse()">Valider</button>
+  </div>
+  <div class="message" id="message"></div>
+  <div class="code-fragment" id="code-fragment"></div>
+  <div class="gif-container" id="gif"></div>
+  <div class="next-button" id="next"></div>
+
+  <script>
+    function verifierReponse() {
+      const rep = document.getElementById("reponse").value.toLowerCase().trim();
+      const message = document.getElementById("message");
+      const gifContainer = document.getElementById("gif");
+      const nextButton = document.getElementById("next");
+      const codeFragment = document.getElementById("code-fragment");
+
+      if (rep.includes("carbonara") || rep.includes("pâtes à la carbonara")) {
+        message.innerHTML = "<strong>Bravo !</strong> Tu as trouvé la bonne réponse.";
+        codeFragment.innerHTML = "<br>Voici ta partie de code : <code>B</code>";
+        gifContainer.innerHTML = "<img src='chef.gif' alt='GIF Chef'>";
+        nextButton.innerHTML = "<a href='code.html'>Passer à l'étape suivante</a>";
+      } else {
+        message.innerHTML = "Mauvaise réponse... essaie encore !";
+        codeFragment.innerHTML = "";
+        gifContainer.innerHTML = "";
+        nextButton.innerHTML = "";
+      }
+    }
+  </script>
+</body>
+</html>
