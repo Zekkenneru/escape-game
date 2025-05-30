@@ -5,24 +5,24 @@
   <title>Animation Viande Fluide</title>
   <style>
     body { background: #222; color: #fff; text-align: center; padding-top: 40px; }
-    #animImage { width: 300px; height: auto; image-rendering: pixelated; display: block; margin: 0 auto; }
-    label { display: block; margin-top: 20px; font-size: 18px; }
+    #animImage { width: 300px; height: auto; image-rendering: pixelated; display: block; margin: 0 auto 20px auto; }
+    #viandeBtn { cursor: pointer; width: 100px; image-rendering: pixelated; }
   </style>
 </head>
 <body>
 
   <h2>Ajouter la viande ?</h2>
-  <label><input type="checkbox" id="toggleAnimation"> Oui</label>
 
   <img id="animImage" src="wokvide.png" alt="Animation Pad Thaï" />
+  <img id="viandeBtn" src="viande.png" alt="Bouton Viande" />
 
   <script>
-    const checkbox = document.getElementById("toggleAnimation");
     const image = document.getElementById("animImage");
+    const btn = document.getElementById("viandeBtn");
 
     const frames = [
       "wokvide.png",
-      "viandair.png",
+      "viandeclair.png",
       "viandechute.png",
       "viandewok.png",
       "wokvide.png"
@@ -38,8 +38,8 @@
       return img;
     });
 
-    checkbox.addEventListener("change", () => {
-      if (checkbox.checked && loadedImages === frames.length) {
+    btn.addEventListener("click", () => {
+      if (loadedImages === frames.length) {
         let i = 0;
         const frameDuration = 250;
 
