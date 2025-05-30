@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Énigme - Question 3</title>
+  <title>Énigme - Question 1</title>
   <link rel="stylesheet" href="../../global.css">
   <style>
     body {
@@ -89,21 +89,13 @@
       margin-top: 100px;
     }
 
-    input[type="text"] {
-      padding: 10px;
-      border-radius: 24px;
-      border: none;
-      width: 70%;
-      font-size: 1rem;
-    }
-
     button {
       padding: 10px 16px;
       background-color: purple;
       border: none;
       border-radius: 24px;
       color: white;
-      margin-left: 8px;
+      margin: 6px;
       font-weight: bold;
       cursor: pointer;
     }
@@ -137,6 +129,21 @@
       border-radius: 8px;
       font-weight: bold;
     }
+
+    .image-tasse {
+      width: 280px;
+      margin-top: 30px;
+      border: 2px solid white;
+      border-radius: 12px;
+    }
+
+    .image-cri {
+      width: 300px;
+      margin-top: 20px;
+      border: 2px solid white;
+      border-radius: 12px;
+      display: none;
+    }
   </style>
 </head>
 <body>
@@ -146,16 +153,20 @@
     <div class="hint-letters" id="hintLetters"></div>
   </div>
 
-  <h1>🍳 Énigme - Question 3</h1>
+  <h1>🎩 Énigme - Question 1</h1>
 
   <div class="question-box">
-    <div class="ronflex-bulle">
-      <img src="ronflex.jpg" alt="Ronflex">
-      <div class="bulle-texte">Moi qui pense toujours à ce plat…</div>
-    </div>
-    <p>Quel est le plat dont je rêve d'envie que tu me refasses ?</p>
-    <input type="text" id="reponse" placeholder="Ta réponse ici">
-    <button onclick="verifierReponse()">Valider</button>
+    <img src="Tasse.jpg" class="image-tasse" alt="Tasse">
+    <p>Avoue, nos tasses sont magnifiques :</p>
+    <button onclick="verifierReponse1('oui')">Oui !</button>
+    <button onclick="verifierReponse1('claquee')">Ouais mais non, juste la mienne. La tienne est claquée.</button>
+  </div>
+
+  <div class="sous-question" id="sousQuestion" style="display:none;">
+    <img src="cri.png" class="image-cri" id="imageCri" alt="Cri">
+    <p> 😭 Nan mais la vérité T_T ?</p>
+    <button onclick="validerSousQuestion()">Non</button>
+    <button onclick="validerSousQuestion()">Non mais vraiment vraiment</button>
   </div>
 
   <div class="message" id="message"></div>
@@ -164,16 +175,12 @@
   <div class="next-button" id="next"></div>
 
   <script>
-    const indexLettreFixe = 3; // Lettre n°4 du mot de passe = "Y"
     const motDePasse = "JOYEUXANNIVERSAIRECHOU<3".split("");
     const lettresRevelees = JSON.parse(localStorage.getItem("lettresRevelees") || "[]");
-
-    while (lettresRevelees.length < motDePasse.length) {
-      lettresRevelees.push("_");
-    }
+    while (lettresRevelees.length < motDePasse.length) lettresRevelees.push("_");
 
     const hintLettersDiv = document.getElementById("hintLetters");
-    let questionValidee = lettresRevelees[indexLettreFixe] !== "_";
+    let questionValidee = false;
 
     function initialiserAffichage() {
       hintLettersDiv.innerHTML = "";
@@ -188,37 +195,33 @@
 
     initialiserAffichage();
 
-    function afficherSucces() {
-      const lettre = motDePasse[indexLettreFixe];
-      document.getElementById(`lettre-${indexLettreFixe}`).textContent = lettre;
-      document.getElementById("message").innerHTML = "<strong style='color:#ff66cc;'>Bravo !</strong> Tu as déjà trouvé la bonne réponse.";
-      document.getElementById("code-fragment").innerHTML = `<br>Voici ta partie de code : <code>${lettre}</code>`;
-      document.getElementById("gif").innerHTML = "<img src='chef.gif' alt='GIF Chef'>";
-      document.getElementById("next").innerHTML = "<a href='question4.html'>Passer à la question suivante</a>";
-    }
-
-    if (questionValidee) {
-      afficherSucces();
-    }
-
-    function verifierReponse() {
+    function verifierReponse1(rep) {
       if (questionValidee) return;
-
-      const rep = document.getElementById("reponse").value.toLowerCase().trim();
-      if (rep.includes("carbonara") || rep.includes("pâtes à la carbonara")) {
-        questionValidee = true;
-        const lettre = motDePasse[indexLettreFixe];
-        lettresRevelees[indexLettreFixe] = lettre;
-        localStorage.setItem("lettresRevelees", JSON.stringify(lettresRevelees));
-        afficherSucces();
+      if (rep === "claquee") {
+        document.getElementById("sousQuestion").style.display = "block";
+        document.getElementById("imageCri").style.display = "block";
       } else {
-        document.getElementById("message").innerHTML = "Mauvaise réponse... essaie encore !";
-        document.getElementById("code-fragment").innerHTML = "";
-        document.getElementById("gif").innerHTML = "";
-        document.getElementById("next").innerHTML = "";
+        document.getElementById("message").innerHTML = "Nan mais t'abuse ! C'est pas la bonne réponse.";
       }
+    }
 
-      document.getElementById("reponse").value = "";
+    function validerSousQuestion() {
+      if (questionValidee) return;
+      questionValidee = true;
+      const index = trouverIndexLettreAleatoireNonRevelee();
+      const lettre = motDePasse[index];
+      lettresRevelees[index] = lettre;
+      localStorage.setItem("lettresRevelees", JSON.stringify(lettresRevelees));
+      document.getElementById(`lettre-${index}`).textContent = lettre;
+      document.getElementById("message").innerHTML = "<strong style='color:#ff66cc;'>Ok t'as avoué...</strong>";
+      document.getElementById("code-fragment").innerHTML = `<br>Voici ta partie de code : <code>${lettre}</code>`;
+      document.getElementById("gif").innerHTML = "<img src='cri.png' class='image-cri' style='display:inline-block;'>";
+      document.getElementById("next").innerHTML = "<a href='question2.html'>Passer à la question suivante</a>";
+    }
+
+    function trouverIndexLettreAleatoireNonRevelee() {
+      const indices = lettresRevelees.map((val, idx) => val === "_" ? idx : null).filter(x => x !== null);
+      return indices[Math.floor(Math.random() * indices.length)];
     }
   </script>
 </body>
