@@ -16,25 +16,25 @@
     .ronflex-bulle {
       position: absolute;
       top: 220px;
-      left: 460px;
+      left: calc(50% + 180px);
       display: flex;
       flex-direction: column;
       align-items: center;
     }
 
     .ronflex-bulle img {
-      width: 180px;
+      width: 140px;
       height: auto;
       border: none;
     }
 
     .bulle-texte {
-      margin-top: 10px;
+      margin-top: 5px;
       background-color: #4b2b36;
       border-radius: 12px;
-      padding: 12px 16px;
-      max-width: 200px;
-      font-size: 1rem;
+      padding: 10px 14px;
+      max-width: 160px;
+      font-size: 0.95rem;
       position: relative;
       color: #ffcccc;
     }
@@ -43,7 +43,7 @@
       content: '';
       position: absolute;
       bottom: -10px;
-      left: 40px;
+      left: 30px;
       width: 0;
       height: 0;
       border: 10px solid transparent;
@@ -113,7 +113,7 @@
     }
 
     .selected {
-      border: 2px solid green !important;
+      border: 2px solid white !important;
     }
 
     .question-box {
@@ -123,10 +123,6 @@
       padding: 30px;
       border: 1px solid #8a2be2;
       border-radius: 16px;
-    }
-
-    .question-box h2 {
-      margin: 0 0 10px 0;
     }
 
     .message {
@@ -157,7 +153,7 @@
     <div class="hint-letters" id="hintLetters"></div>
   </div>
 
-  <h2 style="margin-top: 130px">🍜 Construis ton Pad Thaï parfait !</h2>
+  <h2 id="titreQuestion" style="margin-top: 130px">🍜 Construis ton Pad Thaï parfait !</h2>
   <img id="animImage" src="wokvide.png" alt="Animation Pad Thaï" />
 
   <div class="ronflex-bulle" id="ronflex">
@@ -213,6 +209,11 @@
       btn.addEventListener("click", () => {
         const frames = JSON.parse(btn.dataset.frames || "[]");
         const nom = btn.alt;
+        if (nom === "Pousses de soja") {
+          clicsValides.clear();
+          buttons.forEach(b => b.classList.remove("selected"));
+          return;
+        }
         if (bonnesReponses.includes(nom)) {
           btn.classList.add("selected");
           clicsValides.add(nom);
@@ -249,12 +250,14 @@
     function afficherSucces() {
       const lettre = motDePasse[indexLettreFixe];
       document.getElementById(`lettre-${indexLettreFixe}`).textContent = lettre;
-      document.getElementById("message").innerHTML = "<strong style='color:#ff66cc;'>🍜 Tu as composé un Pad Thaï parfait !</strong>";
+      document.getElementById("message").innerHTML = "<strong style='color:#ff66cc;'>🍜 Bon appétit !</strong>";
       document.getElementById("code-fragment").innerHTML = `<br>Voici ta partie de code : <code>${lettre}</code>`;
       document.getElementById("next").innerHTML = "<a href='question3.html'>Passer à la question suivante</a>";
       document.getElementById("animImage").src = "padthai.png";
+      document.getElementById("animImage").style.width = "300px";
       document.getElementById("questionBox").style.display = "none";
       document.getElementById("ronflex").style.display = "none";
+      document.getElementById("titreQuestion").style.display = "none";
     }
   </script>
 </body>
