@@ -74,16 +74,6 @@
       margin-top: 20px;
     }
 
-    .gif-container {
-      margin-top: 20px;
-    }
-
-    .gif-container img {
-      width: 220px;
-      border-radius: 16px;
-      border: 2px solid #fff;
-    }
-
     .next-button {
       margin-top: 20px;
     }
@@ -126,7 +116,6 @@
     </div>
 
     <div class="message" id="message"></div>
-    <div class="gif-container" id="gifContainer"></div>
     <div class="next-button" id="nextButton"></div>
   </div>
 
@@ -136,6 +125,7 @@
     function checkReponse1(bonne) {
       if (bonne) {
         document.getElementById("sousQuestion").style.display = "block";
+        document.getElementById("message").innerHTML = "";
       } else {
         document.getElementById("message").innerHTML = "Hmm non, essaie d’être honnête 😏";
       }
@@ -145,7 +135,6 @@
       if (lettreDéjàAffichée) return;
 
       document.getElementById("message").innerHTML = "<strong>Snif…</strong> bon d’accord, j’admets 😢";
-      document.getElementById("gifContainer").innerHTML = "<img src='chef.gif' alt='GIF Chef'>";
       document.getElementById("nextButton").innerHTML = "<a href='question2.html'>➡️ Question suivante</a>";
       document.getElementById("hintLetter").style.display = "block";
       lettreDéjàAffichée = true;
