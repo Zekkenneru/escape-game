@@ -123,9 +123,9 @@
     const lettresRevelees = JSON.parse(localStorage.getItem("lettresRevelees") || "[]");
     while (lettresRevelees.length < motDePasse.length) lettresRevelees.push("_");
 
+    const indexLettreFixe = 0; // lettre n°1 à dévoiler ici
     const hintLettersDiv = document.getElementById("hintLetters");
-    const lettreDejaGagnee = localStorage.getItem("question1_validee") === "true";
-    let questionValidee = lettreDejaGagnee;
+    let questionValidee = lettresRevelees[indexLettreFixe] !== "_";
 
     function initialiserAffichage() {
       hintLettersDiv.innerHTML = "";
@@ -140,15 +140,12 @@
 
     initialiserAffichage();
 
-    if (lettreDejaGagnee) {
-      document.getElementById("question1").style.display = "none";
-      document.getElementById("sousQuestion").style.display = "none";
-      document.getElementById("imageCri").style.display = "none";
-      document.getElementById("message").innerHTML = "<strong style='color:#ff66cc;'>Tu as déjà répondu à cette question.</strong>";
-      document.getElementById("next").innerHTML = "<a href='question2.html'>Passer à la question suivante</a>";
+    if (questionValidee) {
+      afficherSucces();
     }
 
     function verifierReponse1(bonne) {
+      if (questionValidee) return;
       if (bonne) {
         document.getElementById("question1").style.display = "none";
         document.getElementById("sousQuestion").style.display = "inline-block";
@@ -161,20 +158,21 @@
     function validerSousQuestion() {
       if (questionValidee) return;
       questionValidee = true;
-      const index = trouverIndexLettreAleatoireNonRevelee();
-      const lettre = motDePasse[index];
-      lettresRevelees[index] = lettre;
+      const lettre = motDePasse[indexLettreFixe];
+      lettresRevelees[indexLettreFixe] = lettre;
       localStorage.setItem("lettresRevelees", JSON.stringify(lettresRevelees));
-      localStorage.setItem("question1_validee", "true");
-      document.getElementById(`lettre-${index}`).textContent = lettre;
+      afficherSucces();
+    }
+
+    function afficherSucces() {
+      const lettre = motDePasse[indexLettreFixe];
+      document.getElementById(`lettre-${indexLettreFixe}`).textContent = lettre;
+      document.getElementById("question1").style.display = "none";
+      document.getElementById("sousQuestion").style.display = "none";
+      document.getElementById("imageCri").style.display = "none";
       document.getElementById("message").innerHTML = "<strong style='color:#ff66cc;'>😭 Ok d’accord… t’as gagné !</strong>";
       document.getElementById("code-fragment").innerHTML = `<br>Voici ta partie de code : <code>${lettre}</code>`;
       document.getElementById("next").innerHTML = "<a href='question2.html'>Passer à la question suivante</a>";
-    }
-
-    function trouverIndexLettreAleatoireNonRevelee() {
-      const indices = lettresRevelees.map((val, idx) => val === "_" ? idx : null).filter(x => x !== null);
-      return indices[Math.floor(Math.random() * indices.length)];
     }
   </script>
 </body>
