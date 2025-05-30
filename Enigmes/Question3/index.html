@@ -164,8 +164,7 @@
   <div class="next-button" id="next"></div>
 
   <script>
-    const indexLettreFixe = 3; // Question 3 ➜ lettre 4 du mot de passe (index 3)
-
+    const indexLettreFixe = 3; // Lettre n°4 du mot de passe = "Y"
     const motDePasse = "JOYEUXANNIVERSAIRECHOU<3".split("");
     const lettresRevelees = JSON.parse(localStorage.getItem("lettresRevelees") || "[]");
 
@@ -189,33 +188,34 @@
 
     initialiserAffichage();
 
+    function afficherSucces() {
+      const lettre = motDePasse[indexLettreFixe];
+      document.getElementById(`lettre-${indexLettreFixe}`).textContent = lettre;
+      document.getElementById("message").innerHTML = "<strong style='color:#ff66cc;'>Bravo !</strong> Tu as déjà trouvé la bonne réponse.";
+      document.getElementById("code-fragment").innerHTML = `<br>Voici ta partie de code : <code>${lettre}</code>`;
+      document.getElementById("gif").innerHTML = "<img src='chef.gif' alt='GIF Chef'>";
+      document.getElementById("next").innerHTML = "<a href='question4.html'>Passer à la question suivante</a>";
+    }
+
+    if (questionValidee) {
+      afficherSucces();
+    }
+
     function verifierReponse() {
       if (questionValidee) return;
 
       const rep = document.getElementById("reponse").value.toLowerCase().trim();
-      const message = document.getElementById("message");
-      const gifContainer = document.getElementById("gif");
-      const nextButton = document.getElementById("next");
-      const codeFragment = document.getElementById("code-fragment");
-
       if (rep.includes("carbonara") || rep.includes("pâtes à la carbonara")) {
         questionValidee = true;
-
         const lettre = motDePasse[indexLettreFixe];
         lettresRevelees[indexLettreFixe] = lettre;
         localStorage.setItem("lettresRevelees", JSON.stringify(lettresRevelees));
-
-        document.getElementById(`lettre-${indexLettreFixe}`).textContent = lettre;
-
-        message.innerHTML = "<strong style='color:#ff66cc;'>Bravo !</strong> Tu as trouvé la bonne réponse.";
-        codeFragment.innerHTML = `<br>Voici ta partie de code : <code>${lettre}</code>`;
-        gifContainer.innerHTML = "<img src='chef.gif' alt='GIF Chef'>";
-        nextButton.innerHTML = "<a href='question4.html'>Passer à la question suivante</a>";
+        afficherSucces();
       } else {
-        message.innerHTML = "Mauvaise réponse... essaie encore !";
-        codeFragment.innerHTML = "";
-        gifContainer.innerHTML = "";
-        nextButton.innerHTML = "";
+        document.getElementById("message").innerHTML = "Mauvaise réponse... essaie encore !";
+        document.getElementById("code-fragment").innerHTML = "";
+        document.getElementById("gif").innerHTML = "";
+        document.getElementById("next").innerHTML = "";
       }
 
       document.getElementById("reponse").value = "";
