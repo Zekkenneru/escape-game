@@ -98,7 +98,7 @@
     <div class="hint-letters" id="hintLetters"></div>
   </div>
 
-  <img src="Tasse.jpg" class="image-tasse" alt="Tasse">
+  <img src="Tasse.jpg" class="image-tasse" id="imageTasse" alt="Tasse">
 
   <div class="question-box" id="question1">
     <p>☕ Avoue, nos tasses sont magnifiques :</p>
@@ -123,9 +123,8 @@
     const lettresRevelees = JSON.parse(localStorage.getItem("lettresRevelees") || "[]");
     while (lettresRevelees.length < motDePasse.length) lettresRevelees.push("_");
 
-    const indexLettreFixe = 0; // lettre n°1 à dévoiler ici
     const hintLettersDiv = document.getElementById("hintLetters");
-    let questionValidee = lettresRevelees[indexLettreFixe] !== "_";
+    let questionValidee = localStorage.getItem("question1_validee") === "true";
 
     function initialiserAffichage() {
       hintLettersDiv.innerHTML = "";
@@ -140,39 +139,46 @@
 
     initialiserAffichage();
 
-    if (questionValidee) {
-      afficherSucces();
-    }
+    if (questionValidee) afficherSucces();
 
     function verifierReponse1(bonne) {
       if (questionValidee) return;
       if (bonne) {
         document.getElementById("question1").style.display = "none";
+        document.getElementById("imageTasse").style.display = "none";
         document.getElementById("sousQuestion").style.display = "inline-block";
         document.getElementById("imageCri").style.display = "block";
+        document.getElementById("message").innerHTML = "";
       } else {
-        document.getElementById("message").innerHTML = "Hmm... pas très honnête tout ça 😅";
+        document.getElementById("message").innerHTML = "";
       }
     }
 
     function validerSousQuestion() {
       if (questionValidee) return;
       questionValidee = true;
-      const lettre = motDePasse[indexLettreFixe];
-      lettresRevelees[indexLettreFixe] = lettre;
+      const index = trouverIndexLettreAleatoireNonRevelee();
+      const lettre = motDePasse[index];
+      lettresRevelees[index] = lettre;
       localStorage.setItem("lettresRevelees", JSON.stringify(lettresRevelees));
-      afficherSucces();
+      localStorage.setItem("question1_validee", "true");
+      afficherSucces(index, lettre);
     }
 
-    function afficherSucces() {
-      const lettre = motDePasse[indexLettreFixe];
-      document.getElementById(`lettre-${indexLettreFixe}`).textContent = lettre;
+    function afficherSucces(index = trouverIndexLettreAleatoireNonRevelee(), lettre = motDePasse[index]) {
+      document.getElementById(`lettre-${index}`).textContent = lettre;
       document.getElementById("question1").style.display = "none";
+      document.getElementById("imageTasse").style.display = "none";
       document.getElementById("sousQuestion").style.display = "none";
       document.getElementById("imageCri").style.display = "none";
       document.getElementById("message").innerHTML = "<strong style='color:#ff66cc;'>😭 Ok d’accord… t’as gagné !</strong>";
       document.getElementById("code-fragment").innerHTML = `<br>Voici ta partie de code : <code>${lettre}</code>`;
       document.getElementById("next").innerHTML = "<a href='question2.html'>Passer à la question suivante</a>";
+    }
+
+    function trouverIndexLettreAleatoireNonRevelee() {
+      const indices = lettresRevelees.map((val, idx) => val === "_" ? idx : null).filter(x => x !== null);
+      return indices[Math.floor(Math.random() * indices.length)];
     }
   </script>
 </body>
