@@ -99,6 +99,14 @@
       margin-bottom: 20px;
     }
 
+    .input-text {
+      padding: 10px;
+      width: 80%;
+      max-width: 300px;
+      font-size: 1rem;
+      margin-top: 20px;
+    }
+
     .reponse-btn {
       padding: 10px 16px;
       background-color: purple;
@@ -138,7 +146,7 @@
   </div>
 
   <h2 style="margin-top: 130px">🎸 À qui appartient cette guitare ?</h2>
-  <img class="question-image" src="guitar.png" alt="Guitare mystérieuse">
+  <img class="question-image" src="guitar.jpg" alt="Guitare mystérieuse">
 
   <div class="ronflex-bulle" id="ronflex">
     <img src="prof.png" alt="Prof">
@@ -146,9 +154,9 @@
   </div>
 
   <div class="question-box" id="questionBox">
-    <button class="reponse-btn" onclick="verifierReponse('miguel')">Miguel</button>
-    <button class="reponse-btn" onclick="verifierReponse('ernesto')">Ernesto de la Cruz</button>
-    <button class="reponse-btn" onclick="verifierReponse('hector')">Hector</button>
+    <input id="reponseInput" class="input-text" type="text" placeholder="Tape ta réponse ici">
+    <br>
+    <button class="reponse-btn" onclick="verifierReponseLibre()">Valider</button>
   </div>
 
   <div class="message" id="message"></div>
@@ -156,7 +164,7 @@
   <div class="next-button" id="next"></div>
 
   <script>
-    const indexLettreFixe = 13; // exemple : on révèle la 14ᵉ lettre
+    const indexLettreFixe = 13;
     const motDePasse = "JOYEUXANNIVERSAIRECHOU<3".split("");
     const lettresRevelees = JSON.parse(localStorage.getItem("lettresRevelees") || "[]");
     while (lettresRevelees.length < motDePasse.length) lettresRevelees.push("_");
@@ -178,9 +186,10 @@
     initialiserAffichage();
     if (questionValidee) afficherSucces();
 
-    function verifierReponse(rep) {
+    function verifierReponseLibre() {
       if (questionValidee) return;
-      if (rep === "ernesto") {
+      const val = document.getElementById("reponseInput").value.trim().toLowerCase();
+      if (val.includes("ernesto")) {
         validerQuestion();
       } else {
         document.getElementById("message").innerHTML = "Non, ce n’est pas la bonne réponse… essaie encore !";
