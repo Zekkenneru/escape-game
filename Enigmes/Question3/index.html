@@ -180,7 +180,7 @@
       lettresRevelees.forEach((lettre, i) => {
         const span = document.createElement("span");
         span.className = "letter-slot";
-        span.id = lettre-${i};
+        span.id = `lettre-${i}`;
         span.textContent = lettre;
         hintLettersDiv.appendChild(span);
       });
@@ -190,9 +190,9 @@
 
     function afficherSucces() {
       const lettre = motDePasse[indexLettreFixe];
-      document.getElementById(lettre-${indexLettreFixe}).textContent = lettre;
+      document.getElementById(`lettre-${indexLettreFixe}`).textContent = lettre;
       document.getElementById("message").innerHTML = "<strong style='color:#ff66cc;'>Bravo !</strong> Tu as déjà trouvé la bonne réponse.";
-      document.getElementById("code-fragment").innerHTML = <br>Voici ta partie de code : <code>${lettre}</code>;
+      document.getElementById("code-fragment").innerHTML = `<br>Voici ta partie de code : <code>${lettre}</code>`;
       document.getElementById("gif").innerHTML = "<img src='chef.gif' alt='GIF Chef'>";
       document.getElementById("next").innerHTML = "<a href='question4.html'>Passer à la question suivante</a>";
     }
