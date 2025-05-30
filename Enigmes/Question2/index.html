@@ -2,49 +2,43 @@
 <html lang="fr">
 <head>
   <meta charset="UTF-8">
-  <title>Animation Viande Fluide</title>
+  <title>Animation Pad Thaï</title>
   <style>
     body { background: #222; color: #fff; text-align: center; padding-top: 40px; }
-    #animImage { width: 300px; height: auto; image-rendering: pixelated; display: block; margin: 0 auto 20px auto; }
-    #viandeBtn { cursor: pointer; width: 100px; image-rendering: pixelated; }
+    img { image-rendering: pixelated; }
+    #animImage { width: 300px; height: auto; display: block; margin: 0 auto 20px auto; }
+    .ingredient-btn { cursor: pointer; width: 100px; margin: 10px; display: inline-block; }
   </style>
 </head>
 <body>
 
-  <h2>Ajouter la viande ?</h2>
-
+  <h2>Ajoute les ingrédients</h2>
   <img id="animImage" src="wokvide.png" alt="Animation Pad Thaï" />
-  <img id="viandeBtn" src="viande.png" alt="Bouton Viande" />
+
+  <div>
+    <img class="ingredient-btn" src="viande.png" alt="Viande" data-frames='["wokvide.png","viandair.png","viandechute.png","viandewok.png","wokvide.png"]' />
+    <img class="ingredient-btn" src="patederiz.png" alt="Pâtes de riz" data-frames='["wokvide.png","patederizair.png","patederizchute.png","patederizwok.png","wokvide.png"]' />
+    <img class="ingredient-btn" src="oeuf.png" alt="Œuf" data-frames='["wokvide.png","oeufair.png","oeufwok.png","wokvide.png"]' />
+    <img class="ingredient-btn" src="cacahuete.png" alt="Cacahuètes" data-frames='["wokvide.png","cacahueteair.png","cacahuetewok.png","wokvide.png"]' />
+    <img class="ingredient-btn" src="ciboulette.png" alt="Ciboulette" data-frames='["wokvide.png","cibouletteair.png","ciboulettewok.png","wokvide.png"]' />
+    <img class="ingredient-btn" src="soja.png" alt="Sauce Soja" data-frames='["wokvide.png","sojaair.png","sojawok.png","wokvide.png"]' />
+    <img class="ingredient-btn" src="poussesoja.png" alt="Pousses de soja" />
+  </div>
 
   <script>
-    const image = document.getElementById("animImage");
-    const btn = document.getElementById("viandeBtn");
+    const animImage = document.getElementById("animImage");
+    const buttons = document.querySelectorAll(".ingredient-btn");
 
-    const frames = [
-      "wokvide.png",
-      "viandair.png",
-      "viandechute.png",
-      "viandewok.png",
-      "wokvide.png"
-    ];
+    buttons.forEach(btn => {
+      btn.addEventListener("click", () => {
+        const frames = JSON.parse(btn.dataset.frames || "[]");
+        if (frames.length === 0) return;
 
-    let loadedImages = 0;
-    const preloadedImages = frames.map(src => {
-      const img = new Image();
-      img.src = src;
-      img.onload = () => {
-        loadedImages++;
-      };
-      return img;
-    });
-
-    btn.addEventListener("click", () => {
-      if (loadedImages === frames.length) {
         let i = 0;
         const frameDuration = 250;
 
         function showNextFrame() {
-          image.src = frames[i];
+          animImage.src = frames[i];
           i++;
           if (i < frames.length) {
             setTimeout(showNextFrame, frameDuration);
@@ -52,7 +46,7 @@
         }
 
         showNextFrame();
-      }
+      });
     });
   </script>
 
