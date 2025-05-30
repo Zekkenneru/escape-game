@@ -78,7 +78,13 @@
       cursor: pointer;
     }
 
-    .message, .code-fragment, .gif-container, .next-button {
+    .message {
+      margin-top: 30px;
+      font-size: 1.4rem;
+      color: #ff66cc;
+    }
+
+    .code-fragment, .gif-container, .next-button {
       margin-top: 20px;
     }
 
@@ -125,6 +131,13 @@
 
     const hintLettersDiv = document.getElementById("hintLetters");
     let questionValidee = localStorage.getItem("question1_validee") === "true";
+    let indexLettre = localStorage.getItem("question1_index") !== null
+      ? parseInt(localStorage.getItem("question1_index"))
+      : trouverIndexLettreAleatoireNonRevelee();
+
+    if (localStorage.getItem("question1_index") === null) {
+      localStorage.setItem("question1_index", indexLettre);
+    }
 
     function initialiserAffichage() {
       hintLettersDiv.innerHTML = "";
@@ -157,21 +170,22 @@
     function validerSousQuestion() {
       if (questionValidee) return;
       questionValidee = true;
-      const index = trouverIndexLettreAleatoireNonRevelee();
-      const lettre = motDePasse[index];
-      lettresRevelees[index] = lettre;
+      const lettre = motDePasse[indexLettre];
+      lettresRevelees[indexLettre] = lettre;
       localStorage.setItem("lettresRevelees", JSON.stringify(lettresRevelees));
       localStorage.setItem("question1_validee", "true");
-      afficherSucces(index, lettre);
+      localStorage.setItem("question1_index", indexLettre);
+      afficherSucces();
     }
 
-    function afficherSucces(index = trouverIndexLettreAleatoireNonRevelee(), lettre = motDePasse[index]) {
-      document.getElementById(`lettre-${index}`).textContent = lettre;
+    function afficherSucces() {
+      const lettre = motDePasse[indexLettre];
+      document.getElementById(`lettre-${indexLettre}`).textContent = lettre;
       document.getElementById("question1").style.display = "none";
       document.getElementById("imageTasse").style.display = "none";
       document.getElementById("sousQuestion").style.display = "none";
       document.getElementById("imageCri").style.display = "none";
-      document.getElementById("message").innerHTML = "<strong style='color:#ff66cc;'>😭 Ok d’accord… t’as gagné !</strong>";
+      document.getElementById("message").innerHTML = "<strong style='color:#ff66cc; font-size: 1.8rem;'>😭 Ok d’accord… t’as gagné !</strong>";
       document.getElementById("code-fragment").innerHTML = `<br>Voici ta partie de code : <code>${lettre}</code>`;
       document.getElementById("next").innerHTML = "<a href='question2.html'>Passer à la question suivante</a>";
     }
