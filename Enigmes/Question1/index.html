@@ -2,15 +2,12 @@
 <html lang="fr">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Énigme - Question 1</title>
-  <link rel="stylesheet" href="../../global.css">
+  <link rel="stylesheet" href="global.css" />
   <style>
     body {
-      background-color: #1a0d0f;
-      color: white;
-      font-family: Arial, sans-serif;
-      text-align: center;
+      position: relative;
     }
 
     .hint-image {
@@ -25,149 +22,134 @@
       width: 100%;
     }
 
-    .hint-letters {
+    .hint-letter {
       position: absolute;
-      top: 44px;
-      left: 50%;
-      transform: translateX(-50%);
-      width: 88%;
-      display: grid;
-      grid-template-columns: repeat(12, 1fr);
-      row-gap: 6px;
-      justify-items: center;
-      font-family: monospace;
-      font-size: 1.4rem;
+      top: 78px;
+      left: 160px;
+      font-size: 2.2rem;
       font-weight: bold;
-      color: #000;
+      color: #000000;
+      display: none;
       z-index: 3;
     }
 
-    .letter-slot {
-      width: 1.2rem;
-      text-align: center;
-    }
-
     .question-box {
-      margin-top: 100px;
+      margin-left: 380px;
+      background-color: #ffffff;
+      border-radius: 16px;
+      padding: 20px;
+      max-width: 600px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.2);
+      position: relative;
     }
 
-    .img-question {
-      width: 220px;
-      margin-bottom: 20px;
+    .question-img {
+      width: 150px;
+      display: block;
+      margin-bottom: 15px;
       border-radius: 12px;
+      border: 2px solid #fff;
     }
 
-    button {
+    .button-set {
+      margin: 10px 0;
+    }
+
+    .button-set button {
+      margin: 5px;
       padding: 10px 20px;
-      margin: 10px;
-      background-color: purple;
-      color: white;
+      border-radius: 8px;
       border: none;
-      border-radius: 24px;
-      font-weight: bold;
+      background-color: #4b2b36;
+      color: #ffcccc;
       cursor: pointer;
     }
 
-    .message, .code-fragment, .gif-container, .next-button {
+    .button-set button:hover {
+      background-color: #6d3c50;
+    }
+
+    .sous-question {
+      display: none;
+      margin-top: 20px;
+    }
+
+    .gif-container {
       margin-top: 20px;
     }
 
     .gif-container img {
-      width: 480px;
-      border-radius: 12px;
+      width: 220px;
+      border-radius: 16px;
+      border: 2px solid #fff;
+    }
+
+    .next-button {
+      margin-top: 20px;
     }
 
     .next-button a {
+      background-color: #4b2b36;
+      color: #ffcccc;
       padding: 10px 20px;
-      background-color: red;
-      color: white;
+      border-radius: 10px;
       text-decoration: none;
-      border-radius: 8px;
-      font-weight: bold;
+    }
+
+    .next-button a:hover {
+      background-color: #6d3c50;
     }
   </style>
 </head>
 <body>
-
+  <!-- Tiplouf à gauche -->
   <div class="hint-image">
-    <img src="pancarte_tiplouf.png" alt="Mot de passe à reconstituer">
-    <div class="hint-letters" id="hintLetters"></div>
+    <img src="pancarte_tiplouf.png" alt="Mot de passe à reconstituer" />
+    <div class="hint-letter" id="hintLetter">A</div>
   </div>
 
-  <h1>🫖 Énigme - Céramique</h1>
+  <div class="question-box">
+    <img src="Tasse.jpg" alt="Tasse" class="question-img" />
+    <p>☕ Avoue, nos tasses sont magnifiques :</p>
+    <div class="button-set">
+      <button onclick="checkReponse1(false)">Oui !</button>
+      <button onclick="checkReponse1(true)">Ouais mais non, juste la mienne. La tienne est claquée.</button>
+    </div>
 
-  <div class="question-box" id="question1">
-    <img src="Tasse.jpg" class="img-question" alt="Tasses peintes">
-    <p>Avoue… nos tasses sont magnifiques 🥰</p>
-    <button onclick="validerQuestion1(0)">Oui</button>
-    <button onclick="validerQuestion1(1)">Ouais mais non… juste la mienne. La tienne est claquée.</button>
+    <div class="sous-question" id="sousQuestion">
+      <img src="cri.png" alt="Ronflex qui pleure" class="question-img" />
+      <p>😭 Nan mais la vérité T_T ?</p>
+      <div class="button-set">
+        <button onclick="checkReponse2()">Non</button>
+        <button onclick="checkReponse2()">Non mais vraiment vraiment</button>
+      </div>
+    </div>
+
+    <div class="message" id="message"></div>
+    <div class="gif-container" id="gifContainer"></div>
+    <div class="next-button" id="nextButton"></div>
   </div>
-
-  <div class="question-box" id="question2" style="display: none;">
-    <img src="cri.png" class="img-question" alt="Ronflex choqué">
-    <p>Nan mais la vérité 😭</p>
-    <button onclick="validerQuestion2()">Non</button>
-    <button onclick="validerQuestion2()">Non… mais vraiment vraiment.</button>
-  </div>
-
-  <div class="message" id="message"></div>
-  <div class="code-fragment" id="code-fragment"></div>
-  <div class="gif-container" id="gif"></div>
-  <div class="next-button" id="next"></div>
 
   <script>
-    const motDePasse = "JOYEUXANNIVERSAIRECHOU<3".split("");
-    const lettresRevelees = JSON.parse(localStorage.getItem("lettresRevelees") || "[]");
+    let lettreDéjàAffichée = false;
 
-    while (lettresRevelees.length < motDePasse.length) {
-      lettresRevelees.push("_");
-    }
-
-    const hintLettersDiv = document.getElementById("hintLetters");
-    let questionValidee = false;
-    let lettreGagnee = null;
-
-    function initialiserAffichage() {
-      hintLettersDiv.innerHTML = "";
-      lettresRevelees.forEach((lettre, i) => {
-        const span = document.createElement("span");
-        span.className = "letter-slot";
-        span.id = `lettre-${i}`;
-        span.textContent = lettre;
-        hintLettersDiv.appendChild(span);
-      });
-    }
-
-    initialiserAffichage();
-
-    function validerQuestion1(reponse) {
-      if (questionValidee) return;
-      if (reponse === 1) {
-        document.getElementById("question1").style.display = "none";
-        document.getElementById("question2").style.display = "block";
+    function checkReponse1(bonne) {
+      if (bonne) {
+        document.getElementById("sousQuestion").style.display = "block";
       } else {
-        document.getElementById("message").innerHTML = "Hmm... pas très honnête tout ça 😅";
+        document.getElementById("message").innerHTML = "Hmm non, essaie d’être honnête 😏";
       }
     }
 
-    function validerQuestion2() {
-      if (questionValidee) return;
-      questionValidee = true;
+    function checkReponse2() {
+      if (lettreDéjàAffichée) return;
 
-      // Choisir une lettre aléatoire non encore révélée
-      const indicesDisponibles = motDePasse.map((_, i) => i).filter(i => lettresRevelees[i] === "_");
-      const index = indicesDisponibles[Math.floor(Math.random() * indicesDisponibles.length)];
-      const lettre = motDePasse[index];
-      lettresRevelees[index] = lettre;
-      localStorage.setItem("lettresRevelees", JSON.stringify(lettresRevelees));
-      document.getElementById(`lettre-${index}`).textContent = lettre;
-
-      document.getElementById("message").innerHTML = "<strong style='color:#ff66cc;'>😭 Ok d’accord… t’as gagné !</strong>";
-      document.getElementById("code-fragment").innerHTML = `Voici ta partie de code : <code>${lettre}</code>`;
-      document.getElementById("gif").innerHTML = "<img src='chef.gif' alt='GIF Chef'>";
-      document.getElementById("next").innerHTML = "<a href='question2.html'>Passer à la question suivante</a>";
+      document.getElementById("message").innerHTML = "<strong>Snif…</strong> bon d’accord, j’admets 😢";
+      document.getElementById("gifContainer").innerHTML = "<img src='chef.gif' alt='GIF Chef'>";
+      document.getElementById("nextButton").innerHTML = "<a href='question2.html'>➡️ Question suivante</a>";
+      document.getElementById("hintLetter").style.display = "block";
+      lettreDéjàAffichée = true;
     }
   </script>
-
 </body>
 </html>
