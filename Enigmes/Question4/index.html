@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Énigme - Question 4</title>
+  <link rel="stylesheet" href="../../global.css">
+  <style>
+    body {
+      background-color: #1a0d0f;
+      color: white;
+      font-family: Arial, sans-serif;
+      text-align: center;
+    }
+
+    .ronflex-bulle {
+      position: absolute;
+      top: 220px;
+      left: calc(50% + 180px);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .ronflex-bulle img {
+      width: 140px;
+      height: auto;
+      border: none;
+    }
+
+    .bulle-texte {
+      margin-top: 5px;
+      background-color: #4b2b36;
+      border-radius: 12px;
+      padding: 10px 14px;
+      max-width: 160px;
+      font-size: 0.95rem;
+      position: relative;
+      color: #ffcccc;
+    }
+
+    .bulle-texte::before {
+      content: '';
+      position: absolute;
+      bottom: -10px;
+      left: 30px;
+      width: 0;
+      height: 0;
+      border: 10px solid transparent;
+      border-top-color: #4b2b36;
+    }
+
+    .hint-image {
+      position: absolute;
+      top: 20px;
+      left: 20px;
+      width: 340px;
+      z-index: 2;
+    }
+
+    .hint-image img {
+      width: 100%;
+    }
+
+    .hint-letters {
+      position: absolute;
+      top: 44px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 88%;
+      display: grid;
+      grid-template-columns: repeat(12, 1fr);
+      row-gap: 6px;
+      justify-items: center;
+      font-family: monospace;
+      font-size: 1.4rem;
+      font-weight: bold;
+      color: #000;
+      z-index: 3;
+    }
+
+    .letter-slot {
+      width: 1.2rem;
+      text-align: center;
+    }
+
+    .question-box {
+      max-width: 720px;
+      margin: 100px auto 20px auto;
+      background-color: #2e1214;
+      padding: 30px;
+      border: 1px solid #8a2be2;
+      border-radius: 16px;
+    }
+
+    .question-image {
+      width: 200px;
+      border-radius: 12px;
+      margin-bottom: 20px;
+    }
+
+    .reponse-btn {
+      padding: 10px 16px;
+      background-color: purple;
+      border: none;
+      border-radius: 24px;
+      color: white;
+      font-weight: bold;
+      cursor: pointer;
+      margin: 10px;
+    }
+
+    .message {
+      margin-top: 30px;
+      font-size: 1.8rem;
+      color: #ff66cc;
+    }
+
+    .code-fragment, .next-button {
+      margin-top: 20px;
+    }
+
+    .next-button a {
+      padding: 10px 20px;
+      background-color: red;
+      color: white;
+      text-decoration: none;
+      border-radius: 8px;
+      font-weight: bold;
+      display: inline-block;
+    }
+  </style>
+</head>
+<body>
+  <div class="hint-image">
+    <img src="pancarte_tiplouf.png" alt="Mot de passe à reconstituer">
+    <div class="hint-letters" id="hintLetters"></div>
+  </div>
+
+  <h2 style="margin-top: 130px">🎸 À qui appartient cette guitare ?</h2>
+  <img class="question-image" src="guitar.png" alt="Guitare mystérieuse">
+
+  <div class="ronflex-bulle" id="ronflex">
+    <img src="prof.png" alt="Prof">
+    <div class="bulle-texte">Attention, il y a un piège !</div>
+  </div>
+
+  <div class="question-box" id="questionBox">
+    <button class="reponse-btn" onclick="verifierReponse('miguel')">Miguel</button>
+    <button class="reponse-btn" onclick="verifierReponse('ernesto')">Ernesto de la Cruz</button>
+    <button class="reponse-btn" onclick="verifierReponse('hector')">Hector</button>
+  </div>
+
+  <div class="message" id="message"></div>
+  <div class="code-fragment" id="code-fragment"></div>
+  <div class="next-button" id="next"></div>
+
+  <script>
+    const indexLettreFixe = 13; // exemple : on révèle la 14ᵉ lettre
+    const motDePasse = "JOYEUXANNIVERSAIRECHOU<3".split("");
+    const lettresRevelees = JSON.parse(localStorage.getItem("lettresRevelees") || "[]");
+    while (lettresRevelees.length < motDePasse.length) lettresRevelees.push("_");
+
+    const hintLettersDiv = document.getElementById("hintLetters");
+    let questionValidee = localStorage.getItem("question4_validee") === "true";
+
+    function initialiserAffichage() {
+      hintLettersDiv.innerHTML = "";
+      lettresRevelees.forEach((lettre, i) => {
+        const span = document.createElement("span");
+        span.className = "letter-slot";
+        span.id = `lettre-${i}`;
+        span.textContent = lettre;
+        hintLettersDiv.appendChild(span);
+      });
+    }
+
+    initialiserAffichage();
+    if (questionValidee) afficherSucces();
+
+    function verifierReponse(rep) {
+      if (questionValidee) return;
+      if (rep === "ernesto") {
+        validerQuestion();
+      } else {
+        document.getElementById("message").innerHTML = "Non, ce n’est pas la bonne réponse… essaie encore !";
+      }
+    }
+
+    function validerQuestion() {
+      questionValidee = true;
+      const lettre = motDePasse[indexLettreFixe];
+      lettresRevelees[indexLettreFixe] = lettre;
+      localStorage.setItem("lettresRevelees", JSON.stringify(lettresRevelees));
+      localStorage.setItem("question4_validee", "true");
+      afficherSucces();
+    }
+
+    function afficherSucces() {
+      const lettre = motDePasse[indexLettreFixe];
+      document.getElementById(`lettre-${indexLettreFixe}`).textContent = lettre;
+      document.getElementById("ronflex").innerHTML = `<img src='ronflexguit.png' alt='Ronflex guitare' style='width: 180px'>`;
+      document.getElementById("questionBox").style.display = "none";
+      document.getElementById("message").innerHTML = "<strong style='color:#ff66cc;'>Bravo ! C'était bien Ernesto 🎸</strong>";
+      document.getElementById("code-fragment").innerHTML = `<br>Voici ta partie de code : <code>${lettre}</code>`;
+      document.getElementById("next").innerHTML = "<a href='../Question5/index.html'>Passer à la question suivante</a>";
+    }
+  </script>
+</body>
+</html>
