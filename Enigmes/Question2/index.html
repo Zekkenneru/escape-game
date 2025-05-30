@@ -13,6 +13,44 @@
       text-align: center;
     }
 
+    .ronflex-bulle {
+      position: absolute;
+      top: 100px;
+      right: 20px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .ronflex-bulle img {
+      width: 180px;
+      height: auto;
+      border-radius: 12px;
+      border: 2px solid #fff;
+    }
+
+    .bulle-texte {
+      margin-top: 10px;
+      background-color: #4b2b36;
+      border-radius: 12px;
+      padding: 12px 16px;
+      max-width: 200px;
+      font-size: 1rem;
+      position: relative;
+      color: #ffcccc;
+    }
+
+    .bulle-texte::before {
+      content: '';
+      position: absolute;
+      bottom: -10px;
+      left: 40px;
+      width: 0;
+      height: 0;
+      border: 10px solid transparent;
+      border-top-color: #4b2b36;
+    }
+
     .hint-image {
       position: absolute;
       top: 20px;
@@ -48,26 +86,26 @@
     }
 
     #animImage {
-      width: 520px;
+      width: 600px;
       height: auto;
       display: block;
-      margin: 200px auto 20px auto;
+      margin: 220px auto 20px auto;
       image-rendering: pixelated;
       border: 2px solid white;
       border-radius: 12px;
     }
 
-    .ingredients-column {
+    .ingredients-row {
       display: flex;
-      flex-direction: column;
-      align-items: center;
+      flex-wrap: wrap;
+      justify-content: center;
       gap: 10px;
       margin-top: 20px;
     }
 
     .ingredient-btn {
       cursor: pointer;
-      width: 100px;
+      width: 80px;
       padding: 6px;
       background-color: #2e1214;
       border: 2px solid white;
@@ -75,40 +113,16 @@
     }
 
     .question-box {
-      max-width: 700px;
+      max-width: 720px;
       margin: 30px auto 20px auto;
       background-color: #2e1214;
       padding: 30px;
       border: 1px solid #8a2be2;
       border-radius: 16px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      position: relative;
     }
 
     .question-box h2 {
-      flex: 1;
-      margin-right: 20px;
-    }
-
-    .prof-image {
-      width: 100px;
-      height: auto;
-    }
-
-    .bulle {
-      position: absolute;
-      top: -40px;
-      right: 100px;
-      background: white;
-      color: black;
-      padding: 10px 15px;
-      border-radius: 16px;
-      max-width: 260px;
-      font-size: 0.9rem;
-      font-weight: bold;
-      font-style: italic;
+      margin: 0;
     }
 
     .message {
@@ -139,40 +153,39 @@
 
   <img id="animImage" src="wokvide.png" alt="Animation Pad Thaï" />
 
+  <div class="ronflex-bulle">
+    <img src="prof.png" alt="Prof">
+    <div class="bulle-texte">S'il n'y a pas d'animation, l'aliment est mauvais !</div>
+  </div>
+
   <div class="question-box">
     <h2>Construis ton Pad Thaï parfait</h2>
-    <div class="bulle">S'il n'y a pas d'animation, c'est que l'ingrédient est mauvais !</div>
-    <img src="prof.png" alt="Prof" class="prof-image">
   </div>
 
-  <div class="ingredients-column">
-    <img class="ingredient-btn" src="cacahuete.png" alt="Cacahuètes" data-frames='["wokvide.png","cacahueteair.png","cacahuetewok.png","wokvide.png"]' />
-    <img class="ingredient-btn" src="patederiz.png" alt="Pâtes de riz" data-frames='["wokvide.png","patederizair.png","patederizchute.png","patederizwok.png","wokvide.png"]' />
+  <div class="ingredients-row">
     <img class="ingredient-btn" src="oeuf.png" alt="Œuf" data-frames='["wokvide.png","oeufair.png","oeufwok.png","wokvide.png"]' />
-    <img class="ingredient-btn" src="ciboulette.png" alt="Ciboulette" data-frames='["wokvide.png","cibouletteair.png","ciboulettewok.png","wokvide.png"]' />
-    <img class="ingredient-btn" src="soja.png" alt="Sauce Soja" data-frames='["wokvide.png","sojaair.png","sojawok.png","wokvide.png"]' />
     <img class="ingredient-btn" src="viande.png" alt="Viande" data-frames='["wokvide.png","viandair.png","viandechute.png","viandewok.png","wokvide.png"]' />
+    <img class="ingredient-btn" src="soja.png" alt="Sauce Soja" data-frames='["wokvide.png","sojaair.png","sojawok.png","wokvide.png"]' />
     <img class="ingredient-btn" src="poussesoja.png" alt="Pousses de soja" />
+    <img class="ingredient-btn" src="patederiz.png" alt="Pâtes de riz" data-frames='["wokvide.png","patederizair.png","patederizchute.png","patederizwok.png","wokvide.png"]' />
+    <img class="ingredient-btn" src="ciboulette.png" alt="Ciboulette" data-frames='["wokvide.png","cibouletteair.png","ciboulettewok.png","wokvide.png"]' />
+    <img class="ingredient-btn" src="cacahuete.png" alt="Cacahuètes" data-frames='["wokvide.png","cacahueteair.png","cacahuetewok.png","wokvide.png"]' />
   </div>
 
-  <div class="message" id="message">Astuce : s'il n'y a pas d'animation, l'aliment est mauvais 👨‍🏫</div>
+  <div class="message" id="message"></div>
   <div class="code-fragment" id="code-fragment"></div>
   <div class="next-button" id="next"></div>
 
   <script>
+    const indexLettreFixe = 1;
     const motDePasse = "JOYEUXANNIVERSAIRECHOU<3".split("");
     const lettresRevelees = JSON.parse(localStorage.getItem("lettresRevelees") || "[]");
     while (lettresRevelees.length < motDePasse.length) lettresRevelees.push("_");
 
     const hintLettersDiv = document.getElementById("hintLetters");
     let questionValidee = localStorage.getItem("question2_validee") === "true";
-    let indexLettre = localStorage.getItem("question2_index") !== null
-      ? parseInt(localStorage.getItem("question2_index"))
-      : trouverIndexLettreAleatoireNonRevelee();
-
-    if (localStorage.getItem("question2_index") === null) {
-      localStorage.setItem("question2_index", indexLettre);
-    }
+    let bonnesReponses = ["Œuf", "Viande", "Sauce Soja", "Pâtes de riz", "Ciboulette", "Cacahuètes"];
+    let clicsValides = new Set();
 
     function initialiserAffichage() {
       hintLettersDiv.innerHTML = "";
@@ -184,58 +197,53 @@
         hintLettersDiv.appendChild(span);
       });
     }
-
     initialiserAffichage();
     if (questionValidee) afficherSucces();
 
     const animImage = document.getElementById("animImage");
     const buttons = document.querySelectorAll(".ingredient-btn");
-    let lettreRevealDone = false;
-
     buttons.forEach(btn => {
       btn.addEventListener("click", () => {
         const frames = JSON.parse(btn.dataset.frames || "[]");
-        if (frames.length === 0) return;
+        const nom = btn.alt;
+        if (bonnesReponses.includes(nom)) {
+          btn.style.border = "2px solid green";
+          if (!clicsValides.has(nom)) clicsValides.add(nom);
+        } else {
+          btn.style.border = "2px solid red";
+        }
 
+        if (frames.length === 0) return;
         let i = 0;
         const frameDuration = 250;
-
         function showNextFrame() {
           animImage.src = frames[i];
           i++;
           if (i < frames.length) {
             setTimeout(showNextFrame, frameDuration);
-          } else if (!lettreRevealDone && !questionValidee) {
-            lettreRevealDone = true;
+          } else if (!questionValidee && clicsValides.size === bonnesReponses.length) {
             validerQuestion();
           }
         }
-
         showNextFrame();
       });
     });
 
     function validerQuestion() {
       questionValidee = true;
-      const lettre = motDePasse[indexLettre];
-      lettresRevelees[indexLettre] = lettre;
+      const lettre = motDePasse[indexLettreFixe];
+      lettresRevelees[indexLettreFixe] = lettre;
       localStorage.setItem("lettresRevelees", JSON.stringify(lettresRevelees));
       localStorage.setItem("question2_validee", "true");
-      localStorage.setItem("question2_index", indexLettre);
       afficherSucces();
     }
 
     function afficherSucces() {
-      const lettre = motDePasse[indexLettre];
-      document.getElementById(`lettre-${indexLettre}`).textContent = lettre;
-      document.getElementById("message").innerHTML = "<strong style='color:#ff66cc; font-size: 1.8rem;'>🍜 Tu as composé un Pad Thaï parfait !</strong>";
+      const lettre = motDePasse[indexLettreFixe];
+      document.getElementById(`lettre-${indexLettreFixe}`).textContent = lettre;
+      document.getElementById("message").innerHTML = "<strong style='color:#ff66cc;'>🍜 Tu as composé un Pad Thaï parfait !</strong>";
       document.getElementById("code-fragment").innerHTML = `<br>Voici ta partie de code : <code>${lettre}</code>`;
       document.getElementById("next").innerHTML = "<a href='question3.html'>Passer à la question suivante</a>";
-    }
-
-    function trouverIndexLettreAleatoireNonRevelee() {
-      const indices = lettresRevelees.map((val, idx) => val === "_" ? idx : null).filter(x => x !== null);
-      return indices[Math.floor(Math.random() * indices.length)];
     }
   </script>
 </body>
