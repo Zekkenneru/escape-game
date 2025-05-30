@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <title>Animation Viande Fluide</title>
+  <style>
+    body { background: #222; color: #fff; text-align: center; padding-top: 40px; }
+    #animImage { width: 300px; height: auto; image-rendering: pixelated; display: block; margin: 0 auto; }
+    label { display: block; margin-top: 20px; font-size: 18px; }
+  </style>
+</head>
+<body>
+
+  <h2>Ajouter la viande ?</h2>
+  <label><input type="checkbox" id="toggleAnimation"> Oui</label>
+
+  <img id="animImage" src="wokvide.png" alt="Animation Pad Thaï" />
+
+  <script>
+    const checkbox = document.getElementById("toggleAnimation");
+    const image = document.getElementById("animImage");
+
+    const frames = [
+      "wokvide.png",
+      "viandeclair.png",
+      "viandechute.png",
+      "viandewok.png",
+      "wokvide.png"
+    ];
+
+    let loadedImages = 0;
+    const preloadedImages = frames.map(src => {
+      const img = new Image();
+      img.src = src;
+      img.onload = () => {
+        loadedImages++;
+      };
+      return img;
+    });
+
+    checkbox.addEventListener("change", () => {
+      if (checkbox.checked && loadedImages === frames.length) {
+        let i = 0;
+        const frameDuration = 250;
+
+        function showNextFrame() {
+          image.src = frames[i];
+          i++;
+          if (i < frames.length) {
+            setTimeout(showNextFrame, frameDuration);
+          }
+        }
+
+        showNextFrame();
+      }
+    });
+  </script>
+
+</body>
+</html>
