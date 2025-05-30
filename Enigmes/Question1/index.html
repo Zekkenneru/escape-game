@@ -13,44 +13,6 @@
       text-align: center;
     }
 
-    .ronflex-bulle {
-      position: absolute;
-      top: -40px;
-      right: -200px;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-    }
-
-    .ronflex-bulle img {
-      width: 140px;
-      height: auto;
-      border-radius: 12px;
-      border: 2px solid #fff;
-    }
-
-    .bulle-texte {
-      margin-top: 5px;
-      background-color: #4b2b36;
-      border-radius: 12px;
-      padding: 10px 14px;
-      max-width: 150px;
-      font-size: 0.95rem;
-      position: relative;
-      color: #ffcccc;
-    }
-
-    .bulle-texte::before {
-      content: '';
-      position: absolute;
-      bottom: -10px;
-      left: 30px;
-      width: 0;
-      height: 0;
-      border: 10px solid transparent;
-      border-top-color: #4b2b36;
-    }
-
     .hint-image {
       position: absolute;
       top: 20px;
@@ -85,20 +47,24 @@
       text-align: center;
     }
 
+    .image-tasse, .image-cri {
+      width: 240px;
+      border-radius: 12px;
+      border: 2px solid #fff;
+      margin-top: 120px;
+    }
+
+    .image-cri {
+      display: none;
+    }
+
     .question-box {
-      margin-top: 100px;
+      margin-top: 30px;
       border: 1px solid #b35eff;
       border-radius: 12px;
       padding: 30px;
       display: inline-block;
       background-color: rgba(255, 255, 255, 0.05);
-    }
-
-    .question-img {
-      width: 240px;
-      margin-bottom: 20px;
-      border-radius: 12px;
-      border: 2px solid #fff;
     }
 
     button {
@@ -124,17 +90,6 @@
       border-radius: 8px;
       font-weight: bold;
     }
-
-    .image-tasse, .image-cri {
-      width: 240px;
-      border-radius: 12px;
-      border: 2px solid #fff;
-      margin-bottom: 20px;
-    }
-
-    .image-cri {
-      display: none;
-    }
   </style>
 </head>
 <body>
@@ -143,25 +98,25 @@
     <div class="hint-letters" id="hintLetters"></div>
   </div>
 
-  <h1>🫖 Énigme - Question 1</h1>
+  <img src="Tasse.jpg" class="image-tasse" alt="Tasse">
 
-  <div class="question-box">
-    <img src="Tasse.jpg" class="question-img image-tasse" alt="Tasse">
+  <div class="question-box" id="question1">
     <p>☕ Avoue, nos tasses sont magnifiques :</p>
     <button onclick="verifierReponse1(false)">Oui !</button>
     <button onclick="verifierReponse1(true)">Ouais mais non, juste la mienne. La tienne est claquée.</button>
-
-    <div id="sousQuestion" style="display:none;">
-      <img src="cri.png" class="image-cri" id="imageCri" alt="Ronflex choqué">
-      <p>😭 Nan mais la vérité T_T ?</p>
-      <button onclick="validerSousQuestion()">Non</button>
-      <button onclick="validerSousQuestion()">Non mais vraiment vraiment</button>
-    </div>
-
-    <div class="message" id="message"></div>
-    <div class="code-fragment" id="code-fragment"></div>
-    <div class="next-button" id="next"></div>
   </div>
+
+  <img src="cri.png" class="image-cri" id="imageCri" alt="Ronflex choqué">
+
+  <div class="question-box" id="sousQuestion" style="display:none;">
+    <p>😭 Nan mais la vérité T_T ?</p>
+    <button onclick="validerSousQuestion()">Non</button>
+    <button onclick="validerSousQuestion()">Non mais vraiment vraiment</button>
+  </div>
+
+  <div class="message" id="message"></div>
+  <div class="code-fragment" id="code-fragment"></div>
+  <div class="next-button" id="next"></div>
 
   <script>
     const motDePasse = "JOYEUXANNIVERSAIRECHOU<3".split("");
@@ -169,7 +124,8 @@
     while (lettresRevelees.length < motDePasse.length) lettresRevelees.push("_");
 
     const hintLettersDiv = document.getElementById("hintLetters");
-    let questionValidee = false;
+    const lettreDejaGagnee = localStorage.getItem("question1_validee") === "true";
+    let questionValidee = lettreDejaGagnee;
 
     function initialiserAffichage() {
       hintLettersDiv.innerHTML = "";
@@ -184,9 +140,18 @@
 
     initialiserAffichage();
 
+    if (lettreDejaGagnee) {
+      document.getElementById("question1").style.display = "none";
+      document.getElementById("sousQuestion").style.display = "none";
+      document.getElementById("imageCri").style.display = "none";
+      document.getElementById("message").innerHTML = "<strong style='color:#ff66cc;'>Tu as déjà répondu à cette question.</strong>";
+      document.getElementById("next").innerHTML = "<a href='question2.html'>Passer à la question suivante</a>";
+    }
+
     function verifierReponse1(bonne) {
       if (bonne) {
-        document.getElementById("sousQuestion").style.display = "block";
+        document.getElementById("question1").style.display = "none";
+        document.getElementById("sousQuestion").style.display = "inline-block";
         document.getElementById("imageCri").style.display = "block";
       } else {
         document.getElementById("message").innerHTML = "Hmm... pas très honnête tout ça 😅";
@@ -200,6 +165,7 @@
       const lettre = motDePasse[index];
       lettresRevelees[index] = lettre;
       localStorage.setItem("lettresRevelees", JSON.stringify(lettresRevelees));
+      localStorage.setItem("question1_validee", "true");
       document.getElementById(`lettre-${index}`).textContent = lettre;
       document.getElementById("message").innerHTML = "<strong style='color:#ff66cc;'>😭 Ok d’accord… t’as gagné !</strong>";
       document.getElementById("code-fragment").innerHTML = `<br>Voici ta partie de code : <code>${lettre}</code>`;
