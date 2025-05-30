@@ -48,40 +48,72 @@
     }
 
     #animImage {
-      width: 400px;
+      width: 520px;
       height: auto;
       display: block;
-      margin: 160px auto 20px auto;
+      margin: 200px auto 20px auto;
       image-rendering: pixelated;
+      border: 2px solid white;
+      border-radius: 12px;
     }
 
-    .ingredient-wrapper {
-      display: inline-block;
-      border: 2px solid white;
-      padding: 20px;
-      border-radius: 16px;
+    .ingredients-column {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 10px;
       margin-top: 20px;
     }
 
     .ingredient-btn {
       cursor: pointer;
       width: 100px;
-      margin: 10px;
-      display: inline-block;
+      padding: 6px;
+      background-color: #2e1214;
+      border: 2px solid white;
+      border-radius: 10px;
     }
 
     .question-box {
       max-width: 700px;
-      margin: 30px auto;
+      margin: 30px auto 20px auto;
       background-color: #2e1214;
       padding: 30px;
       border: 1px solid #8a2be2;
       border-radius: 16px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      position: relative;
+    }
+
+    .question-box h2 {
+      flex: 1;
+      margin-right: 20px;
+    }
+
+    .prof-image {
+      width: 100px;
+      height: auto;
+    }
+
+    .bulle {
+      position: absolute;
+      top: -40px;
+      right: 100px;
+      background: white;
+      color: black;
+      padding: 10px 15px;
+      border-radius: 16px;
+      max-width: 260px;
+      font-size: 0.9rem;
+      font-weight: bold;
+      font-style: italic;
     }
 
     .message {
       margin-top: 30px;
-      font-size: 1.4rem;
+      font-size: 1.8rem;
       color: #ff66cc;
     }
 
@@ -107,22 +139,25 @@
 
   <img id="animImage" src="wokvide.png" alt="Animation Pad Thaï" />
 
-  <div class="ingredient-wrapper">
-    <img class="ingredient-btn" src="viande.png" alt="Viande" data-frames='["wokvide.png","viandair.png","viandechute.png","viandewok.png","wokvide.png"]' />
+  <div class="question-box">
+    <h2>Construis ton Pad Thaï parfait</h2>
+    <div class="bulle">S'il n'y a pas d'animation, c'est que l'ingrédient est mauvais !</div>
+    <img src="prof.png" alt="Prof" class="prof-image">
+  </div>
+
+  <div class="ingredients-column">
+    <img class="ingredient-btn" src="cacahuete.png" alt="Cacahuètes" data-frames='["wokvide.png","cacahueteair.png","cacahuetewok.png","wokvide.png"]' />
     <img class="ingredient-btn" src="patederiz.png" alt="Pâtes de riz" data-frames='["wokvide.png","patederizair.png","patederizchute.png","patederizwok.png","wokvide.png"]' />
     <img class="ingredient-btn" src="oeuf.png" alt="Œuf" data-frames='["wokvide.png","oeufair.png","oeufwok.png","wokvide.png"]' />
-    <img class="ingredient-btn" src="cacahuete.png" alt="Cacahuètes" data-frames='["wokvide.png","cacahueteair.png","cacahuetewok.png","wokvide.png"]' />
     <img class="ingredient-btn" src="ciboulette.png" alt="Ciboulette" data-frames='["wokvide.png","cibouletteair.png","ciboulettewok.png","wokvide.png"]' />
     <img class="ingredient-btn" src="soja.png" alt="Sauce Soja" data-frames='["wokvide.png","sojaair.png","sojawok.png","wokvide.png"]' />
+    <img class="ingredient-btn" src="viande.png" alt="Viande" data-frames='["wokvide.png","viandair.png","viandechute.png","viandewok.png","wokvide.png"]' />
     <img class="ingredient-btn" src="poussesoja.png" alt="Pousses de soja" />
   </div>
 
-  <div class="question-box">
-    <h2>Ajoute les ingrédients</h2>
-    <div class="message" id="message"></div>
-    <div class="code-fragment" id="code-fragment"></div>
-    <div class="next-button" id="next"></div>
-  </div>
+  <div class="message" id="message">Astuce : s'il n'y a pas d'animation, l'aliment est mauvais 👨‍🏫</div>
+  <div class="code-fragment" id="code-fragment"></div>
+  <div class="next-button" id="next"></div>
 
   <script>
     const motDePasse = "JOYEUXANNIVERSAIRECHOU<3".split("");
@@ -151,7 +186,6 @@
     }
 
     initialiserAffichage();
-
     if (questionValidee) afficherSucces();
 
     const animImage = document.getElementById("animImage");
