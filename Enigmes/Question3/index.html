@@ -88,7 +88,7 @@
     }
 
     .question-box {
-      margin-top: 260px;
+      margin-top: 100px;
     }
 
     input[type="text"] {
@@ -122,7 +122,8 @@
 
     .gif-container img {
       margin-top: 20px;
-      width: 220px;
+      width: 360px; /* Taille restaurée */
+      height: auto;
       border-radius: 12px;
     }
 
@@ -191,7 +192,7 @@
       const codeFragment = document.getElementById("code-fragment");
 
       if (rep.includes("carbonara") || rep.includes("pâtes à la carbonara")) {
-        message.innerHTML = "<strong>Bravo !</strong> Tu as trouvé la bonne réponse.";
+        message.innerHTML = "<strong style='color:#ff66cc;'>Bravo !</strong> Tu as trouvé la bonne réponse.";
         gifContainer.innerHTML = "<img src='chef.gif' alt='GIF Chef'>";
         nextButton.innerHTML = "<a href='code.html'>Passer à l'étape suivante</a>";
 
@@ -220,5 +221,6 @@
       document.getElementById("reponse").value = "";
     }
   </script>
+
 </body>
 </html>
