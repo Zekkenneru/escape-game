@@ -15,8 +15,8 @@
 
     .ronflex-bulle {
       position: absolute;
-      top: 100px;
-      right: 20px;
+      top: 220px;
+      left: 460px;
       display: flex;
       flex-direction: column;
       align-items: center;
@@ -25,7 +25,6 @@
     .ronflex-bulle img {
       width: 180px;
       height: auto;
-      border-radius: 12px;
       border: none;
     }
 
@@ -86,7 +85,7 @@
     }
 
     #animImage {
-      width: 280px;
+      width: 220px;
       height: auto;
       display: block;
       margin: 20px auto 20px auto;
@@ -111,6 +110,10 @@
       background-color: #2e1214;
       border: 2px solid white;
       border-radius: 10px;
+    }
+
+    .selected {
+      border: 2px solid green !important;
     }
 
     .question-box {
@@ -157,20 +160,20 @@
   <h2 style="margin-top: 130px">🍜 Construis ton Pad Thaï parfait !</h2>
   <img id="animImage" src="wokvide.png" alt="Animation Pad Thaï" />
 
-  <div class="ronflex-bulle">
+  <div class="ronflex-bulle" id="ronflex">
     <img src="prof.png" alt="Prof">
     <div class="bulle-texte">S'il n'y a pas d'animation, l'aliment est mauvais !</div>
   </div>
 
   <div class="question-box" id="questionBox">
     <div class="ingredients-row" id="ingredientsRow">
+      <img class="ingredient-btn" src="cacahuete.png" alt="Cacahuètes" data-frames='["wokvide.png","cacahueteair.png","cacahuetewok.png","wokvide.png"]' />
+      <img class="ingredient-btn" src="patederiz.png" alt="Pâtes de riz" data-frames='["wokvide.png","patederizair.png","patederizchute.png","patederizwok.png","wokvide.png"]' />
+      <img class="ingredient-btn" src="poussesoja.png" alt="Pousses de soja" />
+      <img class="ingredient-btn" src="ciboulette.png" alt="Ciboulette" data-frames='["wokvide.png","cibouletteair.png","ciboulettewok.png","wokvide.png"]' />
+      <img class="ingredient-btn" src="soja.png" alt="Sauce Soja" data-frames='["wokvide.png","sojaair.png","sojawok.png","wokvide.png"]' />
       <img class="ingredient-btn" src="oeuf.png" alt="Œuf" data-frames='["wokvide.png","oeufair.png","oeufwok.png","wokvide.png"]' />
       <img class="ingredient-btn" src="viande.png" alt="Viande" data-frames='["wokvide.png","viandair.png","viandechute.png","viandewok.png","wokvide.png"]' />
-      <img class="ingredient-btn" src="soja.png" alt="Sauce Soja" data-frames='["wokvide.png","sojaair.png","sojawok.png","wokvide.png"]' />
-      <img class="ingredient-btn" src="poussesoja.png" alt="Pousses de soja" />
-      <img class="ingredient-btn" src="patederiz.png" alt="Pâtes de riz" data-frames='["wokvide.png","patederizair.png","patederizchute.png","patederizwok.png","wokvide.png"]' />
-      <img class="ingredient-btn" src="ciboulette.png" alt="Ciboulette" data-frames='["wokvide.png","cibouletteair.png","ciboulettewok.png","wokvide.png"]' />
-      <img class="ingredient-btn" src="cacahuete.png" alt="Cacahuètes" data-frames='["wokvide.png","cacahueteair.png","cacahuetewok.png","wokvide.png"]' />
     </div>
     <button class="cook-button" id="cookBtn">🔥 Faire sauter</button>
   </div>
@@ -200,6 +203,7 @@
         hintLettersDiv.appendChild(span);
       });
     }
+
     initialiserAffichage();
     if (questionValidee) afficherSucces();
 
@@ -210,10 +214,9 @@
         const frames = JSON.parse(btn.dataset.frames || "[]");
         const nom = btn.alt;
         if (bonnesReponses.includes(nom)) {
-          btn.style.border = "2px solid green";
+          btn.classList.add("selected");
           clicsValides.add(nom);
         }
-
         if (frames.length === 0) return;
         let i = 0;
         const frameDuration = 250;
@@ -251,6 +254,7 @@
       document.getElementById("next").innerHTML = "<a href='question3.html'>Passer à la question suivante</a>";
       document.getElementById("animImage").src = "padthai.png";
       document.getElementById("questionBox").style.display = "none";
+      document.getElementById("ronflex").style.display = "none";
     }
   </script>
 </body>
