@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Énigme - Plat préféré</title>
+  <title>Énigme - Question 3</title>
   <link rel="stylesheet" href="../../global.css">
   <style>
     body {
@@ -146,12 +146,12 @@
     <div class="hint-letters" id="hintLetters"></div>
   </div>
 
-  <h1>🍝 Énigme - Plat préféré</h1>
+  <h1>🍳 Énigme - Question 3</h1>
 
   <div class="question-box">
     <div class="ronflex-bulle">
       <img src="ronflex.jpg" alt="Ronflex">
-      <div class="bulle-texte">Moi qui attend de pouvoir regoûter ce délice</div>
+      <div class="bulle-texte">Moi qui pense toujours à ce plat…</div>
     </div>
     <p>Quel est le plat dont je rêve d'envie que tu me refasses ?</p>
     <input type="text" id="reponse" placeholder="Ta réponse ici">
@@ -164,6 +164,8 @@
   <div class="next-button" id="next"></div>
 
   <script>
+    const indexLettreFixe = 3; // Question 3 ➜ lettre 4 du mot de passe (index 3)
+
     const motDePasse = "JOYEUXANNIVERSAIRECHOU<3".split("");
     const lettresRevelees = JSON.parse(localStorage.getItem("lettresRevelees") || "[]");
 
@@ -172,12 +174,7 @@
     }
 
     const hintLettersDiv = document.getElementById("hintLetters");
-    const indexLettreDuJour = (() => {
-      const possibles = motDePasse.map((_, i) => i).filter(i => lettresRevelees[i] === "_");
-      return possibles.length ? possibles[Math.floor(Math.random() * possibles.length)] : null;
-    })();
-
-    let questionValidee = false;
+    let questionValidee = lettresRevelees[indexLettreFixe] !== "_";
 
     function initialiserAffichage() {
       hintLettersDiv.innerHTML = "";
@@ -193,7 +190,7 @@
     initialiserAffichage();
 
     function verifierReponse() {
-      if (questionValidee || indexLettreDuJour === null) return;
+      if (questionValidee) return;
 
       const rep = document.getElementById("reponse").value.toLowerCase().trim();
       const message = document.getElementById("message");
@@ -204,16 +201,16 @@
       if (rep.includes("carbonara") || rep.includes("pâtes à la carbonara")) {
         questionValidee = true;
 
-        const lettre = motDePasse[indexLettreDuJour];
-        lettresRevelees[indexLettreDuJour] = lettre;
+        const lettre = motDePasse[indexLettreFixe];
+        lettresRevelees[indexLettreFixe] = lettre;
         localStorage.setItem("lettresRevelees", JSON.stringify(lettresRevelees));
 
-        document.getElementById(`lettre-${indexLettreDuJour}`).textContent = lettre;
+        document.getElementById(`lettre-${indexLettreFixe}`).textContent = lettre;
 
         message.innerHTML = "<strong style='color:#ff66cc;'>Bravo !</strong> Tu as trouvé la bonne réponse.";
         codeFragment.innerHTML = `<br>Voici ta partie de code : <code>${lettre}</code>`;
         gifContainer.innerHTML = "<img src='chef.gif' alt='GIF Chef'>";
-        nextButton.innerHTML = "<a href='code.html'>Passer à l'étape suivante</a>";
+        nextButton.innerHTML = "<a href='question4.html'>Passer à la question suivante</a>";
       } else {
         message.innerHTML = "Mauvaise réponse... essaie encore !";
         codeFragment.innerHTML = "";
@@ -224,6 +221,5 @@
       document.getElementById("reponse").value = "";
     }
   </script>
-
 </body>
 </html>
