@@ -1,35 +1,88 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Énigme - Plat préféré</title>
   <link rel="stylesheet" href="../../global.css">
   <style>
-    .ronflex-bulle {
+    body {
+      background-color: #1a0d0f;
+      color: white;
+      font-family: Arial, sans-serif;
+      text-align: center;
+    }
+
+    .container {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin: 40px;
+      gap: 40px;
+    }
+
+    .tiplouf-container {
+      position: relative;
+      width: 340px;
+    }
+
+    .tiplouf-container img {
+      width: 100%;
+    }
+
+    .hint-letters {
       position: absolute;
-      top: -40px;
-      right: -200px;
+      top: 40px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 90%;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      font-family: monospace;
+      font-size: 1.3rem;
+      font-weight: bold;
+      color: #000;
+      line-height: 1.6rem;
+    }
+
+    .letter-slot {
+      width: 1.3rem;
+      text-align: center;
+      margin: 2px;
+    }
+
+    .question-box {
+      flex: 1;
+      background-color: #300f1a;
+      padding: 20px;
+      border-radius: 16px;
+      border: 2px solid purple;
+    }
+
+    .ronflex-bulle {
       display: flex;
       flex-direction: column;
       align-items: center;
+      margin-bottom: 20px;
     }
+
     .ronflex-bulle img {
       width: 140px;
-      height: auto;
-      border-radius: 12px;
-      border: 2px solid #fff;
+      border-radius: 8px;
     }
+
     .bulle-texte {
       margin-top: 5px;
       background-color: #4b2b36;
       border-radius: 12px;
       padding: 10px 14px;
-      max-width: 150px;
+      max-width: 200px;
       font-size: 0.95rem;
       position: relative;
       color: #ffcccc;
     }
+
     .bulle-texte::before {
       content: '';
       position: absolute;
@@ -41,77 +94,138 @@
       border-top-color: #4b2b36;
     }
 
-    .hint-image {
-      position: absolute;
-      top: 20px;
-      left: 20px;
-      width: 220px;
-      z-index: 2;
-    }
-
-    .hint-image img {
-      width: 100%;
+    input[type="text"] {
+      padding: 10px;
+      border-radius: 24px;
       border: none;
-      border-radius: 0;
+      width: 70%;
+      font-size: 1rem;
     }
 
-    .hint-letter {
-      position: absolute;
-      top: 43px;
-      left: 90px;
-      font-size: 2.2rem;
+    button {
+      padding: 10px 16px;
+      background-color: purple;
+      border: none;
+      border-radius: 24px;
+      color: white;
+      margin-left: 8px;
       font-weight: bold;
-      color: #000000;
-      background-color: transparent;
-      padding: 2px;
-      z-index: 3;
-      display: none;
+      cursor: pointer;
+    }
+
+    .message {
+      margin-top: 10px;
+    }
+
+    .code-fragment {
+      margin-top: 10px;
+      font-size: 1rem;
+      color: #ffcccc;
+    }
+
+    .gif-container img {
+      margin-top: 20px;
+      width: 220px;
+      border-radius: 12px;
+    }
+
+    .next-button {
+      margin-top: 20px;
+    }
+
+    .next-button a {
+      padding: 10px 20px;
+      background-color: red;
+      color: white;
+      text-decoration: none;
+      border-radius: 8px;
+      font-weight: bold;
     }
   </style>
 </head>
 <body>
-  <div class="hint-image">
-    <img src="pancarte_tiplouf.png" alt="Mot de passe à reconstituer">
-    <div class="hint-letter" id="hintLetter">N</div>
-  </div>
+
   <h1>🍝 Énigme - Plat préféré</h1>
-  <div class="question-box">
-    <div class="ronflex-bulle">
-      <img src="ronflex.jpg" alt="Ronflex">
-      <div class="bulle-texte">Moi qui attend de pouvoir regoûter ce délice</div>
+
+  <div class="container">
+    <!-- Tiplouf -->
+    <div class="tiplouf-container">
+      <img src="pancarte_tiplouf.png" alt="Mot de passe à reconstituer">
+      <div class="hint-letters" id="hintLetters"></div>
     </div>
-    <p>Quel est le plat dont je rêve d'envie que tu me refasses ?</p>
-    <input type="text" id="reponse" placeholder="Ta réponse ici">
-    <button onclick="verifierReponse()">Valider</button>
+
+    <!-- Question + Ronflex -->
+    <div class="question-box">
+      <div class="ronflex-bulle">
+        <img src="ronflex.jpg" alt="Ronflex">
+        <div class="bulle-texte">Moi qui attend de pouvoir regoûter ce délice</div>
+      </div>
+      <p><strong>Quel est le plat dont je rêve d'envie que tu me refasses ?</strong></p>
+      <input type="text" id="reponse" placeholder="Ta réponse ici">
+      <button onclick="verifierReponse()">Valider</button>
+      <div class="message" id="message"></div>
+      <div class="code-fragment" id="code-fragment"></div>
+      <div class="gif-container" id="gif"></div>
+      <div class="next-button" id="next"></div>
+    </div>
   </div>
-  <div class="message" id="message"></div>
-  <div class="code-fragment" id="code-fragment"></div>
-  <div class="gif-container" id="gif"></div>
-  <div class="next-button" id="next"></div>
 
   <script>
+    const motDePasse = "JOYEUXANNIVERSAIRECHOU<3".split("");
+    const lettresRevelees = Array(motDePasse.length).fill("_");
+    const lettresDejaRevelees = new Set();
+    const hintLettersDiv = document.getElementById("hintLetters");
+
+    function initialiserAffichage() {
+      hintLettersDiv.innerHTML = "";
+      lettresRevelees.forEach((lettre, i) => {
+        const span = document.createElement("span");
+        span.className = "letter-slot";
+        span.id = `lettre-${i}`;
+        span.textContent = lettre;
+        hintLettersDiv.appendChild(span);
+      });
+    }
+
+    initialiserAffichage();
+
     function verifierReponse() {
       const rep = document.getElementById("reponse").value.toLowerCase().trim();
       const message = document.getElementById("message");
       const gifContainer = document.getElementById("gif");
       const nextButton = document.getElementById("next");
       const codeFragment = document.getElementById("code-fragment");
-      const hintLetter = document.getElementById("hintLetter");
 
       if (rep.includes("carbonara") || rep.includes("pâtes à la carbonara")) {
         message.innerHTML = "<strong>Bravo !</strong> Tu as trouvé la bonne réponse.";
-        codeFragment.innerHTML = "<br>Voici ta partie de code : <code>N</code>";
         gifContainer.innerHTML = "<img src='chef.gif' alt='GIF Chef'>";
         nextButton.innerHTML = "<a href='code.html'>Passer à l'étape suivante</a>";
-        hintLetter.style.display = "block";
+
+        const indicesRestants = motDePasse
+          .map((_, i) => i)
+          .filter(i => !lettresDejaRevelees.has(i));
+
+        if (indicesRestants.length === 0) {
+          codeFragment.innerHTML = "<br>Toutes les lettres ont été trouvées ! 🎉";
+          return;
+        }
+
+        const indexAleatoire = indicesRestants[Math.floor(Math.random() * indicesRestants.length)];
+        lettresRevelees[indexAleatoire] = motDePasse[indexAleatoire];
+        lettresDejaRevelees.add(indexAleatoire);
+        document.getElementById(`lettre-${indexAleatoire}`).textContent = motDePasse[indexAleatoire];
+
+        codeFragment.innerHTML = `<br>Lettre révélée : <code>${motDePasse[indexAleatoire]}</code>`;
       } else {
         message.innerHTML = "Mauvaise réponse... essaie encore !";
         codeFragment.innerHTML = "";
         gifContainer.innerHTML = "";
         nextButton.innerHTML = "";
-        hintLetter.style.display = "none";
       }
+
+      document.getElementById("reponse").value = "";
     }
   </script>
+
 </body>
 </html>
