@@ -57,7 +57,7 @@
     }
 
     .question-image {
-      width: 140px;
+      width: 160px;
       height: auto;
       border-radius: 12px;
       margin: 40px auto 20px;
@@ -130,26 +130,25 @@
     }
 
     .bonus-wrapper {
+      position: absolute;
+      top: 280px;
+      left: 20px;
       display: flex;
-      align-items: flex-start;
-      justify-content: flex-start;
-      margin-top: 30px;
-      padding-left: 20px;
+      flex-direction: column;
+      align-items: center;
     }
 
     .bonus-wrapper img {
-      width: 240px;
+      width: 160px;
     }
 
     #bonusDisplayPassword {
-      position: absolute;
-      top: 108px;
-      left: 190px;
+      margin-top: -60px;
       font-size: 1.4rem;
       color: #000;
       font-weight: bold;
       letter-spacing: 4px;
-      width: 120px;
+      width: 150px;
       text-align: center;
     }
   </style>
@@ -177,7 +176,7 @@
   </div>
 
   <div class="bonus-section" id="bonusSection" style="display: none;">
-    <img src="benidorm.jpg" alt="Benidorm" class="question-image" style="width: 180px;">
+    <img src="benidorm.jpg" alt="Benidorm" class="question-image" style="width: 150px;">
     <div class="question-box">
       <h2>🚌 Combien d’entre elles te ramènent à Benidorm ?</h2>
       <input id="bonusInput" class="input-text" type="text" placeholder="Ta réponse">
@@ -187,7 +186,7 @@
   </div>
 
   <div class="message" id="bonusMessage"></div>
-  <div class="bonus-wrapper" id="bonusReveal" style="display:none; position: absolute; top: 360px; left: 20px;">
+  <div class="bonus-wrapper" id="bonusReveal" style="display:none;">
     <img src="bonus.png">
     <div id="bonusDisplayPassword"></div>
     <div class="bonus-grid" id="bonusLetters"></div>
@@ -209,7 +208,7 @@
       lettresRevelees.forEach((lettre, i) => {
         const span = document.createElement("span");
         span.className = "letter-slot";
-        span.id = lettre-${i};
+        span.id = `lettre-${i}`;
         span.textContent = lettre;
         hintLettersDiv.appendChild(span);
       });
@@ -223,9 +222,9 @@
         const lettre = motDePasse[indexLettreFixe];
         lettresRevelees[indexLettreFixe] = lettre;
         localStorage.setItem("lettresRevelees", JSON.stringify(lettresRevelees));
-        document.getElementById(lettre-${indexLettreFixe}).textContent = lettre;
+        document.getElementById(`lettre-${indexLettreFixe}`).textContent = lettre;
         document.getElementById("message").innerHTML = "Bravo !";
-        document.getElementById("code-fragment").innerHTML = Voici ta partie de code : <code>${lettre}</code>;
+        document.getElementById("code-fragment").innerHTML = `Voici ta partie de code : <code>${lettre}</code>`;
         document.getElementById("optionsButtons").style.display = "block";
       } else {
         document.getElementById("message").innerHTML = "Mauvaise réponse.";
@@ -247,6 +246,8 @@
         afficherMotDePasseBonus();
       } else {
         document.getElementById("bonusMessage").innerHTML = "Non, essaie encore !";
+        selectedBonusLetters = [];
+        document.getElementById("bonusDisplayPassword").textContent = "";
       }
     }
 
@@ -254,18 +255,20 @@
       document.getElementById("bonusReveal").style.display = "flex";
       const container = document.getElementById("bonusLetters");
       const mot = "TIPLOUF".split("");
-      const lettreAleatoire = mot[Math.floor(Math.random() * mot.length)];
+      const lettresMelangees = mot.sort(() => Math.random() - 0.5);
       container.innerHTML = "";
-      const btn = document.createElement("button");
-      btn.className = "letter-button";
-      btn.textContent = lettreAleatoire;
-      btn.onclick = function () {
-        if (selectedBonusLetters.length < 7) {
-          selectedBonusLetters.push(lettreAleatoire);
-          document.getElementById("bonusDisplayPassword").textContent = selectedBonusLetters.join("");
-        }
-      };
-      container.appendChild(btn);
+      lettresMelangees.forEach(lettre => {
+        const btn = document.createElement("button");
+        btn.className = "letter-button";
+        btn.textContent = lettre;
+        btn.onclick = function () {
+          if (selectedBonusLetters.length < 7) {
+            selectedBonusLetters.push(lettre);
+            document.getElementById("bonusDisplayPassword").textContent = selectedBonusLetters.join("");
+          }
+        };
+        container.appendChild(btn);
+      });
     }
   </script>
 </body>
