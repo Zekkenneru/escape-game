@@ -67,8 +67,8 @@
 
     .ronflex-bulle {
       position: absolute;
-      top: 40px;
-      left: calc(50% + 240px);
+      top: 60px;
+      left: calc(50% + 230px);
       display: flex;
       flex-direction: column;
       align-items: center;
@@ -81,10 +81,10 @@
     }
 
     .bulle-texte {
-      margin-top: 6px;
+      margin-top: 4px;
       background-color: #4b2b36;
       border-radius: 12px;
-      padding: 10px 14px;
+      padding: 8px 10px;
       max-width: 160px;
       font-size: 0.95rem;
       color: #ffcccc;
@@ -121,21 +121,15 @@
       margin: 10px;
     }
 
-    #rewardSection {
-      display: none;
-      margin-top: 40px;
+    .reward-image {
+      width: 160px;
+      margin: 20px;
     }
 
-    .reward-wrapper {
+    .reward-container {
       display: flex;
       justify-content: center;
-      gap: 30px;
-      margin-bottom: 20px;
-    }
-
-    .reward-image {
-      width: 180px;
-      height: auto;
+      align-items: center;
     }
 
     .message {
@@ -144,8 +138,18 @@
       color: #ff66cc;
     }
 
-    .code-fragment {
-      margin-bottom: 30px;
+    .next-button {
+      margin-top: 20px;
+    }
+
+    .next-button a {
+      padding: 10px 20px;
+      background-color: red;
+      color: white;
+      text-decoration: none;
+      border-radius: 8px;
+      font-weight: bold;
+      display: inline-block;
     }
   </style>
 </head>
@@ -169,15 +173,14 @@
     <button class="reponse-btn" onclick="verifierQuestionDisney()">Valider</button>
   </div>
 
-  <div id="rewardSection">
-    <div class="reward-wrapper">
-      <img src="moipooh.png" class="reward-image" alt="moipooh">
-      <img src="winnie.png" class="reward-image" alt="winnie">
-    </div>
+  <div class="reward-container" id="rewardSection" style="display: none;">
+    <img src="moipooh.png" class="reward-image">
+    <img src="winnie.png" class="reward-image">
   </div>
 
   <div class="message" id="message"></div>
   <div class="code-fragment" id="code-fragment"></div>
+  <div class="next-button" id="next"></div>
 
   <script>
     const motDePasse = "JOYEUXANNIVERSAIRECHOU<3".split("");
@@ -216,7 +219,8 @@
         document.getElementById("code-fragment").innerHTML = `Lettre révélée : <code>${lettre}</code>`;
         document.getElementById("poohImage").style.display = "none";
         document.getElementById("ronflex").style.display = "none";
-        document.getElementById("rewardSection").style.display = "block";
+        document.getElementById("rewardSection").style.display = "flex";
+        document.getElementById("next").innerHTML = "<a href='../Question7/index.html'>Passer à la question suivante</a>";
       } else if (dejaRevelee) {
         document.getElementById("message").innerHTML = "Tu as déjà validé cette question.";
       } else {
