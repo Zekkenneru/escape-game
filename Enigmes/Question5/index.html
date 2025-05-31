@@ -142,8 +142,8 @@
 
     .bonus-letters {
       position: absolute;
-      top: 18px;
-      left: 70%;
+      top: 28px;
+      left: 71%;
       transform: translateX(-50%);
       display: flex;
       justify-content: center;
@@ -267,14 +267,12 @@
       renderAffichage();
       bonusGrid.innerHTML = "";
 
-      const lettresMelangees = motDePasseBonus.split("").sort(() => Math.random() - 0.5);
-      lettresMelangees.forEach(l => {
-        const btn = document.createElement("button");
-        btn.className = "letter-button";
-        btn.textContent = l;
-        btn.onclick = () => ajouterLettre(l);
-        bonusGrid.appendChild(btn);
-      });
+      const lettreAleatoire = motDePasseBonus[Math.floor(Math.random() * motDePasseBonus.length)];
+      const btn = document.createElement("button");
+      btn.className = "letter-button";
+      btn.textContent = lettreAleatoire;
+      btn.onclick = () => ajouterLettre(lettreAleatoire);
+      bonusGrid.appendChild(btn);
     }
 
     function ajouterLettre(l) {
