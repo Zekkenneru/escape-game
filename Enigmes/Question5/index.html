@@ -57,7 +57,7 @@
     }
 
     .question-image {
-      width: 200px;
+      width: 160px;
       height: auto;
       border-radius: 12px;
       margin: 40px auto 20px;
@@ -131,11 +131,11 @@
 
     #bonusDisplayPassword {
       position: absolute;
-      top: 150px;
+      top: 34px;
       left: 50%;
       transform: translateX(-50%);
       font-size: 1.6rem;
-      color: #ffccff;
+      color: #000;
       font-weight: bold;
       letter-spacing: 4px;
     }
@@ -175,8 +175,7 @@
 
   <div class="message" id="bonusMessage"></div>
   <div class="bonus-reveal" id="bonusReveal" style="display:none; position: relative;">
-    <img src="pancarte_tiplouf.png" style="width: 200px; margin: 10px auto;">
-    <img src="bonus.png" alt="Mot de passe Bonus" style="width: 220px;">
+    <img src="bonus.png" style="width: 220px;">
     <div id="bonusDisplayPassword"></div>
     <div class="bonus-grid" id="bonusLetters"></div>
   </div>
@@ -224,6 +223,7 @@
       document.getElementById("bonusSection").style.display = "block";
       document.getElementById("questionBox").style.display = "none";
       document.getElementById("questionImage").style.display = "none";
+      document.querySelector("#optionsButtons a:nth-child(2)").style.display = "none";
     }
 
     function verifierQuestionBonus() {
