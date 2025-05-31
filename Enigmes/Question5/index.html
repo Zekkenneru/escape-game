@@ -133,19 +133,17 @@
       position: absolute;
       top: 420px;
       left: 20px;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
+      width: 340px;
     }
 
     .bonus-wrapper img {
-      width: 340px;
+      width: 100%;
     }
 
     .bonus-visual-password {
       position: absolute;
-      top: 60px;
-      left: 60px;
+      top: 26px;
+      left: 100px;
       color: #000;
       font-size: 1.3rem;
       font-weight: bold;
@@ -252,7 +250,7 @@
     }
 
     function afficherMotDePasseBonus() {
-      document.getElementById("bonusReveal").style.display = "flex";
+      document.getElementById("bonusReveal").style.display = "block";
       const container = document.getElementById("bonusLetters");
       const mot = "TIPLOUF".split("");
       const lettreAleatoire = mot[Math.floor(Math.random() * mot.length)];
