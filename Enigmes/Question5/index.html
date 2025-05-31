@@ -57,7 +57,7 @@
     }
 
     .question-image {
-      width: 160px;
+      width: 140px;
       height: auto;
       border-radius: 12px;
       margin: 40px auto 20px;
@@ -113,7 +113,7 @@
       display: flex;
       justify-content: center;
       flex-wrap: wrap;
-      margin-top: 12px;
+      margin-top: 10px;
     }
 
     .letter-button {
@@ -130,26 +130,27 @@
     }
 
     .bonus-wrapper {
-      position: absolute;
-      top: 300px;
-      left: 20px;
       display: flex;
-      flex-direction: column;
-      align-items: center;
+      align-items: flex-start;
+      justify-content: flex-start;
+      margin-top: 30px;
+      padding-left: 20px;
     }
 
     .bonus-wrapper img {
-      width: 120px;
+      width: 240px;
     }
 
-    .bonus-visual-password {
+    #bonusDisplayPassword {
       position: absolute;
-      top: 34px;
-      left: 36px;
+      top: 108px;
+      left: 190px;
+      font-size: 1.4rem;
       color: #000;
-      font-size: 1.3rem;
       font-weight: bold;
-      letter-spacing: 6px;
+      letter-spacing: 4px;
+      width: 120px;
+      text-align: center;
     }
   </style>
 </head>
@@ -176,7 +177,7 @@
   </div>
 
   <div class="bonus-section" id="bonusSection" style="display: none;">
-    <img src="benidorm.jpg" alt="Benidorm" class="question-image" style="width: 120px;">
+    <img src="benidorm.jpg" alt="Benidorm" class="question-image" style="width: 180px;">
     <div class="question-box">
       <h2>🚌 Combien d’entre elles te ramènent à Benidorm ?</h2>
       <input id="bonusInput" class="input-text" type="text" placeholder="Ta réponse">
@@ -186,9 +187,9 @@
   </div>
 
   <div class="message" id="bonusMessage"></div>
-  <div class="bonus-wrapper" id="bonusReveal" style="display:none;">
+  <div class="bonus-wrapper" id="bonusReveal" style="display:none; position: absolute; top: 360px; left: 20px;">
     <img src="bonus.png">
-    <div class="bonus-visual-password" id="bonusDisplayPassword"></div>
+    <div id="bonusDisplayPassword"></div>
     <div class="bonus-grid" id="bonusLetters"></div>
   </div>
 
@@ -208,7 +209,7 @@
       lettresRevelees.forEach((lettre, i) => {
         const span = document.createElement("span");
         span.className = "letter-slot";
-        span.id = `lettre-${i}`;
+        span.id = lettre-${i};
         span.textContent = lettre;
         hintLettersDiv.appendChild(span);
       });
@@ -222,9 +223,9 @@
         const lettre = motDePasse[indexLettreFixe];
         lettresRevelees[indexLettreFixe] = lettre;
         localStorage.setItem("lettresRevelees", JSON.stringify(lettresRevelees));
-        document.getElementById(`lettre-${indexLettreFixe}`).textContent = lettre;
+        document.getElementById(lettre-${indexLettreFixe}).textContent = lettre;
         document.getElementById("message").innerHTML = "Bravo !";
-        document.getElementById("code-fragment").innerHTML = `Voici ta partie de code : <code>${lettre}</code>`;
+        document.getElementById("code-fragment").innerHTML = Voici ta partie de code : <code>${lettre}</code>;
         document.getElementById("optionsButtons").style.display = "block";
       } else {
         document.getElementById("message").innerHTML = "Mauvaise réponse.";
@@ -246,8 +247,6 @@
         afficherMotDePasseBonus();
       } else {
         document.getElementById("bonusMessage").innerHTML = "Non, essaie encore !";
-        selectedBonusLetters = [];
-        document.getElementById("bonusDisplayPassword").textContent = "";
       }
     }
 
@@ -255,29 +254,18 @@
       document.getElementById("bonusReveal").style.display = "flex";
       const container = document.getElementById("bonusLetters");
       const mot = "TIPLOUF".split("");
-      const lettresMelangees = mot.sort(() => Math.random() - 0.5);
+      const lettreAleatoire = mot[Math.floor(Math.random() * mot.length)];
       container.innerHTML = "";
-      lettresMelangees.forEach(lettre => {
-        const btn = document.createElement("button");
-        btn.className = "letter-button";
-        btn.textContent = lettre;
-        btn.onclick = function () {
-          if (selectedBonusLetters.length < 7) {
-            selectedBonusLetters.push(lettre);
-            document.getElementById("bonusDisplayPassword").textContent = selectedBonusLetters.join("");
-          }
-          if (selectedBonusLetters.length === 7) {
-            if (selectedBonusLetters.join("") !== "TIPLOUF") {
-              alert("Mauvais mot de passe bonus ! Essaie encore.");
-              selectedBonusLetters = [];
-              document.getElementById("bonusDisplayPassword").textContent = "";
-            } else {
-              alert("Mot de passe bonus correct ! 🎉");
-            }
-          }
-        };
-        container.appendChild(btn);
-      });
+      const btn = document.createElement("button");
+      btn.className = "letter-button";
+      btn.textContent = lettreAleatoire;
+      btn.onclick = function () {
+        if (selectedBonusLetters.length < 7) {
+          selectedBonusLetters.push(lettreAleatoire);
+          document.getElementById("bonusDisplayPassword").textContent = selectedBonusLetters.join("");
+        }
+      };
+      container.appendChild(btn);
     }
   </script>
 </body>
