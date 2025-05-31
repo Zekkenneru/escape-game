@@ -131,24 +131,22 @@
 
     .bonus-wrapper {
       position: absolute;
-      top: 220px;
-      left: 30px;
+      top: 300px;
+      left: 20px;
       display: flex;
       flex-direction: column;
       align-items: center;
     }
 
     .bonus-wrapper img {
-      width: 120px;
+      width: 100px;
     }
 
-    #bonusDisplayPassword {
-      position: absolute;
-      top: 45px;
-      width: 100px;
-      text-align: center;
-      font-size: 1.4rem;
+    .bonus-visual-password {
+      position: relative;
+      top: -42px;
       color: #000;
+      font-size: 1.3rem;
       font-weight: bold;
     }
   </style>
@@ -188,7 +186,7 @@
   <div class="message" id="bonusMessage"></div>
   <div class="bonus-wrapper" id="bonusReveal" style="display:none;">
     <img src="bonus.png">
-    <div id="bonusDisplayPassword"></div>
+    <div class="bonus-visual-password" id="bonusDisplayPassword"></div>
     <div class="bonus-grid" id="bonusLetters"></div>
   </div>
 
@@ -265,6 +263,15 @@
           if (selectedBonusLetters.length < 7) {
             selectedBonusLetters.push(lettre);
             document.getElementById("bonusDisplayPassword").textContent = selectedBonusLetters.join("");
+          }
+          if (selectedBonusLetters.length === 7) {
+            if (selectedBonusLetters.join("") !== "TIPLOUF") {
+              alert("Mauvais mot de passe bonus ! Essaie encore.");
+              selectedBonusLetters = [];
+              document.getElementById("bonusDisplayPassword").textContent = "";
+            } else {
+              alert("Mot de passe bonus correct ! 🎉");
+            }
           }
         };
         container.appendChild(btn);
