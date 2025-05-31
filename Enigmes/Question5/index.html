@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="fr">
 <head>
@@ -132,8 +131,8 @@
 
     .bonus-wrapper {
       position: absolute;
-      top: 420px;
-      left: 20px;
+      top: 460px;
+      left: 40px;
       width: 340px;
     }
 
@@ -143,21 +142,22 @@
 
     .bonus-letters {
       position: absolute;
-      top: 42px;
-      left: 72%;
+      top: 18px;
+      left: 70%;
       transform: translateX(-50%);
       display: flex;
       justify-content: center;
-      gap: 6px;
+      gap: 4px;
       font-family: monospace;
-      font-size: 0.8rem;
+      font-size: 0.6rem;
       font-weight: bold;
       color: #000;
-      width: 120px;
+      width: 100px;
+      pointer-events: none;
     }
 
     .bonus-slot {
-      width: 1rem;
+      width: 0.9rem;
       text-align: center;
     }
   </style>
@@ -197,7 +197,7 @@
   <div class="message" id="bonusMessage"></div>
   <div class="bonus-wrapper" id="bonusReveal" style="display:none;">
     <img src="bonus.png">
-    <div class="bonus-letters" id="bonusSlots"></div>
+    <div class="bonus-letters" id="bonusLettersDisplay"></div>
     <div class="bonus-grid" id="bonusLetters"></div>
   </div>
 
@@ -208,17 +208,12 @@
     while (lettresRevelees.length < motDePasse.length) lettresRevelees.push("_");
 
     const hintLettersDiv = document.getElementById("hintLetters");
-    const bonusSlotsDiv = document.getElementById("bonusSlots");
-    let questionValidee = false;
-    let bonusValidee = false;
-    let selectedBonusLetters = [];
-
     function initialiserAffichage() {
       hintLettersDiv.innerHTML = "";
       lettresRevelees.forEach((lettre, i) => {
         const span = document.createElement("span");
         span.className = "letter-slot";
-        span.id = lettre-${i};
+        span.id = `lettre-${i}`;
         span.textContent = lettre;
         hintLettersDiv.appendChild(span);
       });
@@ -228,13 +223,12 @@
     function verifierQuestionPrincipale() {
       const val = parseInt(document.getElementById("reponseInput").value);
       if (val === 6) {
-        questionValidee = true;
         const lettre = motDePasse[indexLettreFixe];
         lettresRevelees[indexLettreFixe] = lettre;
         localStorage.setItem("lettresRevelees", JSON.stringify(lettresRevelees));
-        document.getElementById(lettre-${indexLettreFixe}).textContent = lettre;
+        document.getElementById(`lettre-${indexLettreFixe}`).textContent = lettre;
         document.getElementById("message").innerHTML = "Bravo !";
-        document.getElementById("code-fragment").innerHTML = Voici ta partie de code : <code>${lettre}</code>;
+        document.getElementById("code-fragment").innerHTML = `Voici ta partie de code : <code>${lettre}</code>`;
         document.getElementById("optionsButtons").style.display = "block";
       } else {
         document.getElementById("message").innerHTML = "Mauvaise réponse.";
@@ -251,55 +245,54 @@
     function verifierQuestionBonus() {
       const val = parseInt(document.getElementById("bonusInput").value);
       if (val === 2) {
-        bonusValidee = true;
         document.getElementById("bonusMessage").innerHTML = "L9 et L1 te ramènent à Benidorm 🎉";
         afficherMotDePasseBonus();
       } else {
         document.getElementById("bonusMessage").innerHTML = "Non, essaie encore !";
-        selectedBonusLetters = [];
-        initialiserMotBonus();
       }
     }
 
-    function initialiserMotBonus() {
-      const motBonus = "TIPLOUF";
-      bonusSlotsDiv.innerHTML = "";
-      for (let i = 0; i < motBonus.length; i++) {
-        const slot = document.createElement("span");
-        slot.className = "bonus-slot";
-        slot.id = bonus-slot-${i};
-        slot.textContent = "_";
-        bonusSlotsDiv.appendChild(slot);
-      }
+    const motDePasseBonus = "TIPLOUF";
+    const lettresAffichees = Array(motDePasseBonus.length).fill("_");
+    const bonusDisplay = document.getElementById("bonusLettersDisplay");
+    const bonusGrid = document.getElementById("bonusLetters");
+
+    function renderAffichage() {
+      bonusDisplay.innerHTML = lettresAffichees.map(l => `<span class="bonus-slot">${l}</span>`).join("");
     }
 
     function afficherMotDePasseBonus() {
       document.getElementById("bonusReveal").style.display = "block";
-      initialiserMotBonus();
-      const container = document.getElementById("bonusLetters");
-      const mot = "TIPLOUF".split("");
-      const lettreAleatoire = mot[Math.floor(Math.random() * mot.length)];
-      container.innerHTML = "";
-      const btn = document.createElement("button");
-      btn.className = "letter-button";
-      btn.textContent = lettreAleatoire;
-      btn.onclick = function () {
-        for (let i = 0; i < 7; i++) {
-          const slot = document.getElementById(bonus-slot-${i});
-          if (slot.textContent === "_") {
-            slot.textContent = lettreAleatoire;
-            selectedBonusLetters.push(lettreAleatoire);
-            break;
-          }
+      lettresAffichees.fill("_");
+      renderAffichage();
+      bonusGrid.innerHTML = "";
+
+      const lettresMelangees = motDePasseBonus.split("").sort(() => Math.random() - 0.5);
+      lettresMelangees.forEach(l => {
+        const btn = document.createElement("button");
+        btn.className = "letter-button";
+        btn.textContent = l;
+        btn.onclick = () => ajouterLettre(l);
+        bonusGrid.appendChild(btn);
+      });
+    }
+
+    function ajouterLettre(l) {
+      const index = lettresAffichees.indexOf("_");
+      if (index === -1) return;
+      lettresAffichees[index] = l;
+      renderAffichage();
+
+      if (!lettresAffichees.includes("_")) {
+        const tentative = lettresAffichees.join("");
+        if (tentative !== motDePasseBonus) {
+          alert("Raté ! Essaie encore.");
+          lettresAffichees.fill("_");
+          renderAffichage();
+        } else {
+          alert("Mot de passe bonus réussi !");
         }
-        if (selectedBonusLetters.length === 7) {
-          if (selectedBonusLetters.join("") !== "TIPLOUF") {
-            selectedBonusLetters = [];
-            initialiserMotBonus();
-          }
-        }
-      };
-      container.appendChild(btn);
+      }
     }
   </script>
 </body>
