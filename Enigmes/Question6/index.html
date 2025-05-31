@@ -1,1 +1,173 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Question 6 - Devinette Disney</title>
+  <link rel="stylesheet" href="../../global.css">
+  <style>
+    body {
+      background-color: #1a0d0f;
+      color: white;
+      font-family: Arial, sans-serif;
+      text-align: center;
+    }
 
+    .hint-image {
+      position: absolute;
+      top: 20px;
+      left: 20px;
+      width: 340px;
+      z-index: 2;
+    }
+
+    .hint-image img {
+      width: 100%;
+    }
+
+    .hint-letters {
+      position: absolute;
+      top: 44px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 88%;
+      display: grid;
+      grid-template-columns: repeat(12, 1fr);
+      row-gap: 6px;
+      justify-items: center;
+      font-family: monospace;
+      font-size: 1.4rem;
+      font-weight: bold;
+      color: #000;
+      z-index: 3;
+    }
+
+    .letter-slot {
+      width: 1.2rem;
+      text-align: center;
+    }
+
+    .question-box {
+      max-width: 420px;
+      margin: 200px auto 20px;
+      background-color: #2e1214;
+      padding: 20px;
+      border: 1px solid #8a2be2;
+      border-radius: 16px;
+      position: relative;
+    }
+
+    .question-image, .indice-image {
+      width: 160px;
+      height: auto;
+      position: absolute;
+    }
+
+    .question-image {
+      left: -180px;
+      top: 60px;
+    }
+
+    .indice-image {
+      right: -180px;
+      top: 60px;
+    }
+
+    .input-text {
+      padding: 10px;
+      width: 80%;
+      max-width: 300px;
+      font-size: 1rem;
+      margin-top: 20px;
+    }
+
+    .reponse-btn {
+      padding: 10px 16px;
+      background-color: purple;
+      border: none;
+      border-radius: 24px;
+      color: white;
+      font-weight: bold;
+      cursor: pointer;
+      margin: 10px;
+    }
+
+    .reward-image {
+      width: 160px;
+      margin: 20px;
+    }
+
+    .message {
+      margin-top: 30px;
+      font-size: 1.8rem;
+      color: #ff66cc;
+    }
+  </style>
+</head>
+<body>
+  <div class="hint-image">
+    <img src="pancarte_tiplouf.png" alt="Mot de passe à reconstituer">
+    <div class="hint-letters" id="hintLetters"></div>
+  </div>
+
+  <div class="question-box" id="questionBox">
+    <img src="pooh.png" alt="Pooh" class="question-image" id="poohImage">
+    <img src="prof.png" alt="Indice" class="indice-image">
+    <h2>🐻 De quel personnage Disney je me suis inspiré pour le prénom de mon chien ?</h2>
+    <p><em>Indice : son meilleur ami est un petit cochon</em></p>
+    <input id="reponseInput" class="input-text" type="text" placeholder="Ta réponse">
+    <br>
+    <button class="reponse-btn" onclick="verifierQuestionDisney()">Valider</button>
+  </div>
+
+  <div class="message" id="message"></div>
+  <div class="code-fragment" id="code-fragment"></div>
+
+  <div id="rewardSection" style="display: none;">
+    <img src="moipooh.png" class="reward-image">
+    <img src="winnie.png" class="reward-image">
+  </div>
+
+  <script>
+    const motDePasse = "JOYEUXANNIVERSAIRECHOU<3".split("");
+    const lettresRevelees = JSON.parse(localStorage.getItem("lettresRevelees") || "[]");
+    while (lettresRevelees.length < motDePasse.length) lettresRevelees.push("_");
+
+    const indexCleQuestion6 = "q6_revelee";
+    const dejaRevelee = localStorage.getItem(indexCleQuestion6);
+
+    const hintLettersDiv = document.getElementById("hintLetters");
+    function initialiserAffichage() {
+      hintLettersDiv.innerHTML = "";
+      lettresRevelees.forEach((lettre, i) => {
+        const span = document.createElement("span");
+        span.className = "letter-slot";
+        span.id = `lettre-${i}`;
+        span.textContent = lettre;
+        hintLettersDiv.appendChild(span);
+      });
+    }
+    initialiserAffichage();
+
+    function verifierQuestionDisney() {
+      const val = document.getElementById("reponseInput").value.toLowerCase();
+      if ((val.includes("winnie") || val.includes("ourson")) && !dejaRevelee) {
+        const indexRandom = Math.floor(Math.random() * motDePasse.length);
+        const lettre = motDePasse[indexRandom];
+        lettresRevelees[indexRandom] = lettre;
+        localStorage.setItem("lettresRevelees", JSON.stringify(lettresRevelees));
+        localStorage.setItem(indexCleQuestion6, indexRandom);
+        document.getElementById(`lettre-${indexRandom}`).textContent = lettre;
+        document.getElementById("message").innerHTML = "Bonne réponse!!!";
+        document.getElementById("code-fragment").innerHTML = `Lettre révélée : <code>${lettre}</code>`;
+        document.getElementById("poohImage").style.display = "none";
+        document.getElementById("rewardSection").style.display = "block";
+      } else if (dejaRevelee) {
+        document.getElementById("message").innerHTML = "Tu as déjà validé cette question.";
+      } else {
+        document.getElementById("message").innerHTML = "Mauvaise réponse.";
+      }
+    }
+  </script>
+</body>
+</html>
