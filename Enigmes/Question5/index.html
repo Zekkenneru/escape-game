@@ -49,7 +49,7 @@
 
     .question-box {
       max-width: 420px;
-      margin: 200px auto 30px;
+      margin: 20px auto;
       background-color: #2e1214;
       padding: 20px;
       border: 1px solid #8a2be2;
@@ -57,9 +57,11 @@
     }
 
     .question-image {
-      width: 500px;
+      width: 480px;
       border-radius: 12px;
-      margin-bottom: 20px;
+      margin: 40px auto 20px;
+      display: block;
+      border: 2px solid white;
     }
 
     .input-text {
@@ -99,6 +101,7 @@
       border-radius: 8px;
       font-weight: bold;
       display: inline-block;
+      margin: 5px;
     }
 
     .bonus-section {
@@ -125,14 +128,22 @@
       cursor: pointer;
     }
 
-    .letter-button.selected {
-      background-color: green;
-    }
-
     #selectedPassword {
       margin-top: 15px;
       font-size: 1.4rem;
       font-weight: bold;
+    }
+
+    .bonus-reveal img {
+      display: block;
+      margin: 0 auto;
+      width: 320px;
+    }
+
+    #bonusDisplayPassword {
+      margin-top: 10px;
+      font-size: 1.6rem;
+      color: #ffccff;
     }
   </style>
 </head>
@@ -142,10 +153,10 @@
     <div class="hint-letters" id="hintLetters"></div>
   </div>
 
-  <img class="question-image" src="train.png" alt="Tram d'Alicante">
+  <img class="question-image" src="train.png" alt="Tram d'Alicante" id="questionImage">
   <div class="question-box" id="questionBox">
     <h2>🚆 Donne-moi le nombre de lignes de métro existantes à Alicante ?</h2>
-    <input id="reponseInput" class="input-text" type="number" placeholder="Ta réponse">
+    <input id="reponseInput" class="input-text" type="text" placeholder="Ta réponse">
     <br>
     <button class="reponse-btn" onclick="verifierQuestionPrincipale()">Valider</button>
   </div>
@@ -162,17 +173,17 @@
     <img src="benidorm.jpg" alt="Benidorm" class="question-image">
     <div class="question-box">
       <h2>🚌 Combien d’entre elles te ramènent à Benidorm ?</h2>
-      <input id="bonusInput" class="input-text" type="number" placeholder="Ta réponse">
+      <input id="bonusInput" class="input-text" type="text" placeholder="Ta réponse">
       <br>
       <button class="reponse-btn" onclick="verifierQuestionBonus()">Valider la bonus</button>
     </div>
   </div>
 
   <div class="message" id="bonusMessage"></div>
-  <div id="bonusReveal" style="display:none; margin-top: 20px;">
+  <div class="bonus-reveal" id="bonusReveal" style="display:none;">
     <img src="bonus.png" alt="Mot de passe Bonus">
     <div class="bonus-grid" id="bonusLetters"></div>
-    <div id="selectedPassword"></div>
+    <div id="bonusDisplayPassword"></div>
   </div>
 
   <script>
@@ -184,6 +195,7 @@
     const hintLettersDiv = document.getElementById("hintLetters");
     let questionValidee = false;
     let bonusValidee = false;
+    let selectedBonusLetters = [];
 
     function initialiserAffichage() {
       hintLettersDiv.innerHTML = "";
@@ -215,6 +227,8 @@
 
     function afficherBonus() {
       document.getElementById("bonusSection").style.display = "block";
+      document.getElementById("questionBox").style.display = "none";
+      document.getElementById("questionImage").style.display = "none";
     }
 
     function verifierQuestionBonus() {
@@ -231,23 +245,20 @@
     function afficherMotDePasseBonus() {
       document.getElementById("bonusReveal").style.display = "block";
       const container = document.getElementById("bonusLetters");
-      const mot = "TIPLOUF".split("").sort(() => Math.random() - 0.5);
+      const mot = "TIPLOUF".split("");
+      const lettrePourCetteQuestion = mot[0]; // Seule la première lettre est disponible ici
       container.innerHTML = "";
       mot.forEach(letter => {
         const btn = document.createElement("button");
         btn.className = "letter-button";
         btn.textContent = letter;
         btn.onclick = function () {
-          btn.classList.add("selected");
-          selectedLetters.push(letter);
-          document.getElementById("selectedPassword").textContent = selectedLetters.join("");
+          selectedBonusLetters.push(letter);
+          document.getElementById("bonusDisplayPassword").textContent = selectedBonusLetters.join("");
         };
         container.appendChild(btn);
       });
     }
-
-    const selectedLetters = [];
   </script>
 </body>
 </html>
-
