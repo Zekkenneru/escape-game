@@ -57,7 +57,7 @@
     }
 
     .question-image {
-      width: 160px;
+      width: 140px;
       height: auto;
       border-radius: 12px;
       margin: 40px auto 20px;
@@ -129,15 +129,28 @@
       cursor: pointer;
     }
 
+    .bonus-wrapper {
+      display: flex;
+      align-items: flex-start;
+      justify-content: flex-start;
+      margin-top: 30px;
+      padding-left: 20px;
+    }
+
+    .bonus-wrapper img {
+      width: 240px;
+    }
+
     #bonusDisplayPassword {
       position: absolute;
-      top: 34px;
-      left: 50%;
-      transform: translateX(-50%);
-      font-size: 1.6rem;
+      top: 70px;
+      left: 95px;
+      font-size: 1.4rem;
       color: #000;
       font-weight: bold;
       letter-spacing: 4px;
+      width: 100px;
+      text-align: center;
     }
   </style>
 </head>
@@ -160,7 +173,7 @@
 
   <div class="next-button" id="optionsButtons" style="display: none;">
     <a href='../Question6/index.html'>Passer à la question suivante</a>
-    <a href="#" onclick="afficherBonus()">Faire la question bonus</a>
+    <a href="#" onclick="afficherBonus()" id="bonusButton">Faire la question bonus</a>
   </div>
 
   <div class="bonus-section" id="bonusSection" style="display: none;">
@@ -174,8 +187,8 @@
   </div>
 
   <div class="message" id="bonusMessage"></div>
-  <div class="bonus-reveal" id="bonusReveal" style="display:none; position: relative;">
-    <img src="bonus.png" style="width: 220px;">
+  <div class="bonus-wrapper" id="bonusReveal" style="display:none; position: relative;">
+    <img src="bonus.png">
     <div id="bonusDisplayPassword"></div>
     <div class="bonus-grid" id="bonusLetters"></div>
   </div>
@@ -223,7 +236,7 @@
       document.getElementById("bonusSection").style.display = "block";
       document.getElementById("questionBox").style.display = "none";
       document.getElementById("questionImage").style.display = "none";
-      document.querySelector("#optionsButtons a:nth-child(2)").style.display = "none";
+      document.getElementById("bonusButton").style.display = "none";
     }
 
     function verifierQuestionBonus() {
@@ -238,7 +251,7 @@
     }
 
     function afficherMotDePasseBonus() {
-      document.getElementById("bonusReveal").style.display = "block";
+      document.getElementById("bonusReveal").style.display = "flex";
       const container = document.getElementById("bonusLetters");
       const mot = "TIPLOUF".split("");
       const lettreAleatoire = mot[Math.floor(Math.random() * mot.length)];
