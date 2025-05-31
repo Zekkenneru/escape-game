@@ -131,7 +131,7 @@
 
     .bonus-wrapper {
       position: absolute;
-      top: 420px;
+      top: 460px;
       left: 20px;
       width: 340px;
     }
@@ -142,12 +142,12 @@
 
     .bonus-letters {
       position: absolute;
-      top: 30px;
-      left: 53.5%;
+      top: 18px;
+      left: 65%;
       transform: translateX(-50%);
       display: flex;
       justify-content: center;
-      gap: 5px;
+      gap: 4px;
       font-family: monospace;
       font-size: 0.6rem;
       font-weight: bold;
@@ -163,6 +163,53 @@
   </style>
 </head>
 <body>
-<!-- HTML content unchanged -->
+  <div class="bonus-wrapper">
+    <img src="bonus.png" alt="Mot de passe bonus">
+    <div class="bonus-letters" id="bonusLettersDisplay"></div>
+  </div>
+
+  <div class="bonus-grid" id="bonusLetters"></div>
+
+  <script>
+    const motDePasseBonus = "TIPLOUF";
+    const lettresChoisies = [];
+    const lettresAffichees = Array(motDePasseBonus.length).fill("_");
+
+    const display = document.getElementById("bonusLettersDisplay");
+    const grid = document.getElementById("bonusLetters");
+
+    function renderAffichage() {
+      display.innerHTML = lettresAffichees.map(l => `<span class="bonus-slot">${l}</span>`).join("");
+    }
+
+    function ajouterLettre(l) {
+      const index = lettresAffichees.indexOf("_");
+      if (index === -1) return;
+      lettresAffichees[index] = l;
+      renderAffichage();
+
+      if (!lettresAffichees.includes("_")) {
+        const tentative = lettresAffichees.join("");
+        if (tentative !== motDePasseBonus) {
+          alert("Raté ! Essaie encore.");
+          for (let i = 0; i < lettresAffichees.length; i++) lettresAffichees[i] = "_";
+          renderAffichage();
+        } else {
+          alert("Mot de passe bonus réussi !");
+        }
+      }
+    }
+
+    const lettresMelangees = motDePasseBonus.split("").sort(() => Math.random() - 0.5);
+    lettresMelangees.forEach(l => {
+      const btn = document.createElement("button");
+      btn.className = "letter-button";
+      btn.textContent = l;
+      btn.onclick = () => ajouterLettre(l);
+      grid.appendChild(btn);
+    });
+
+    renderAffichage();
+  </script>
 </body>
 </html>
