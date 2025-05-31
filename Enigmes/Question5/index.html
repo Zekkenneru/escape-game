@@ -57,7 +57,8 @@
     }
 
     .question-image {
-      width: 480px;
+      width: 200px;
+      height: auto;
       border-radius: 12px;
       margin: 40px auto 20px;
       display: block;
@@ -128,22 +129,15 @@
       cursor: pointer;
     }
 
-    #selectedPassword {
-      margin-top: 15px;
-      font-size: 1.4rem;
-      font-weight: bold;
-    }
-
-    .bonus-reveal img {
-      display: block;
-      margin: 0 auto;
-      width: 320px;
-    }
-
     #bonusDisplayPassword {
-      margin-top: 10px;
+      position: absolute;
+      top: 150px;
+      left: 50%;
+      transform: translateX(-50%);
       font-size: 1.6rem;
       color: #ffccff;
+      font-weight: bold;
+      letter-spacing: 4px;
     }
   </style>
 </head>
@@ -180,10 +174,11 @@
   </div>
 
   <div class="message" id="bonusMessage"></div>
-  <div class="bonus-reveal" id="bonusReveal" style="display:none;">
-    <img src="bonus.png" alt="Mot de passe Bonus">
-    <div class="bonus-grid" id="bonusLetters"></div>
+  <div class="bonus-reveal" id="bonusReveal" style="display:none; position: relative;">
+    <img src="pancarte_tiplouf.png" style="width: 200px; margin: 10px auto;">
+    <img src="bonus.png" alt="Mot de passe Bonus" style="width: 220px;">
     <div id="bonusDisplayPassword"></div>
+    <div class="bonus-grid" id="bonusLetters"></div>
   </div>
 
   <script>
@@ -246,18 +241,18 @@
       document.getElementById("bonusReveal").style.display = "block";
       const container = document.getElementById("bonusLetters");
       const mot = "TIPLOUF".split("");
-      const lettrePourCetteQuestion = mot[0]; // Seule la première lettre est disponible ici
+      const lettreAleatoire = mot[Math.floor(Math.random() * mot.length)];
       container.innerHTML = "";
-      mot.forEach(letter => {
-        const btn = document.createElement("button");
-        btn.className = "letter-button";
-        btn.textContent = letter;
-        btn.onclick = function () {
-          selectedBonusLetters.push(letter);
+      const btn = document.createElement("button");
+      btn.className = "letter-button";
+      btn.textContent = lettreAleatoire;
+      btn.onclick = function () {
+        if (selectedBonusLetters.length < 7) {
+          selectedBonusLetters.push(lettreAleatoire);
           document.getElementById("bonusDisplayPassword").textContent = selectedBonusLetters.join("");
-        };
-        container.appendChild(btn);
-      });
+        }
+      };
+      container.appendChild(btn);
     }
   </script>
 </body>
