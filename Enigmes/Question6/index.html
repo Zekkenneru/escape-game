@@ -65,24 +65,41 @@
       position: relative;
     }
 
-    .prof-indice {
+    .ronflex-bulle {
       position: absolute;
-      right: -200px;
-      top: 0;
-      text-align: center;
-    }
-
-    .prof-indice img {
+      top: 60px;
+      left: calc(50% + 230px);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
       width: 180px;
     }
 
-    .prof-indice p {
-      margin: 6px 0 0;
-      font-size: 0.9rem;
-      background-color: #471e23;
-      padding: 4px 8px;
-      border-radius: 6px;
-      display: inline-block;
+    .ronflex-bulle img {
+      width: 180px;
+      height: auto;
+    }
+
+    .bulle-texte {
+      margin-top: 4px;
+      background-color: #4b2b36;
+      border-radius: 12px;
+      padding: 8px 10px;
+      max-width: 160px;
+      font-size: 0.95rem;
+      color: #ffcccc;
+      position: relative;
+    }
+
+    .bulle-texte::before {
+      content: '';
+      position: absolute;
+      bottom: -10px;
+      left: 30px;
+      width: 0;
+      height: 0;
+      border: 10px solid transparent;
+      border-top-color: #4b2b36;
     }
 
     .input-text {
@@ -124,11 +141,12 @@
 
   <img src="pooh.png" alt="Pooh" class="question-image" id="poohImage">
 
+  <div class="ronflex-bulle" id="ronflex">
+    <img src="prof.png" alt="Indice">
+    <div class="bulle-texte">Attention, il y a un piège !<br>Son meilleur ami est un petit cochon</div>
+  </div>
+
   <div class="question-box" id="questionBox">
-    <div class="prof-indice">
-      <img src="prof.png" alt="Indice">
-      <p>Attention, il y a un piège !<br>Son meilleur ami est un petit cochon</p>
-    </div>
     <h2>🐻 De quel personnage Disney je me suis inspiré pour le prénom de mon chien ?</h2>
     <input id="reponseInput" class="input-text" type="text" placeholder="Ta réponse">
     <br>
