@@ -67,8 +67,8 @@
 
     .ronflex-bulle {
       position: absolute;
-      top: 60px;
-      left: calc(50% + 230px);
+      top: 40px;
+      left: calc(50% + 240px);
       display: flex;
       flex-direction: column;
       align-items: center;
@@ -81,10 +81,10 @@
     }
 
     .bulle-texte {
-      margin-top: 4px;
+      margin-top: 6px;
       background-color: #4b2b36;
       border-radius: 12px;
-      padding: 8px 10px;
+      padding: 10px 14px;
       max-width: 160px;
       font-size: 0.95rem;
       color: #ffcccc;
@@ -121,15 +121,31 @@
       margin: 10px;
     }
 
+    #rewardSection {
+      display: none;
+      margin-top: 40px;
+    }
+
+    .reward-wrapper {
+      display: flex;
+      justify-content: center;
+      gap: 30px;
+      margin-bottom: 20px;
+    }
+
     .reward-image {
-      width: 160px;
-      margin: 20px;
+      width: 180px;
+      height: auto;
     }
 
     .message {
       margin-top: 30px;
       font-size: 1.8rem;
       color: #ff66cc;
+    }
+
+    .code-fragment {
+      margin-bottom: 30px;
     }
   </style>
 </head>
@@ -153,13 +169,15 @@
     <button class="reponse-btn" onclick="verifierQuestionDisney()">Valider</button>
   </div>
 
+  <div id="rewardSection">
+    <div class="reward-wrapper">
+      <img src="moipooh.png" class="reward-image" alt="moipooh">
+      <img src="winnie.png" class="reward-image" alt="winnie">
+    </div>
+  </div>
+
   <div class="message" id="message"></div>
   <div class="code-fragment" id="code-fragment"></div>
-
-  <div id="rewardSection" style="display: none;">
-    <img src="moipooh.png" class="reward-image">
-    <img src="winnie.png" class="reward-image">
-  </div>
 
   <script>
     const motDePasse = "JOYEUXANNIVERSAIRECHOU<3".split("");
@@ -197,6 +215,7 @@
         document.getElementById("message").innerHTML = "Bonne réponse!!!";
         document.getElementById("code-fragment").innerHTML = `Lettre révélée : <code>${lettre}</code>`;
         document.getElementById("poohImage").style.display = "none";
+        document.getElementById("ronflex").style.display = "none";
         document.getElementById("rewardSection").style.display = "block";
       } else if (dejaRevelee) {
         document.getElementById("message").innerHTML = "Tu as déjà validé cette question.";
