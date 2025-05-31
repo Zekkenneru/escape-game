@@ -139,13 +139,13 @@
     }
 
     .bonus-wrapper img {
-      width: 120px;
+      width: 340px;
     }
 
     .bonus-visual-password {
       position: absolute;
-      top: 36px;
-      left: 36px;
+      top: 60px;
+      left: 60px;
       color: #000;
       font-size: 1.3rem;
       font-weight: bold;
@@ -255,29 +255,18 @@
       document.getElementById("bonusReveal").style.display = "flex";
       const container = document.getElementById("bonusLetters");
       const mot = "TIPLOUF".split("");
-      const lettresMelangees = mot.sort(() => Math.random() - 0.5);
+      const lettreAleatoire = mot[Math.floor(Math.random() * mot.length)];
       container.innerHTML = "";
-      lettresMelangees.forEach(lettre => {
-        const btn = document.createElement("button");
-        btn.className = "letter-button";
-        btn.textContent = lettre;
-        btn.onclick = function () {
-          if (selectedBonusLetters.length < 7) {
-            selectedBonusLetters.push(lettre);
-            document.getElementById("bonusDisplayPassword").textContent = selectedBonusLetters.join("");
-          }
-          if (selectedBonusLetters.length === 7) {
-            if (selectedBonusLetters.join("") !== "TIPLOUF") {
-              alert("Mauvais mot de passe bonus ! Essaie encore.");
-              selectedBonusLetters = [];
-              document.getElementById("bonusDisplayPassword").textContent = "";
-            } else {
-              alert("Mot de passe bonus correct ! 🎉");
-            }
-          }
-        };
-        container.appendChild(btn);
-      });
+      const btn = document.createElement("button");
+      btn.className = "letter-button";
+      btn.textContent = lettreAleatoire;
+      btn.onclick = function () {
+        if (selectedBonusLetters.length < 7) {
+          selectedBonusLetters.push(lettreAleatoire);
+          document.getElementById("bonusDisplayPassword").textContent = selectedBonusLetters.join("");
+        }
+      };
+      container.appendChild(btn);
     }
   </script>
 </body>
