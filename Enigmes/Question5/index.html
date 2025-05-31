@@ -131,7 +131,7 @@
 
     .bonus-wrapper {
       position: absolute;
-      top: 460px;
+      top: 470px;
       left: 40px;
       width: 340px;
     }
@@ -142,8 +142,8 @@
 
     .bonus-letters {
       position: absolute;
-      top: 28px;
-      left: 71%;
+      top: 34px;
+      left: 71.5%;
       transform: translateX(-50%);
       display: flex;
       justify-content: center;
@@ -267,7 +267,8 @@
       renderAffichage();
       bonusGrid.innerHTML = "";
 
-      const lettreAleatoire = motDePasseBonus[Math.floor(Math.random() * motDePasseBonus.length)];
+      const lettresPossibles = motDePasseBonus.split("");
+      const lettreAleatoire = lettresPossibles[Math.floor(Math.random() * lettresPossibles.length)];
       const btn = document.createElement("button");
       btn.className = "letter-button";
       btn.textContent = lettreAleatoire;
