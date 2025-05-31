@@ -49,9 +49,15 @@
       text-align: center;
     }
 
+    .question-image {
+      width: 220px;
+      margin: 0 auto 20px;
+      display: block;
+    }
+
     .question-box {
       max-width: 460px;
-      margin: 160px auto 20px;
+      margin: 20px auto;
       background-color: #2e1214;
       padding: 20px;
       border: 1px solid #8a2be2;
@@ -59,20 +65,24 @@
       position: relative;
     }
 
-    .question-image, .indice-image {
-      width: 180px;
-      height: auto;
+    .prof-indice {
       position: absolute;
-    }
-
-    .question-image {
-      left: -200px;
-      top: 20px;
-    }
-
-    .indice-image {
       right: -200px;
-      top: 20px;
+      top: 0;
+      text-align: center;
+    }
+
+    .prof-indice img {
+      width: 180px;
+    }
+
+    .prof-indice p {
+      margin: 6px 0 0;
+      font-size: 0.9rem;
+      background-color: #471e23;
+      padding: 4px 8px;
+      border-radius: 6px;
+      display: inline-block;
     }
 
     .input-text {
@@ -112,11 +122,14 @@
     <div class="hint-letters" id="hintLetters"></div>
   </div>
 
+  <img src="pooh.png" alt="Pooh" class="question-image" id="poohImage">
+
   <div class="question-box" id="questionBox">
-    <img src="pooh.png" alt="Pooh" class="question-image" id="poohImage">
-    <img src="prof.png" alt="Indice" class="indice-image">
+    <div class="prof-indice">
+      <img src="prof.png" alt="Indice">
+      <p>Attention, il y a un piège !<br>Son meilleur ami est un petit cochon</p>
+    </div>
     <h2>🐻 De quel personnage Disney je me suis inspiré pour le prénom de mon chien ?</h2>
-    <p style="font-style: italic; margin-bottom: 0;">// son meilleur ami est un petit cochon</p>
     <input id="reponseInput" class="input-text" type="text" placeholder="Ta réponse">
     <br>
     <button class="reponse-btn" onclick="verifierQuestionDisney()">Valider</button>
@@ -154,7 +167,10 @@
     function verifierQuestionDisney() {
       const val = document.getElementById("reponseInput").value.toLowerCase();
       if ((val.includes("winnie") || val.includes("ourson")) && !dejaRevelee) {
-        const indexRandom = Math.floor(Math.random() * motDePasse.length);
+        let indexRandom = Math.floor(Math.random() * motDePasse.length);
+        while (lettresRevelees[indexRandom] !== "_") {
+          indexRandom = Math.floor(Math.random() * motDePasse.length);
+        }
         const lettre = motDePasse[indexRandom];
         lettresRevelees[indexRandom] = lettre;
         localStorage.setItem("lettresRevelees", JSON.stringify(lettresRevelees));
