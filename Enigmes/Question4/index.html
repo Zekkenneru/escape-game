@@ -15,15 +15,15 @@
 
     .ronflex-bulle {
       position: absolute;
-      top: 220px;
-      left: calc(50% + 180px);
+      top: 240px;
+      left: calc(50% + 160px);
       display: flex;
       flex-direction: column;
       align-items: center;
     }
 
     .ronflex-bulle img {
-      width: 140px;
+      width: 200px;
       height: auto;
       border: none;
     }
@@ -94,7 +94,7 @@
     }
 
     .question-image {
-      width: 200px;
+      width: 320px;
       border-radius: 12px;
       margin-bottom: 20px;
     }
@@ -146,7 +146,7 @@
   </div>
 
   <h2 style="margin-top: 130px">🎸 À qui appartient cette guitare ?</h2>
-  <img class="question-image" src="guitar.jpg" alt="Guitare mystérieuse">
+  <img id="questionImage" class="question-image" src="guitar.jpg" alt="Guitare mystérieuse">
 
   <div class="ronflex-bulle" id="ronflex">
     <img src="prof.png" alt="Prof">
@@ -208,7 +208,10 @@
     function afficherSucces() {
       const lettre = motDePasse[indexLettreFixe];
       document.getElementById(`lettre-${indexLettreFixe}`).textContent = lettre;
-      document.getElementById("ronflex").innerHTML = `<img src='ronflexguit.png' alt='Ronflex guitare' style='width: 180px'>`;
+      const questionImage = document.getElementById("questionImage");
+      questionImage.src = "ronflexguit.png";
+      questionImage.style.width = "320px";
+      document.getElementById("ronflex").style.display = "none";
       document.getElementById("questionBox").style.display = "none";
       document.getElementById("message").innerHTML = "<strong style='color:#ff66cc;'>Bravo ! C'était bien Ernesto 🎸</strong>";
       document.getElementById("code-fragment").innerHTML = `<br>Voici ta partie de code : <code>${lettre}</code>`;
