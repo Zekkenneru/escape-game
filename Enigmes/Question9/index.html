@@ -49,30 +49,50 @@
       text-align: center;
     }
 
-    .question-image {
-      width: 300px;
-      margin-top: 40px;
-      border: 6px solid white;
-      border-radius: 6px;
-    }
-
     .question-row {
       display: flex;
       justify-content: center;
       align-items: flex-start;
-      gap: 400px;
+      gap: 60px;
       margin-top: 40px;
     }
 
-    .ronflex-bulle {
+    .question-image {
+      width: 300px;
+      border: 6px solid white;
+      border-radius: 6px;
+    }
+
+    .ronflex-bulle, .basket-bulle {
       display: flex;
       flex-direction: column;
       align-items: center;
       width: 200px;
     }
 
-    .ronflex-bulle img {
+    .ronflex-bulle img, .basket-bulle img {
       width: 240px;
+    }
+
+    .bulle-texte {
+      margin-top: 6px;
+      background-color: #4b2b36;
+      border-radius: 12px;
+      padding: 8px 10px;
+      font-size: 0.85rem;
+      color: #ffcccc;
+      position: relative;
+    }
+
+    .bulle-texte::before {
+      content: '';
+      position: absolute;
+      bottom: -10px;
+      left: 30px;
+      width: 0;
+      height: 0;
+      border: 10px solid transparent;
+      border-top-color: #4b2b36;
     }
 
     .question-box {
@@ -125,25 +145,21 @@
       margin: 5px;
     }
 
-    .bulle-texte {
-      margin-top: 6px;
-      background-color: #4b2b36;
-      border-radius: 12px;
-      padding: 8px 10px;
-      font-size: 0.85rem;
-      color: #ffcccc;
-      position: relative;
+    .bonus-flex-wrapper {
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+      gap: 40px;
+      margin-top: 40px;
     }
 
-    .bulle-texte::before {
-      content: '';
-      position: absolute;
-      bottom: -10px;
-      left: 30px;
-      width: 0;
-      height: 0;
-      border: 10px solid transparent;
-      border-top-color: #4b2b36;
+    .bonus-box {
+      max-width: 480px;
+      margin: 20px auto;
+      background-color: #2e1214;
+      padding: 20px;
+      border: 1px solid #8a2be2;
+      border-radius: 16px;
     }
   </style>
 </head>
@@ -174,6 +190,23 @@
   <div class="next-button" id="optionsButtons" style="display: none;">
     <a href='../Question10/index.html'>Passer à la question suivante</a>
     <a href="#" onclick="afficherBonus()" id="bonusButton">Faire la question bonus</a>
+  </div>
+
+  <div id="bonusSection" style="display: none;">
+    <div class="bonus-flex-wrapper">
+      <img src="jt.jpg" alt="Joueur mystère" class="question-image" style="width: 180px;">
+      <div class="basket-bulle">
+        <img src="basket.png" alt="Indice">
+        <div class="bulle-texte">je suis suffisant comme indice ahah</div>
+      </div>
+    </div>
+    <div class="bonus-box">
+      <h2>🏀 À quel joueur appartient ce logo ?</h2>
+      <input id="bonusInput" class="input-text" type="text" placeholder="Ta réponse">
+      <br>
+      <button class="reponse-btn" onclick="verifierQuestionBonus()">Valider la bonus</button>
+      <div class="message" id="bonusMessage"></div>
+    </div>
   </div>
 
   <script>
@@ -207,6 +240,22 @@
         document.getElementById("optionsButtons").style.display = "block";
       } else {
         document.getElementById("message").innerHTML = "Mauvaise réponse.";
+      }
+    }
+
+    function afficherBonus() {
+      document.getElementById("bonusSection").style.display = "block";
+      document.getElementById("questionBox").style.display = "none";
+      document.getElementById("questionImage").style.display = "none";
+      document.getElementById("bonusButton").style.display = "none";
+    }
+
+    function verifierQuestionBonus() {
+      const val = document.getElementById("bonusInput").value.toLowerCase();
+      if (val.includes("tatum")) {
+        document.getElementById("bonusMessage").innerHTML = "C'était bien Jayson Tatum !";
+      } else {
+        document.getElementById("bonusMessage").innerHTML = "Non, essaie encore !";
       }
     }
   </script>
