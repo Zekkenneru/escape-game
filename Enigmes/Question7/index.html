@@ -52,6 +52,8 @@
     .question-image {
       width: 400px;
       margin-top: 40px;
+      border: 6px solid white;
+      border-radius: 6px;
     }
 
     .question-box {
@@ -67,7 +69,7 @@
     .ronflex-bulle {
       position: absolute;
       top: 100px;
-      right: 20%;
+      right: 10%;
       display: flex;
       flex-direction: column;
       align-items: center;
@@ -119,7 +121,9 @@
     }
 
     .reward-image {
-      width: 340px;
+      width: 400px;
+      border: 6px solid white;
+      border-radius: 6px;
       margin: 20px;
     }
 
@@ -133,7 +137,7 @@
     .message {
       margin-top: 30px;
       font-size: 1.8rem;
-      color: #ff66cc;
+      color: #ffccff;
     }
 
     .next-button {
@@ -157,7 +161,7 @@
     <div class="hint-letters" id="hintLetters"></div>
   </div>
 
-  <img src="tableau.jpg" alt="Tableau" class="question-image" id="tableauImage">
+  <img src="tableau.png" alt="Tableau" class="question-image" id="tableauImage">
 
   <div class="ronflex-bulle" id="ronflex">
     <img src="peintre.png" alt="Indice">
@@ -172,8 +176,7 @@
   </div>
 
   <div class="reward-container" id="rewardSection" style="display: none;">
-    <img src="tableau.jpg" class="reward-image">
-    <p style="color: #ffccff; font-size: 1.2rem;">Félicitations ! C’est bien <strong>Le Baiser</strong> de Gustav Klimt 💛</p>
+    <p style="color: #ffccff; font-size: 1.2rem; margin-top: 20px;">Félicitations ! C’est bien <strong style="color:white;">Le Baiser</strong> de Gustav Klimt 💛</p>
   </div>
 
   <div class="message" id="message"></div>
