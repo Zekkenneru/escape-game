@@ -6,6 +6,7 @@
   <title>Question 9 - Celtics</title>
   <link rel="stylesheet" href="../../global.css">
   <style>
+    /* Styles (inchangés, déjà présents) */
     body {
       background-color: #1a0d0f;
       color: white;
@@ -14,19 +15,8 @@
       margin: 0;
       overflow-x: hidden;
     }
-
-    .hint-image {
-      position: absolute;
-      top: 20px;
-      left: 20px;
-      width: 340px;
-      z-index: 2;
-    }
-
-    .hint-image img {
-      width: 100%;
-    }
-
+    .hint-image { position: absolute; top: 20px; left: 20px; width: 340px; z-index: 2; }
+    .hint-image img { width: 100%; }
     .hint-letters {
       position: absolute;
       top: 44px;
@@ -43,12 +33,7 @@
       color: #000;
       z-index: 3;
     }
-
-    .letter-slot {
-      width: 1.2rem;
-      text-align: center;
-    }
-
+    .letter-slot { width: 1.2rem; text-align: center; }
     .image-wrapper {
       display: flex;
       justify-content: center;
@@ -56,24 +41,18 @@
       gap: 60px;
       margin-top: 40px;
     }
-
     .question-image {
       width: 300px;
       border: 6px solid white;
       border-radius: 6px;
     }
-
     .ronflex-bulle {
       display: flex;
       flex-direction: column;
       align-items: center;
       width: 200px;
     }
-
-    .ronflex-bulle img {
-      width: 240px;
-    }
-
+    .ronflex-bulle img { width: 240px; }
     .bulle-texte {
       margin-top: 6px;
       background-color: #4b2b36;
@@ -83,7 +62,6 @@
       color: #ffcccc;
       position: relative;
     }
-
     .bulle-texte::before {
       content: '';
       position: absolute;
@@ -94,7 +72,6 @@
       border: 10px solid transparent;
       border-top-color: #4b2b36;
     }
-
     .question-box {
       max-width: 480px;
       margin: 20px auto;
@@ -104,15 +81,13 @@
       border-radius: 16px;
       position: relative;
     }
-
     .input-text {
       padding: 10px;
-      width: 80%;
-      max-width: 300px;
+      width: 100%;
+      max-width: 320px;
       font-size: 1rem;
       margin-top: 20px;
     }
-
     .reponse-btn {
       padding: 10px 16px;
       background-color: purple;
@@ -123,17 +98,12 @@
       cursor: pointer;
       margin: 10px;
     }
-
     .message {
       margin-top: 30px;
       font-size: 1.8rem;
       color: #ffccff;
     }
-
-    .code-fragment, .next-button {
-      margin-top: 20px;
-    }
-
+    .code-fragment, .next-button { margin-top: 20px; }
     .next-button a {
       padding: 10px 20px;
       background-color: red;
@@ -144,41 +114,28 @@
       display: inline-block;
       margin: 5px;
     }
-
-    .bonus-section {
-      margin-top: 30px;
-    }
-
+    .bonus-section { margin-top: 30px; }
     .bonus-flex-wrapper {
       display: flex;
       justify-content: center;
       align-items: flex-start;
-      gap: 40px;
+      gap: 100px;
       margin-bottom: 20px;
     }
-
     .basket-bulle {
       display: flex;
       flex-direction: column;
       align-items: center;
       width: 200px;
     }
-
-    .basket-bulle img {
-      width: 240px;
-    }
-
+    .basket-bulle img { width: 240px; }
     .bonus-wrapper {
       position: absolute;
       top: 470px;
       left: 40px;
       width: 340px;
     }
-
-    .bonus-wrapper img {
-      width: 100%;
-    }
-
+    .bonus-wrapper img { width: 100%; }
     .bonus-letters {
       position: absolute;
       top: 38px;
@@ -194,14 +151,12 @@
       width: 100px;
       pointer-events: none;
     }
-
     .bonus-grid {
       display: flex;
       justify-content: center;
       flex-wrap: wrap;
       margin-top: 12px;
     }
-
     .letter-button {
       width: 40px;
       height: 40px;
@@ -214,7 +169,6 @@
       color: #fff;
       cursor: pointer;
     }
-
     .bonus-slot {
       width: 0.9rem;
       text-align: center;
@@ -227,16 +181,16 @@
     <div class="hint-letters" id="hintLetters"></div>
   </div>
 
-  <div class="image-wrapper">
+  <div class="image-wrapper" id="imageWrapper">
     <img class="question-image" src="celtics.png" alt="Logo mystère" id="questionImage">
-    <div class="ronflex-bulle">
-      <img src="prof.png" alt="Indice">
+    <div class="ronflex-bulle" id="ronflexBulle">
+      <img src="prof.png" alt="Indice mathématique">
       <div class="bulle-texte">C'est mon sport préféré !</div>
     </div>
   </div>
 
   <div class="question-box" id="questionBox">
-    <h2> À quelle équipe sportive appartient ce bout de logo ?</h2>
+    <h2>🍀 À quelle équipe sportive appartient ce bout de logo ?</h2>
     <input id="reponseInput" class="input-text" type="text" placeholder="Ta réponse">
     <br>
     <button class="reponse-btn" onclick="verifierQuestionPrincipale()">Valider</button>
@@ -246,7 +200,6 @@
   <div class="code-fragment" id="code-fragment"></div>
 
   <div class="next-button" id="optionsButtons" style="display: none;">
-    <a href='../Question10/index.html'>Passer à la question suivante</a>
     <a href="#" onclick="afficherBonus()" id="bonusButton">Faire la question bonus</a>
   </div>
 
@@ -259,7 +212,7 @@
       </div>
     </div>
     <div class="question-box">
-      <h2> À quel joueur appartient ce logo ?</h2>
+      <h2>🏀 À quel joueur appartient ce logo ?</h2>
       <input id="bonusInput" class="input-text" type="text" placeholder="Ta réponse">
       <br>
       <button class="reponse-btn" onclick="verifierQuestionBonus()">Valider la bonus</button>
@@ -311,6 +264,7 @@
       document.getElementById("bonusSection").style.display = "block";
       document.getElementById("questionBox").style.display = "none";
       document.getElementById("questionImage").style.display = "none";
+      document.getElementById("ronflexBulle").style.display = "none";
       document.getElementById("bonusButton").style.display = "none";
     }
 
