@@ -1,1 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Quiz Faiblesses Type</title>
+  <style>
+    body {
+      font-family: sans-serif;
+      text-align: center;
+      background-color: #f0f0f0;
+    }
+    .container {
+      position: relative;
+      display: inline-block;
+    }
+    img {
+      width: 1000px;
+      height: auto;
+    }
+    .button {
+      position: absolute;
+      width: 180px;
+      height: 80px;
+      cursor: pointer;
+      opacity: 0;
+    }
+    #message {
+      margin-top: 20px;
+      font-size: 20px;
+      font-weight: bold;
+    }
+  </style>
+</head>
+<body>
+  <h1>Clique sur toutes les faiblesses</h1>
+  <div class="container">
+    <img src="types.png" alt="Types">
+    <!-- Ligne 1 -->
+    <div class="button" style="top: 10px; left: 10px;" data-type="normal"></div>
+    <div class="button" style="top: 10px; left: 270px;" data-type="fire"></div>
+    <div class="button" style="top: 10px; left: 530px;" data-type="water"></div>
+    <!-- Ligne 2 -->
+    <div class="button" style="top: 100px; left: 10px;" data-type="grass"></div>
+    <div class="button" style="top: 100px; left: 270px;" data-type="electric"></div>
+    <div class="button" style="top: 100px; left: 530px;" data-type="ice"></div>
+    <!-- Ligne 3 -->
+    <div class="button" style="top: 190px; left: 10px;" data-type="ground"></div>
+    <div class="button" style="top: 190px; left: 270px;" data-type="flying"></div>
+    <div class="button" style="top: 190px; left: 530px;" data-type="poison"></div>
+    <!-- Ligne 4 -->
+    <div class="button" style="top: 280px; left: 10px;" data-type="fighting"></div>
+    <div class="button" style="top: 280px; left: 270px;" data-type="psychic"></div>
+    <div class="button" style="top: 280px; left: 530px;" data-type="dark"></div>
+    <!-- Ligne 5 -->
+    <div class="button" style="top: 370px; left: 10px;" data-type="rock"></div>
+    <div class="button" style="top: 370px; left: 270px;" data-type="bug"></div>
+    <div class="button" style="top: 370px; left: 530px;" data-type="ghost"></div>
+    <!-- Ligne 6 -->
+    <div class="button" style="top: 460px; left: 10px;" data-type="steel"></div>
+    <div class="button" style="top: 460px; left: 270px;" data-type="dragon"></div>
+    <div class="button" style="top: 460px; left: 530px;" data-type="fairy"></div>
+  </div>
+  <div id="message"></div>
+
+  <script>
+    const correctTypes = ['fighting', 'electric', 'ground'];
+    const selected = new Set();
+
+    document.querySelectorAll('.button').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const type = btn.dataset.type;
+        if (selected.has(type)) {
+          selected.delete(type);
+          btn.style.outline = '';
+        } else {
+          selected.add(type);
+          btn.style.outline = '2px solid red';
+        }
+
+        if (selected.size === 3) {
+          const allCorrect = [...selected].every(t => correctTypes.includes(t));
+          if (allCorrect && [...selected].length === correctTypes.length) {
+            document.getElementById('message').textContent = '✅ Bonne réponse !';
+          } else {
+            document.getElementById('message').textContent = '❌ Mauvaise combinaison.';
+          }
+        } else {
+          document.getElementById('message').textContent = '';
+        }
+      });
+    });
+  </script>
+</body>
+</html>
 
