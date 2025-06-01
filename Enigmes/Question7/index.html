@@ -1,1 +1,229 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Question 7 - Art</title>
+  <link rel="stylesheet" href="../../global.css">
+  <style>
+    body {
+      background-color: #1a0d0f;
+      color: white;
+      font-family: Arial, sans-serif;
+      text-align: center;
+      margin: 0;
+      overflow-x: hidden;
+    }
 
+    .hint-image {
+      position: absolute;
+      top: 20px;
+      left: 20px;
+      width: 340px;
+      z-index: 2;
+    }
+
+    .hint-image img {
+      width: 100%;
+    }
+
+    .hint-letters {
+      position: absolute;
+      top: 44px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 88%;
+      display: grid;
+      grid-template-columns: repeat(12, 1fr);
+      row-gap: 6px;
+      justify-items: center;
+      font-family: monospace;
+      font-size: 1.4rem;
+      font-weight: bold;
+      color: #000;
+      z-index: 3;
+    }
+
+    .letter-slot {
+      width: 1.2rem;
+      text-align: center;
+    }
+
+    .question-image {
+      width: 400px;
+      margin-top: 40px;
+    }
+
+    .question-box {
+      max-width: 420px;
+      margin: 20px auto;
+      background-color: #2e1214;
+      padding: 20px;
+      border: 1px solid #8a2be2;
+      border-radius: 16px;
+      position: relative;
+    }
+
+    .ronflex-bulle {
+      position: absolute;
+      top: 100px;
+      right: 20%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      width: 150px;
+    }
+
+    .ronflex-bulle img {
+      width: 360px;
+    }
+
+    .bulle-texte {
+      margin-top: 6px;
+      background-color: #4b2b36;
+      border-radius: 12px;
+      padding: 8px 10px;
+      font-size: 0.85rem;
+      color: #ffcccc;
+      position: relative;
+    }
+
+    .bulle-texte::before {
+      content: '';
+      position: absolute;
+      bottom: -10px;
+      left: 30px;
+      width: 0;
+      height: 0;
+      border: 10px solid transparent;
+      border-top-color: #4b2b36;
+    }
+
+    .input-text {
+      padding: 10px;
+      width: 80%;
+      max-width: 300px;
+      font-size: 1rem;
+      margin-top: 20px;
+    }
+
+    .reponse-btn {
+      padding: 10px 16px;
+      background-color: purple;
+      border: none;
+      border-radius: 24px;
+      color: white;
+      font-weight: bold;
+      cursor: pointer;
+      margin: 10px;
+    }
+
+    .reward-image {
+      width: 340px;
+      margin: 20px;
+    }
+
+    .reward-container {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .message {
+      margin-top: 30px;
+      font-size: 1.8rem;
+      color: #ff66cc;
+    }
+
+    .next-button {
+      margin-top: 20px;
+    }
+
+    .next-button a {
+      padding: 10px 20px;
+      background-color: red;
+      color: white;
+      text-decoration: none;
+      border-radius: 8px;
+      font-weight: bold;
+      display: inline-block;
+    }
+  </style>
+</head>
+<body>
+  <div class="hint-image">
+    <img src="pancarte_tiplouf.png" alt="Mot de passe à reconstituer">
+    <div class="hint-letters" id="hintLetters"></div>
+  </div>
+
+  <img src="tableau.png" alt="Tableau" class="question-image" id="tableauImage">
+
+  <div class="ronflex-bulle" id="ronflex">
+    <img src="peintre.png" alt="Indice">
+    <div class="bulle-texte">Un des tableaux les plus représentatifs de l’amour</div>
+  </div>
+
+  <div class="question-box" id="questionBox">
+    <h2>🖼️ Donne moi le nom de ce tableau ?</h2>
+    <input id="reponseInput" class="input-text" type="text" placeholder="Ta réponse">
+    <br>
+    <button class="reponse-btn" onclick="verifierQuestionArt()">Valider</button>
+  </div>
+
+  <div class="reward-container" id="rewardSection" style="display: none;">
+    <img src="tableau.png" class="reward-image">
+    <p style="color: #ffccff; font-size: 1.2rem;">Félicitations ! C’est bien <strong>Le Baiser</strong> de Gustav Klimt 💛</p>
+  </div>
+
+  <div class="message" id="message"></div>
+  <div class="code-fragment" id="code-fragment"></div>
+  <div class="next-button" id="next"></div>
+
+  <script>
+    const motDePasse = "JOYEUXANNIVERSAIRECHOU<3".split("");
+    const lettresRevelees = JSON.parse(localStorage.getItem("lettresRevelees") || "[]");
+    while (lettresRevelees.length < motDePasse.length) lettresRevelees.push("_");
+
+    const indexCleQuestion7 = "q7_revelee";
+    const dejaRevelee = localStorage.getItem(indexCleQuestion7);
+
+    const hintLettersDiv = document.getElementById("hintLetters");
+    function initialiserAffichage() {
+      hintLettersDiv.innerHTML = "";
+      lettresRevelees.forEach((lettre, i) => {
+        const span = document.createElement("span");
+        span.className = "letter-slot";
+        span.id = `lettre-${i}`;
+        span.textContent = lettre;
+        hintLettersDiv.appendChild(span);
+      });
+    }
+    initialiserAffichage();
+
+    function verifierQuestionArt() {
+      const val = document.getElementById("reponseInput").value.toLowerCase();
+      if ((val.includes("baiser") || val.includes("klimt")) && !dejaRevelee) {
+        let indexRandom = Math.floor(Math.random() * motDePasse.length);
+        while (lettresRevelees[indexRandom] !== "_") {
+          indexRandom = Math.floor(Math.random() * motDePasse.length);
+        }
+        const lettre = motDePasse[indexRandom];
+        lettresRevelees[indexRandom] = lettre;
+        localStorage.setItem("lettresRevelees", JSON.stringify(lettresRevelees));
+        localStorage.setItem(indexCleQuestion7, indexRandom);
+        document.getElementById(`lettre-${indexRandom}`).textContent = lettre;
+        document.getElementById("code-fragment").innerHTML = `Lettre révélée : <code>${lettre}</code>`;
+        document.getElementById("ronflex").style.display = "none";
+        document.getElementById("questionBox").style.display = "none";
+        document.getElementById("rewardSection").style.display = "flex";
+        document.getElementById("next").innerHTML = "<a href='../Question8/index.html'>Passer à la question suivante</a>";
+      } else if (dejaRevelee) {
+        document.getElementById("message").innerHTML = "Tu as déjà validé cette question.";
+      } else {
+        document.getElementById("message").innerHTML = "Mauvaise réponse.";
+      }
+    }
+  </script>
+</body>
+</html>
