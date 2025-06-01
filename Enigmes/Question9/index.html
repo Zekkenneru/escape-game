@@ -49,11 +49,50 @@
       text-align: center;
     }
 
+    .image-wrapper {
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+      gap: 60px;
+      margin-top: 40px;
+    }
+
     .question-image {
       width: 300px;
-      margin-top: 40px;
       border: 6px solid white;
       border-radius: 6px;
+    }
+
+    .ronflex-bulle {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      width: 200px;
+    }
+
+    .ronflex-bulle img {
+      width: 240px;
+    }
+
+    .bulle-texte {
+      margin-top: 6px;
+      background-color: #4b2b36;
+      border-radius: 12px;
+      padding: 8px 10px;
+      font-size: 0.85rem;
+      color: #ffcccc;
+      position: relative;
+    }
+
+    .bulle-texte::before {
+      content: '';
+      position: absolute;
+      bottom: -10px;
+      left: 30px;
+      width: 0;
+      height: 0;
+      border: 10px solid transparent;
+      border-top-color: #4b2b36;
     }
 
     .question-box {
@@ -110,24 +149,23 @@
       margin-top: 30px;
     }
 
-    .bonus-grid {
+    .bonus-flex-wrapper {
       display: flex;
       justify-content: center;
-      flex-wrap: wrap;
-      margin-top: 12px;
+      align-items: flex-start;
+      gap: 40px;
+      margin-bottom: 20px;
     }
 
-    .letter-button {
-      width: 40px;
-      height: 40px;
-      margin: 5px;
-      font-size: 1.2rem;
-      font-weight: bold;
-      border-radius: 8px;
-      border: 2px solid #fff;
-      background-color: #2e1214;
-      color: #fff;
-      cursor: pointer;
+    .basket-bulle {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      width: 200px;
+    }
+
+    .basket-bulle img {
+      width: 240px;
     }
 
     .bonus-wrapper {
@@ -157,49 +195,29 @@
       pointer-events: none;
     }
 
+    .bonus-grid {
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      margin-top: 12px;
+    }
+
+    .letter-button {
+      width: 40px;
+      height: 40px;
+      margin: 5px;
+      font-size: 1.2rem;
+      font-weight: bold;
+      border-radius: 8px;
+      border: 2px solid #fff;
+      background-color: #2e1214;
+      color: #fff;
+      cursor: pointer;
+    }
+
     .bonus-slot {
       width: 0.9rem;
       text-align: center;
-    }
-
-    .bonus-flex-wrapper {
-      display: flex;
-      justify-content: center;
-      align-items: flex-start;
-      gap: 40px;
-      margin-bottom: 20px;
-    }
-
-    .basket-bulle {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      width: 200px;
-    }
-
-    .basket-bulle img {
-      width: 240px;
-    }
-
-    .bulle-texte {
-      margin-top: 6px;
-      background-color: #4b2b36;
-      border-radius: 12px;
-      padding: 8px 10px;
-      font-size: 0.85rem;
-      color: #ffcccc;
-      position: relative;
-    }
-
-    .bulle-texte::before {
-      content: '';
-      position: absolute;
-      bottom: -10px;
-      left: 30px;
-      width: 0;
-      height: 0;
-      border: 10px solid transparent;
-      border-top-color: #4b2b36;
     }
   </style>
 </head>
@@ -209,9 +227,16 @@
     <div class="hint-letters" id="hintLetters"></div>
   </div>
 
-  <img class="question-image" src="celtics.png" alt="Logo mystère" id="questionImage">
+  <div class="image-wrapper">
+    <img class="question-image" src="celtics.png" alt="Logo mystère" id="questionImage">
+    <div class="ronflex-bulle">
+      <img src="prof.png" alt="Indice">
+      <div class="bulle-texte">C'est mon sport préféré !</div>
+    </div>
+  </div>
+
   <div class="question-box" id="questionBox">
-    <h2>🍀 À quelle équipe sportive appartient ce bout de logo ?</h2>
+    <h2> À quelle équipe sportive appartient ce bout de logo ?</h2>
     <input id="reponseInput" class="input-text" type="text" placeholder="Ta réponse">
     <br>
     <button class="reponse-btn" onclick="verifierQuestionPrincipale()">Valider</button>
@@ -234,7 +259,7 @@
       </div>
     </div>
     <div class="question-box">
-      <h2>🏀 À quel joueur appartient ce logo ?</h2>
+      <h2> À quel joueur appartient ce logo ?</h2>
       <input id="bonusInput" class="input-text" type="text" placeholder="Ta réponse">
       <br>
       <button class="reponse-btn" onclick="verifierQuestionBonus()">Valider la bonus</button>
