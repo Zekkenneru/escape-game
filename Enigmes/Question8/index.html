@@ -50,7 +50,7 @@
     }
 
     .question-image {
-      width: 300px;
+      width: 450px;
       margin-top: 40px;
       border: 6px solid white;
       border-radius: 6px;
@@ -103,7 +103,7 @@
     }
 
     .reward-image {
-      width: 300px;
+      width: 450px;
       margin: 20px;
       border: 6px solid white;
       border-radius: 6px;
@@ -146,7 +146,7 @@
   <img src="pingoleon.png" alt="Pingoléon" class="question-image" id="pingoleonImage">
 
   <div class="question-box" id="questionBox">
-    <h2>❓ Oh non ! Le dresseur légendaire Angelo envoie son Pingoléon... cible toutes ses faiblesses pour le vaincre !</h2>
+    <h2> Oh non ! Le dresseur légendaire Angelo envoie son Pingoléon... cible toutes ses faiblesses pour le vaincre !</h2>
   </div>
 
   <div class="types-container" id="typesContainer"></div>
@@ -154,7 +154,7 @@
 
   <div class="reward-container" id="rewardSection" style="display: none;">
     <img src="dresseur.png" class="reward-image">
-    <p style="color: #ffccff; font-size: 1.2rem; margin-top: 20px;">Félicitations à toi, jeune dresseuse Sarah !</p>
+    <p style="color: #ffccff; font-size: 1.5rem; margin-top: 20px;">Félicitations à toi, jeune dresseuse Sarah !</p>
   </div>
 
   <div class="message" id="message"></div>
@@ -225,6 +225,7 @@
         document.getElementById("typesContainer").style.display = "none";
         document.querySelector(".reponse-btn").style.display = "none";
         document.getElementById("rewardSection").style.display = "flex";
+        document.getElementById("message").innerHTML = "";
         document.getElementById("code-fragment").innerHTML = `Lettre révélée : <code>${lettre}</code>`;
         document.getElementById("next").innerHTML = "<a href='../Question9/index.html'>Passer à la question suivante</a>";
       } else if (dejaRevelee) {
