@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Question 8 - Pokemon</title>
+  <title>Question 8 - Pokémon</title>
   <link rel="stylesheet" href="../../global.css">
   <style>
     body {
@@ -12,7 +12,7 @@
       font-family: Arial, sans-serif;
       text-align: center;
       margin: 0;
-      overflow: hidden;
+      overflow-x: hidden;
     }
 
     .hint-image {
@@ -22,9 +22,11 @@
       width: 340px;
       z-index: 2;
     }
+
     .hint-image img {
       width: 100%;
     }
+
     .hint-letters {
       position: absolute;
       top: 44px;
@@ -41,19 +43,22 @@
       color: #000;
       z-index: 3;
     }
+
     .letter-slot {
       width: 1.2rem;
       text-align: center;
     }
 
     .question-image {
-      width: 320px;
+      width: 300px;
       margin-top: 40px;
+      border: 6px solid white;
+      border-radius: 6px;
     }
 
     .question-box {
-      max-width: 460px;
-      margin: 20px auto;
+      max-width: 480px;
+      margin: 20px auto 0;
       background-color: #2e1214;
       padding: 20px;
       border: 1px solid #8a2be2;
@@ -62,59 +67,65 @@
     }
 
     .types-container {
-      display: grid;
-      grid-template-columns: repeat(6, 1fr);
-      gap: 10px;
+      display: flex;
+      flex-wrap: wrap;
       justify-content: center;
-      padding: 10px 20px;
-      max-width: 500px;
-      margin: 0 auto;
+      gap: 10px;
+      margin-top: 20px;
+      max-width: 600px;
+      margin-left: auto;
+      margin-right: auto;
     }
 
     .type-button {
-      padding: 8px 6px;
-      background-color: #4b2b36;
-      color: white;
+      padding: 8px 12px;
+      background-color: #444;
       border: 1px solid white;
       border-radius: 12px;
+      color: white;
       cursor: pointer;
-      font-size: 0.8rem;
-      transition: background-color 0.3s;
+      font-weight: bold;
     }
 
     .type-button.selected {
       background-color: #8a2be2;
     }
 
-    .confirm-btn {
-      margin-top: 10px;
-      padding: 10px 20px;
+    .reponse-btn {
+      padding: 10px 16px;
       background-color: purple;
-      color: white;
       border: none;
-      border-radius: 20px;
+      border-radius: 24px;
+      color: white;
       font-weight: bold;
       cursor: pointer;
+      margin-top: 20px;
+    }
+
+    .reward-image {
+      width: 300px;
+      margin: 20px;
+      border: 6px solid white;
+      border-radius: 6px;
     }
 
     .reward-container {
-      display: none;
+      display: flex;
       flex-direction: column;
       justify-content: center;
       align-items: center;
-      margin-top: 40px;
     }
-    .reward-image {
-      width: 400px;
-    }
+
     .message {
       margin-top: 30px;
       font-size: 1.8rem;
       color: #ffccff;
     }
-    .code-fragment, .next-button {
+
+    .next-button {
       margin-top: 20px;
     }
+
     .next-button a {
       padding: 10px 20px;
       background-color: red;
@@ -128,39 +139,35 @@
 </head>
 <body>
   <div class="hint-image">
-    <img src="pancarte_tiplouf.png" alt="Mot de passe">
+    <img src="pancarte_tiplouf.png" alt="Mot de passe à reconstituer">
     <div class="hint-letters" id="hintLetters"></div>
   </div>
 
-  <img src="pingoleon.png" class="question-image" id="pokeImage">
+  <img src="pingoleon.png" alt="Pingoléon" class="question-image" id="pingoleonImage">
 
   <div class="question-box" id="questionBox">
-    <h2>❓ Combien de faiblesses a Pingoléon ?</h2>
-    <div class="types-container" id="typesContainer"></div>
-    <button class="confirm-btn" onclick="verifierTypes()">Confirmer</button>
+    <h2>❓ Oh non ! Le dresseur légendaire Angelo envoie son Pingoléon... cible toutes ses faiblesses pour le vaincre !</h2>
   </div>
 
-  <div class="reward-container" id="rewardSection">
-    <img src="dresseurs.png" class="reward-image">
-    <p class="message">Félicitations à toi jeune dresseur de Pokémon !</p>
-    <div class="code-fragment" id="code-fragment"></div>
-    <div class="next-button" id="next"></div>
+  <div class="types-container" id="typesContainer"></div>
+  <button class="reponse-btn" onclick="verifierReponsePokemon()">Confirmer</button>
+
+  <div class="reward-container" id="rewardSection" style="display: none;">
+    <img src="dresseur.png" class="reward-image">
+    <p style="color: #ffccff; font-size: 1.2rem; margin-top: 20px;">Félicitations à toi, jeune dresseuse Sarah !</p>
   </div>
+
+  <div class="message" id="message"></div>
+  <div class="code-fragment" id="code-fragment"></div>
+  <div class="next-button" id="next"></div>
 
   <script>
-    const types = [
-      "Acier", "Combat", "Dragon", "Eau", "Electrik", "Feu",
-      "Glace", "Insecte", "Normal", "Plante", "Poison", "Psy",
-      "Roche", "Sol", "Spectre", "Ténèbres", "Vol", "Fée"
-    ];
-    const bonnesReponses = ["Combat", "Sol", "Electrik"];
-
     const motDePasse = "JOYEUXANNIVERSAIRECHOU<3".split("");
     const lettresRevelees = JSON.parse(localStorage.getItem("lettresRevelees") || "[]");
     while (lettresRevelees.length < motDePasse.length) lettresRevelees.push("_");
 
-    const indexCle = "q8_revelee";
-    const dejaRevelee = localStorage.getItem(indexCle);
+    const indexCleQuestion8 = "q8_revelee";
+    const dejaRevelee = localStorage.getItem(indexCleQuestion8);
 
     const hintLettersDiv = document.getElementById("hintLetters");
     function initialiserAffichage() {
@@ -175,22 +182,34 @@
     }
     initialiserAffichage();
 
+    const types = [
+      "Acier", "Combat", "Dragon", "Eau", "Électrik", "Fée", "Feu", "Glace", "Insecte",
+      "Normal", "Plante", "Poison", "Psy", "Roche", "Sol", "Spectre", "Ténèbres", "Vol"
+    ];
+
+    const bonnesReponses = ["Combat", "Sol", "Électrik"];
+
     const typesContainer = document.getElementById("typesContainer");
+    const selectedTypes = new Set();
+
     types.forEach(type => {
       const btn = document.createElement("button");
-      btn.textContent = type;
       btn.className = "type-button";
-      btn.onclick = () => btn.classList.toggle("selected");
+      btn.textContent = type;
+      btn.onclick = () => {
+        if (selectedTypes.has(type)) {
+          selectedTypes.delete(type);
+          btn.classList.remove("selected");
+        } else {
+          selectedTypes.add(type);
+          btn.classList.add("selected");
+        }
+      };
       typesContainer.appendChild(btn);
     });
 
-    function verifierTypes() {
-      if (dejaRevelee) return;
-      const selections = [...document.querySelectorAll('.type-button.selected')].map(b => b.textContent);
-      selections.sort();
-      const solution = [...bonnesReponses].sort();
-      const isCorrect = JSON.stringify(selections) === JSON.stringify(solution);
-      if (isCorrect) {
+    function verifierReponsePokemon() {
+      if (!dejaRevelee && bonnesReponses.every(t => selectedTypes.has(t)) && selectedTypes.size === 3) {
         let indexRandom = Math.floor(Math.random() * motDePasse.length);
         while (lettresRevelees[indexRandom] !== "_") {
           indexRandom = Math.floor(Math.random() * motDePasse.length);
@@ -198,15 +217,20 @@
         const lettre = motDePasse[indexRandom];
         lettresRevelees[indexRandom] = lettre;
         localStorage.setItem("lettresRevelees", JSON.stringify(lettresRevelees));
-        localStorage.setItem(indexCle, indexRandom);
+        localStorage.setItem(indexCleQuestion8, indexRandom);
         document.getElementById(`lettre-${indexRandom}`).textContent = lettre;
-        document.getElementById("code-fragment").innerHTML = `Lettre révélée : <code>${lettre}</code>`;
-        document.getElementById("pokeImage").style.display = "none";
+
         document.getElementById("questionBox").style.display = "none";
+        document.getElementById("pingoleonImage").style.display = "none";
+        document.getElementById("typesContainer").style.display = "none";
+        document.querySelector(".reponse-btn").style.display = "none";
         document.getElementById("rewardSection").style.display = "flex";
+        document.getElementById("code-fragment").innerHTML = `Lettre révélée : <code>${lettre}</code>`;
         document.getElementById("next").innerHTML = "<a href='../Question9/index.html'>Passer à la question suivante</a>";
+      } else if (dejaRevelee) {
+        document.getElementById("message").innerHTML = "Tu as déjà validé cette question.";
       } else {
-        alert("Essaie encore, ce n’est pas la bonne combinaison.");
+        document.getElementById("message").innerHTML = "Ce n'est pas très efficace...";
       }
     }
   </script>
