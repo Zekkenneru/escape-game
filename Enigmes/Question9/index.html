@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Question 9 - Celtics</title>
   <link rel="stylesheet" href="../../global.css">
- <style>
+  <style>
     body {
       background-color: #1a0d0f;
       color: white;
@@ -50,7 +50,7 @@
       align-items: flex-start;
       gap: 190px;
       margin-top: 40px;
-      padding-left: 400px;
+      padding-left: 400px
     }
     .question-image {
       width: 300px;
@@ -135,11 +135,10 @@
     .bonus-flex-wrapper {
       display: flex;
       justify-content: center;
-      align-items: center;
-      flex-direction: column;
-      gap: 20px;
+      align-items: flex-start;
+      gap: 300px;
       margin-bottom: 20px;
-      padding: 0;
+      padding-left: 540px;
     }
     .basket-bulle {
       display: flex;
@@ -151,8 +150,9 @@
       width: 260px;
     }
     .bonus-wrapper {
-      position: relative;
-      margin: 20px auto;
+      position: absolute;
+      top: 470px;
+      left: 40px;
       width: 340px;
     }
     .bonus-wrapper img {
@@ -161,7 +161,7 @@
     .bonus-letters {
       position: absolute;
       top: 38px;
-      left: 50%;
+      left: 75.5%;
       transform: translateX(-50%);
       display: flex;
       justify-content: center;
@@ -170,7 +170,7 @@
       font-size: 1.4rem;
       font-weight: bold;
       color: #000;
-      width: 100%;
+      width: 100px;
       pointer-events: none;
     }
     .bonus-grid {
@@ -195,45 +195,32 @@
       width: 0.9rem;
       text-align: center;
     }
-    @media (max-width: 1024px) {
-      .image-wrapper,
-      .bonus-flex-wrapper {
-        flex-direction: column;
-        align-items: center;
-        padding-left: 0;
-        gap: 20px;
-      }
-      .bonus-flex-wrapper {
-        display: flex;
-        flex-direction: column;
-      }
-      .bonus-flex-wrapper > img {
-        order: -1;
-      }
-      .question-image,
-      .ronflex-bulle img,
-      .basket-bulle img {
-        width: 80%;
-        max-width: 300px;
-      }
-      .ronflex-bulle,
-      .basket-bulle {
-        width: auto;
-      }
-      .hint-image,
-      .bonus-wrapper {
-        position: relative;
-        width: 90%;
-        max-width: 320px;
-        margin: 20px auto;
-      }
-      .bonus-letters {
-        top: 38px;
-        left: 50%;
-        width: 100%;
-        transform: translateX(-50%);
-      }
-    }
+    @media (max-width: 768px) {
+  .image-wrapper,
+  .bonus-flex-wrapper {
+    flex-direction: column;
+    align-items: center;
+    padding-left: 0;
+    gap: 20px;
+  }
+  .question-image,
+  .ronflex-bulle img,
+  .basket-bulle img {
+    width: 80%;
+    max-width: 300px;
+  }
+  .ronflex-bulle,
+  .basket-bulle {
+    width: auto;
+  }
+  .hint-image,
+  .bonus-wrapper {
+    position: static;
+    width: 90%;
+    max-width: 320px;
+    margin: 20px auto;
+  }
+}
   </style>
 </head>
 <body>
