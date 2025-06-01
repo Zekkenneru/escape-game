@@ -12,22 +12,34 @@
     .container {
       position: relative;
       display: inline-block;
+      transform: scale(0.6); /* Réduction de l'image */
+      transform-origin: top left;
     }
     img {
       width: 1000px;
       height: auto;
+      display: block;
     }
     .button {
       position: absolute;
       width: 180px;
       height: 80px;
       cursor: pointer;
-      opacity: 0;
+      border: 3px solid transparent;
+    }
+    .button.selected {
+      border-color: limegreen;
     }
     #message {
       margin-top: 20px;
-      font-size: 20px;
+      font-size: 24px;
       font-weight: bold;
+    }
+    #validate {
+      margin-top: 30px;
+      padding: 10px 20px;
+      font-size: 18px;
+      cursor: pointer;
     }
   </style>
 </head>
@@ -60,6 +72,8 @@
     <div class="button" style="top: 460px; left: 270px;" data-type="dragon"></div>
     <div class="button" style="top: 460px; left: 530px;" data-type="fairy"></div>
   </div>
+
+  <button id="validate">Valider ma sélection</button>
   <div id="message"></div>
 
   <script>
@@ -71,25 +85,31 @@
         const type = btn.dataset.type;
         if (selected.has(type)) {
           selected.delete(type);
-          btn.style.outline = '';
+          btn.classList.remove('selected');
         } else {
           selected.add(type);
-          btn.style.outline = '2px solid red';
+          btn.classList.add('selected');
         }
-
-        if (selected.size === 3) {
-          const allCorrect = [...selected].every(t => correctTypes.includes(t));
-          if (allCorrect && [...selected].length === correctTypes.length) {
-            document.getElementById('message').textContent = '✅ Bonne réponse !';
-          } else {
-            document.getElementById('message').textContent = '❌ Mauvaise combinaison.';
-          }
-        } else {
-          document.getElementById('message').textContent = '';
-        }
+        document.getElementById('message').textContent = '';
       });
+    });
+
+    document.getElementById('validate').addEventListener('click', () => {
+      if (selected.size !== correctTypes.length) {
+        document.getElementById('message').textContent = '❌ Il faut choisir exactement 3 types.';
+        document.getElementById('message').style.color = 'orange';
+        return;
+      }
+
+      const allCorrect = [...selected].every(t => correctTypes.includes(t));
+      if (allCorrect) {
+        document.getElementById('message').textContent = '✅ Bonne réponse !';
+        document.getElementById('message').style.color = 'green';
+      } else {
+        document.getElementById('message').textContent = '❌ Mauvaise combinaison.';
+        document.getElementById('message').style.color = 'red';
+      }
     });
   </script>
 </body>
 </html>
-
