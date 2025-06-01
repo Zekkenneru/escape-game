@@ -6,7 +6,6 @@
   <title>Question 9 - Celtics</title>
   <link rel="stylesheet" href="../../global.css">
   <style>
-    /* Styles (inchangés, déjà présents) */
     body {
       background-color: #1a0d0f;
       color: white;
@@ -15,8 +14,16 @@
       margin: 0;
       overflow-x: hidden;
     }
-    .hint-image { position: absolute; top: 20px; left: 20px; width: 340px; z-index: 2; }
-    .hint-image img { width: 100%; }
+    .hint-image {
+      position: absolute;
+      top: 20px;
+      left: 20px;
+      width: 340px;
+      z-index: 2;
+    }
+    .hint-image img {
+      width: 100%;
+    }
     .hint-letters {
       position: absolute;
       top: 44px;
@@ -33,7 +40,10 @@
       color: #000;
       z-index: 3;
     }
-    .letter-slot { width: 1.2rem; text-align: center; }
+    .letter-slot {
+      width: 1.2rem;
+      text-align: center;
+    }
     .image-wrapper {
       display: flex;
       justify-content: center;
@@ -52,7 +62,9 @@
       align-items: center;
       width: 200px;
     }
-    .ronflex-bulle img { width: 240px; }
+    .ronflex-bulle img {
+      width: 240px;
+    }
     .bulle-texte {
       margin-top: 6px;
       background-color: #4b2b36;
@@ -103,7 +115,9 @@
       font-size: 1.8rem;
       color: #ffccff;
     }
-    .code-fragment, .next-button { margin-top: 20px; }
+    .code-fragment, .next-button {
+      margin-top: 20px;
+    }
     .next-button a {
       padding: 10px 20px;
       background-color: red;
@@ -114,28 +128,34 @@
       display: inline-block;
       margin: 5px;
     }
-    .bonus-section { margin-top: 30px; }
+    .bonus-section {
+      margin-top: 30px;
+    }
     .bonus-flex-wrapper {
       display: flex;
       justify-content: center;
       align-items: flex-start;
-      gap: 100px;
+      gap: 80px;
       margin-bottom: 20px;
     }
     .basket-bulle {
       display: flex;
       flex-direction: column;
       align-items: center;
-      width: 200px;
+      width: 240px;
     }
-    .basket-bulle img { width: 240px; }
+    .basket-bulle img {
+      width: 260px;
+    }
     .bonus-wrapper {
       position: absolute;
       top: 470px;
       left: 40px;
       width: 340px;
     }
-    .bonus-wrapper img { width: 100%; }
+    .bonus-wrapper img {
+      width: 100%;
+    }
     .bonus-letters {
       position: absolute;
       top: 38px;
@@ -180,29 +200,25 @@
     <img src="pancarte_tiplouf.png" alt="Mot de passe à reconstituer">
     <div class="hint-letters" id="hintLetters"></div>
   </div>
-
   <div class="image-wrapper" id="imageWrapper">
     <img class="question-image" src="celtics.png" alt="Logo mystère" id="questionImage">
-    <div class="ronflex-bulle" id="ronflexBulle">
-      <img src="prof.png" alt="Indice mathématique">
+    <div class="ronflex-bulle" id="profContainer">
+      <img src="prof.png" alt="Indice">
       <div class="bulle-texte">C'est mon sport préféré !</div>
     </div>
   </div>
-
   <div class="question-box" id="questionBox">
     <h2>🍀 À quelle équipe sportive appartient ce bout de logo ?</h2>
     <input id="reponseInput" class="input-text" type="text" placeholder="Ta réponse">
     <br>
     <button class="reponse-btn" onclick="verifierQuestionPrincipale()">Valider</button>
   </div>
-
   <div class="message" id="message"></div>
   <div class="code-fragment" id="code-fragment"></div>
-
   <div class="next-button" id="optionsButtons" style="display: none;">
+    <a href="../Question10/index.html">Passer à la question suivante</a>
     <a href="#" onclick="afficherBonus()" id="bonusButton">Faire la question bonus</a>
   </div>
-
   <div class="bonus-section" id="bonusSection" style="display: none;">
     <div class="bonus-flex-wrapper">
       <img src="jt.jpg" alt="Joueur mystère" class="question-image" style="width: 180px;">
@@ -218,14 +234,12 @@
       <button class="reponse-btn" onclick="verifierQuestionBonus()">Valider la bonus</button>
     </div>
   </div>
-
   <div class="message" id="bonusMessage"></div>
   <div class="bonus-wrapper" id="bonusReveal" style="display:none;">
     <img src="bonus.png">
     <div class="bonus-letters" id="bonusLettersDisplay"></div>
     <div class="bonus-grid" id="bonusLetters"></div>
   </div>
-
   <script>
     const indexLettreFixe = 2;
     const motDePasse = "JOYEUXANNIVERSAIRECHOU<3".split("");
@@ -264,8 +278,8 @@
       document.getElementById("bonusSection").style.display = "block";
       document.getElementById("questionBox").style.display = "none";
       document.getElementById("questionImage").style.display = "none";
-      document.getElementById("ronflexBulle").style.display = "none";
       document.getElementById("bonusButton").style.display = "none";
+      document.getElementById("profContainer").style.display = "none";
     }
 
     function verifierQuestionBonus() {
@@ -292,7 +306,6 @@
       lettresAffichees.fill("_");
       renderAffichage();
       bonusGrid.innerHTML = "";
-
       const lettresPossibles = motDePasseBonus.split("");
       const lettreAleatoire = lettresPossibles[Math.floor(Math.random() * lettresPossibles.length)];
       const btn = document.createElement("button");
@@ -307,7 +320,6 @@
       if (index === -1) return;
       lettresAffichees[index] = l;
       renderAffichage();
-
       if (!lettresAffichees.includes("_")) {
         const tentative = lettresAffichees.join("");
         if (tentative !== motDePasseBonus) {
