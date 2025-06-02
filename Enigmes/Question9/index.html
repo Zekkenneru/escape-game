@@ -6,7 +6,7 @@
   <title>Question 9 - Celtics</title>
   <link rel="stylesheet" href="../../global.css">
   <style>
-      body {
+    body {
       background-color: #1a0d0f;
       color: white;
       font-family: Arial, sans-serif;
@@ -15,8 +15,9 @@
       overflow-x: hidden;
     }
     .hint-image {
+      position: absolute;
       top: 20px;
-      left: auto;
+      left: 20px;
       width: 340px;
       z-index: 2;
     }
@@ -151,7 +152,7 @@
     }
     .bonus-wrapper {
       position: relative;
-      margin: 20px auto;
+      margin: 0 auto 20px;
       width: 340px;
     }
     .bonus-wrapper img {
@@ -202,6 +203,18 @@
         padding-left: 0;
         gap: 20px;
       }
+      .image-wrapper > .question-image {
+        order: -2;
+      }
+      .image-wrapper > .ronflex-bulle {
+        order: 2;
+      }
+      .bonus-flex-wrapper > img {
+        order: -2;
+      }
+      .basket-bulle {
+        order: 2;
+      }
       .question-image,
       .ronflex-bulle img,
       .basket-bulle img {
@@ -212,19 +225,12 @@
       .basket-bulle {
         width: auto;
       }
-      .hint-image {
-        position: relative;
-        width: 90%;
-        max-width: 320px;
-        margin: 20px auto;
-        top: 20px;
-        left: auto;
-      }
+      .hint-image,
       .bonus-wrapper {
         position: relative;
         width: 90%;
         max-width: 320px;
-        margin: 0 auto;
+        margin: 20px auto;
       }
       .bonus-letters {
         top: 30px;
@@ -232,7 +238,6 @@
         transform: translateX(-50%);
         font-size: 1rem;
         gap: 2px;
-        width: 100%;
       }
       .hint-letters {
         width: 79%;
