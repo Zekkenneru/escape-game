@@ -50,7 +50,7 @@
       align-items: flex-start;
       gap: 190px;
       margin-top: 40px;
-      padding-left: 400px
+      padding-left: 400px;
     }
     .question-image {
       width: 300px;
@@ -135,10 +135,11 @@
     .bonus-flex-wrapper {
       display: flex;
       justify-content: center;
-      align-items: flex-start;
-      gap: 300px;
+      align-items: center;
+      flex-direction: column;
+      gap: 20px;
       margin-bottom: 20px;
-      padding-left: 540px;
+      padding: 0;
     }
     .basket-bulle {
       display: flex;
@@ -150,9 +151,8 @@
       width: 260px;
     }
     .bonus-wrapper {
-      position: absolute;
-      top: 470px;
-      left: 40px;
+      position: relative;
+      margin: 0 auto 20px;
       width: 340px;
     }
     .bonus-wrapper img {
@@ -160,17 +160,17 @@
     }
     .bonus-letters {
       position: absolute;
-      top: 38px;
-      left: 75.5%;
+      top: 30px;
+      left: 75%;
       transform: translateX(-50%);
       display: flex;
       justify-content: center;
-      gap: 4px;
+      gap: 2px;
       font-family: monospace;
-      font-size: 1.4rem;
+      font-size: 1rem;
       font-weight: bold;
       color: #000;
-      width: 100px;
+      width: 100%;
       pointer-events: none;
     }
     .bonus-grid {
@@ -195,7 +195,7 @@
       width: 0.9rem;
       text-align: center;
     }
-    @media (max-width: 768px) {
+    @media (max-width: 1024px) {
       .image-wrapper,
       .bonus-flex-wrapper {
         flex-direction: column;
@@ -234,8 +234,7 @@
       }
       .bonus-letters {
         top: 30px;
-        left: 50%;
-        width: 100%;
+        left: 75%;
         transform: translateX(-50%);
         font-size: 1rem;
         gap: 2px;
@@ -243,7 +242,7 @@
       .hint-letters {
         width: 79%;
       }
-}
+    }
   </style>
 </head>
 <body>
