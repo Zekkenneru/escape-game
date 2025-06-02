@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Question 8 - Pokémon</title>
+  <title>Question 9 - Celtics</title>
   <link rel="stylesheet" href="../../global.css">
   <style>
     body {
@@ -14,7 +14,6 @@
       margin: 0;
       overflow-x: hidden;
     }
-
     .hint-image {
       position: absolute;
       top: 20px;
@@ -22,11 +21,9 @@
       width: 340px;
       z-index: 2;
     }
-
     .hint-image img {
       width: 100%;
     }
-
     .hint-letters {
       position: absolute;
       top: 44px;
@@ -43,54 +40,67 @@
       color: #000;
       z-index: 3;
     }
-
     .letter-slot {
       width: 1.2rem;
       text-align: center;
     }
-
-    .question-image {
-      width: 450px;
+    .image-wrapper {
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+      gap: 190px;
       margin-top: 40px;
+      padding-left: 400px
+    }
+    .question-image {
+      width: 300px;
       border: 6px solid white;
       border-radius: 6px;
     }
-
+    .ronflex-bulle {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      width: 200px;
+    }
+    .ronflex-bulle img {
+      width: 240px;
+    }
+    .bulle-texte {
+      margin-top: 6px;
+      background-color: #4b2b36;
+      border-radius: 12px;
+      padding: 8px 10px;
+      font-size: 0.85rem;
+      color: #ffcccc;
+      position: relative;
+    }
+    .bulle-texte::before {
+      content: '';
+      position: absolute;
+      bottom: -10px;
+      left: 30px;
+      width: 0;
+      height: 0;
+      border: 10px solid transparent;
+      border-top-color: #4b2b36;
+    }
     .question-box {
       max-width: 480px;
-      margin: 20px auto 0;
+      margin: 20px auto;
       background-color: #2e1214;
       padding: 20px;
       border: 1px solid #8a2be2;
       border-radius: 16px;
       position: relative;
     }
-
-    .types-container {
-      display: flex;
-      flex-wrap: wrap;
-      justify-content: center;
-      gap: 10px;
+    .input-text {
+      padding: 10px;
+      width: 100%;
+      max-width: 320px;
+      font-size: 1rem;
       margin-top: 20px;
-      max-width: 600px;
-      margin-left: auto;
-      margin-right: auto;
     }
-
-    .type-button {
-      padding: 8px 12px;
-      background-color: #444;
-      border: 1px solid white;
-      border-radius: 12px;
-      color: white;
-      cursor: pointer;
-      font-weight: bold;
-    }
-
-    .type-button.selected {
-      background-color: #8a2be2;
-    }
-
     .reponse-btn {
       padding: 10px 16px;
       background-color: purple;
@@ -99,33 +109,16 @@
       color: white;
       font-weight: bold;
       cursor: pointer;
-      margin-top: 20px;
+      margin: 10px;
     }
-
-    .reward-image {
-      width: 450px;
-      margin: 20px;
-      border: 6px solid white;
-      border-radius: 6px;
-    }
-
-    .reward-container {
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
-    }
-
     .message {
       margin-top: 30px;
       font-size: 1.8rem;
       color: #ffccff;
     }
-
-    .next-button {
+    .code-fragment, .next-button {
       margin-top: 20px;
     }
-
     .next-button a {
       padding: 10px 20px;
       background-color: red;
@@ -134,7 +127,100 @@
       border-radius: 8px;
       font-weight: bold;
       display: inline-block;
+      margin: 5px;
     }
+    .bonus-section {
+      margin-top: 30px;
+    }
+    .bonus-flex-wrapper {
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+      gap: 300px;
+      margin-bottom: 20px;
+      padding-left: 540px;
+    }
+    .basket-bulle {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      width: 240px;
+    }
+    .basket-bulle img {
+      width: 260px;
+    }
+    .bonus-wrapper {
+      position: absolute;
+      top: 470px;
+      left: 40px;
+      width: 340px;
+    }
+    .bonus-wrapper img {
+      width: 100%;
+    }
+    .bonus-letters {
+      position: absolute;
+      top: 38px;
+      left: 75.5%;
+      transform: translateX(-50%);
+      display: flex;
+      justify-content: center;
+      gap: 4px;
+      font-family: monospace;
+      font-size: 1.4rem;
+      font-weight: bold;
+      color: #000;
+      width: 100px;
+      pointer-events: none;
+    }
+    .bonus-grid {
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      margin-top: 12px;
+    }
+    .letter-button {
+      width: 40px;
+      height: 40px;
+      margin: 5px;
+      font-size: 1.2rem;
+      font-weight: bold;
+      border-radius: 8px;
+      border: 2px solid #fff;
+      background-color: #2e1214;
+      color: #fff;
+      cursor: pointer;
+    }
+    .bonus-slot {
+      width: 0.9rem;
+      text-align: center;
+    }
+    @media (max-width: 768px) {
+  .image-wrapper,
+  .bonus-flex-wrapper {
+    flex-direction: column;
+    align-items: center;
+    padding-left: 0;
+    gap: 20px;
+  }
+  .question-image,
+  .ronflex-bulle img,
+  .basket-bulle img {
+    width: 80%;
+    max-width: 300px;
+  }
+  .ronflex-bulle,
+  .basket-bulle {
+    width: auto;
+  }
+  .hint-image,
+  .bonus-wrapper {
+    position: static;
+    width: 90%;
+    max-width: 320px;
+    margin: 20px auto;
+  }
+}
   </style>
 </head>
 <body>
@@ -142,32 +228,51 @@
     <img src="pancarte_tiplouf.png" alt="Mot de passe à reconstituer">
     <div class="hint-letters" id="hintLetters"></div>
   </div>
-
-  <img src="pingoleon.png" alt="Pingoléon" class="question-image" id="pingoleonImage">
-
+  <div class="image-wrapper" id="imageWrapper">
+    <img class="question-image" src="celtics.png" alt="Logo mystère" id="questionImage">
+    <div class="ronflex-bulle" id="profContainer">
+      <img src="prof.png" alt="Indice">
+      <div class="bulle-texte">C'est mon sport préféré !</div>
+    </div>
+  </div>
   <div class="question-box" id="questionBox">
-    <h2> Oh non ! Le dresseur légendaire Angelo envoie son Pingoléon... cible toutes ses faiblesses pour le vaincre !</h2>
+    <h2>🍀 À quelle équipe sportive appartient ce bout de logo ?</h2>
+    <input id="reponseInput" class="input-text" type="text" placeholder="Ta réponse">
+    <br>
+    <button class="reponse-btn" onclick="verifierQuestionPrincipale()">Valider</button>
   </div>
-
-  <div class="types-container" id="typesContainer"></div>
-  <button class="reponse-btn" onclick="verifierReponsePokemon()">Confirmer</button>
-
-  <div class="reward-container" id="rewardSection" style="display: none;">
-    <img src="dresseur.png" class="reward-image">
-    <p style="color: #ffccff; font-size: 1.5rem; margin-top: 20px;">Félicitations à toi, jeune dresseuse Sarah !</p>
-  </div>
-
   <div class="message" id="message"></div>
   <div class="code-fragment" id="code-fragment"></div>
-  <div class="next-button" id="next"></div>
-
+  <div class="next-button" id="optionsButtons" style="display: none;">
+    <a href="../Question10/index.html">Passer à la question suivante</a>
+    <a href="#" onclick="afficherBonus()" id="bonusButton">Faire la question bonus</a>
+  </div>
+  <div class="bonus-section" id="bonusSection" style="display: none;">
+    <div class="bonus-flex-wrapper">
+      <img src="jt.jpg" alt="Joueur mystère" class="question-image" style="width: 180px;">
+      <div class="basket-bulle">
+        <img src="basket.png" alt="Indice">
+        <div class="bulle-texte">je suis suffisant comme indice ahah</div>
+      </div>
+    </div>
+    <div class="question-box">
+      <h2>🏀 À quel joueur appartient ce logo ?</h2>
+      <input id="bonusInput" class="input-text" type="text" placeholder="Ta réponse">
+      <br>
+      <button class="reponse-btn" onclick="verifierQuestionBonus()">Valider la bonus</button>
+    </div>
+  </div>
+  <div class="message" id="bonusMessage"></div>
+  <div class="bonus-wrapper" id="bonusReveal" style="display:none;">
+    <img src="bonus.png">
+    <div class="bonus-letters" id="bonusLettersDisplay"></div>
+    <div class="bonus-grid" id="bonusLetters"></div>
+  </div>
   <script>
+    const indexLettreFixe = 2;
     const motDePasse = "JOYEUXANNIVERSAIRECHOU<3".split("");
     const lettresRevelees = JSON.parse(localStorage.getItem("lettresRevelees") || "[]");
     while (lettresRevelees.length < motDePasse.length) lettresRevelees.push("_");
-
-    const indexCleQuestion8 = "q8_revelee";
-    const dejaRevelee = localStorage.getItem(indexCleQuestion8);
 
     const hintLettersDiv = document.getElementById("hintLetters");
     function initialiserAffichage() {
@@ -182,56 +287,76 @@
     }
     initialiserAffichage();
 
-    const types = [
-      "Acier", "Combat", "Dragon", "Eau", "Électrik", "Fée", "Feu", "Glace", "Insecte",
-      "Normal", "Plante", "Poison", "Psy", "Roche", "Sol", "Spectre", "Ténèbres", "Vol"
-    ];
-
-    const bonnesReponses = ["Combat", "Sol", "Électrik"];
-
-    const typesContainer = document.getElementById("typesContainer");
-    const selectedTypes = new Set();
-
-    types.forEach(type => {
-      const btn = document.createElement("button");
-      btn.className = "type-button";
-      btn.textContent = type;
-      btn.onclick = () => {
-        if (selectedTypes.has(type)) {
-          selectedTypes.delete(type);
-          btn.classList.remove("selected");
-        } else {
-          selectedTypes.add(type);
-          btn.classList.add("selected");
-        }
-      };
-      typesContainer.appendChild(btn);
-    });
-
-    function verifierReponsePokemon() {
-      if (!dejaRevelee && bonnesReponses.every(t => selectedTypes.has(t)) && selectedTypes.size === 3) {
-        let indexRandom = Math.floor(Math.random() * motDePasse.length);
-        while (lettresRevelees[indexRandom] !== "_") {
-          indexRandom = Math.floor(Math.random() * motDePasse.length);
-        }
-        const lettre = motDePasse[indexRandom];
-        lettresRevelees[indexRandom] = lettre;
+    function verifierQuestionPrincipale() {
+      const val = document.getElementById("reponseInput").value.toLowerCase();
+      if (val.includes("celtics") || val.includes("boston")) {
+        const lettre = motDePasse[indexLettreFixe];
+        lettresRevelees[indexLettreFixe] = lettre;
         localStorage.setItem("lettresRevelees", JSON.stringify(lettresRevelees));
-        localStorage.setItem(indexCleQuestion8, indexRandom);
-        document.getElementById(`lettre-${indexRandom}`).textContent = lettre;
-
-        document.getElementById("questionBox").style.display = "none";
-        document.getElementById("pingoleonImage").style.display = "none";
-        document.getElementById("typesContainer").style.display = "none";
-        document.querySelector(".reponse-btn").style.display = "none";
-        document.getElementById("rewardSection").style.display = "flex";
-        document.getElementById("message").innerHTML = "";
-        document.getElementById("code-fragment").innerHTML = `Lettre révélée : <code>${lettre}</code>`;
-        document.getElementById("next").innerHTML = "<a href='../Question9/index.html'>Passer à la question suivante</a>";
-      } else if (dejaRevelee) {
-        document.getElementById("message").innerHTML = "Tu as déjà validé cette question.";
+        document.getElementById(`lettre-${indexLettreFixe}`).textContent = lettre;
+        document.getElementById("message").innerHTML = "Bravo !";
+        document.getElementById("code-fragment").innerHTML = `Voici ta partie de code : <code>${lettre}</code>`;
+        document.getElementById("optionsButtons").style.display = "block";
       } else {
-        document.getElementById("message").innerHTML = "Ce n'est pas très efficace...";
+        document.getElementById("message").innerHTML = "Mauvaise réponse.";
+      }
+    }
+
+    function afficherBonus() {
+      document.getElementById("bonusSection").style.display = "block";
+      document.getElementById("questionBox").style.display = "none";
+      document.getElementById("questionImage").style.display = "none";
+      document.getElementById("bonusButton").style.display = "none";
+      document.getElementById("profContainer").style.display = "none";
+    }
+
+    function verifierQuestionBonus() {
+      const val = document.getElementById("bonusInput").value.toLowerCase();
+      if (val.includes("tatum")) {
+        document.getElementById("bonusMessage").innerHTML = "C'était bien Jayson Tatum !";
+        afficherMotDePasseBonus();
+      } else {
+        document.getElementById("bonusMessage").innerHTML = "Non, essaie encore !";
+      }
+    }
+
+    const motDePasseBonus = "TIPLOUF";
+    const lettresAffichees = Array(motDePasseBonus.length).fill("_");
+    const bonusDisplay = document.getElementById("bonusLettersDisplay");
+    const bonusGrid = document.getElementById("bonusLetters");
+
+    function renderAffichage() {
+      bonusDisplay.innerHTML = lettresAffichees.map(l => `<span class="bonus-slot">${l}</span>`).join("");
+    }
+
+    function afficherMotDePasseBonus() {
+      document.getElementById("bonusReveal").style.display = "block";
+      lettresAffichees.fill("_");
+      renderAffichage();
+      bonusGrid.innerHTML = "";
+      const lettresPossibles = motDePasseBonus.split("");
+      const lettreAleatoire = lettresPossibles[Math.floor(Math.random() * lettresPossibles.length)];
+      const btn = document.createElement("button");
+      btn.className = "letter-button";
+      btn.textContent = lettreAleatoire;
+      btn.onclick = () => ajouterLettre(lettreAleatoire);
+      bonusGrid.appendChild(btn);
+    }
+
+    function ajouterLettre(l) {
+      const index = lettresAffichees.indexOf("_");
+      if (index === -1) return;
+      lettresAffichees[index] = l;
+      renderAffichage();
+      if (!lettresAffichees.includes("_")) {
+        const tentative = lettresAffichees.join("");
+        if (tentative !== motDePasseBonus) {
+          alert("Raté ! Essaie encore.");
+          lettresAffichees.fill("_");
+          renderAffichage();
+        } else {
+          alert("Mot de passe bonus réussi !");
+        }
       }
     }
   </script>
