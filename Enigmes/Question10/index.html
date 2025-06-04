@@ -1,1 +1,210 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Question 10 - Tempérance</title>
+  <link rel="stylesheet" href="../../global.css">
+  <style>
+    body {
+      background-color: #1a0d0f;
+      color: white;
+      font-family: Arial, sans-serif;
+      text-align: center;
+      margin: 0;
+      overflow-x: hidden;
+    }
+
+    .hint-image {
+      position: absolute;
+      top: 20px;
+      left: 20px;
+      width: 340px;
+      z-index: 2;
+    }
+    .hint-image img {
+      width: 100%;
+    }
+
+    .hint-letters {
+      position: absolute;
+      top: 50px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 79%;
+      display: grid;
+      grid-template-columns: repeat(12, 1fr);
+      row-gap: 6px;
+      justify-items: center;
+      font-family: monospace;
+      font-size: 1.4rem;
+      font-weight: bold;
+      color: #000;
+      z-index: 3;
+    }
+
+    .letter-slot {
+      width: 1.2rem;
+      text-align: center;
+    }
+
+    .image-wrapper {
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+      gap: 60px;
+      margin-top: 20px;
+    }
+
+    .question-image {
+      width: 280px;
+      border: 6px solid white;
+      border-radius: 6px;
+    }
+
+    .question-box {
+      max-width: 480px;
+      margin: 10px auto;
+      background-color: #2e1214;
+      padding: 14px;
+      border: 1px solid #8a2be2;
+      border-radius: 16px;
+    }
+
+    .input-text {
+      padding: 10px;
+      width: 100%;
+      max-width: 320px;
+      font-size: 1rem;
+      margin-top: 20px;
+    }
+
+    .reponse-btn {
+      padding: 10px 16px;
+      background-color: purple;
+      border: none;
+      border-radius: 24px;
+      color: white;
+      font-weight: bold;
+      cursor: pointer;
+      margin: 10px;
+    }
+
+    .message {
+      margin-top: 15px;
+      font-size: 1.6rem;
+      color: #ffccff;
+    }
+
+    .code-fragment,
+    .next-button {
+      margin-top: 12px;
+    }
+
+    .next-button a {
+      padding: 10px 20px;
+      background-color: red;
+      color: white;
+      text-decoration: none;
+      border-radius: 8px;
+      font-weight: bold;
+      display: inline-block;
+      margin: 5px;
+    }
+
+    @media (max-width: 768px) {
+      .image-wrapper {
+        flex-direction: column;
+        align-items: center;
+        gap: 20px;
+        padding-left: 0;
+      }
+      .question-image {
+        width: 80%;
+        max-width: 300px;
+      }
+      .hint-image {
+        position: static;
+        width: 90%;
+        max-width: 320px;
+        margin: 20px auto;
+      }
+      .hint-letters {
+        width: 79%;
+        top: 50px;
+      }
+      .reponse-btn {
+        padding: 10px 12px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="hint-image">
+    <img src="pancarte_tiplouf.png" alt="Mot de passe à reconstituer">
+    <div class="hint-letters" id="hintLetters"></div>
+  </div>
+
+  <div class="image-wrapper">
+    <img class="question-image" src="temperance.jpg" alt="Carte Tempérance">
+  </div>
+
+  <div class="question-box">
+    <h2>🃏 Quelle arcana est représentée sur cette carte ?</h2>
+    <input id="reponseInput" class="input-text" type="text" placeholder="Ta réponse">
+    <br>
+    <button class="reponse-btn" onclick="verifierQuestion()">Valider</button>
+  </div>
+
+  <div class="message" id="message"></div>
+  <div class="code-fragment" id="code-fragment"></div>
+  <div class="next-button" id="optionsButtons" style="display: none;">
+    <a href="../Question11/index.html">Passer à la question suivante</a>
+  </div>
+
+  <script>
+    const indexLettreFixe = 3;
+    const motDePasse = "JOYEUXANNIVERSAIRECHOU<3".split("");
+    const lettresRevelees = JSON.parse(localStorage.getItem("lettresRevelees") || "[]");
+    while (lettresRevelees.length < motDePasse.length) lettresRevelees.push("_");
+
+    const hintLettersDiv = document.getElementById("hintLetters");
+
+    function initialiserAffichage() {
+      hintLettersDiv.innerHTML = "";
+      lettresRevelees.forEach((lettre, i) => {
+        const span = document.createElement("span");
+        span.className = "letter-slot";
+        span.id = `lettre-${i}`;
+        span.textContent = lettre;
+        hintLettersDiv.appendChild(span);
+      });
+    }
+
+    initialiserAffichage();
+
+    function verifierQuestion() {
+      const val = document.getElementById("reponseInput").value
+        .toLowerCase()
+        .normalize("NFD")
+        .replace(/[\u0300-\u036f]/g, "");
+
+      if (
+        val.includes("temperance") ||
+        val.includes("la carte de la temperance")
+      ) {
+        const lettre = motDePasse[indexLettreFixe];
+        lettresRevelees[indexLettreFixe] = lettre;
+        localStorage.setItem("lettresRevelees", JSON.stringify(lettresRevelees));
+        document.getElementById(`lettre-${indexLettreFixe}`).textContent = lettre;
+        document.getElementById("message").innerHTML = "Bravo !";
+        document.getElementById("code-fragment").innerHTML = `Voici ta partie de code : <code>${lettre}</code>`;
+        document.getElementById("optionsButtons").style.display = "block";
+      } else {
+        document.getElementById("message").innerHTML = "Mauvaise réponse.";
+      }
+    }
+  </script>
+</body>
+</html>
 
