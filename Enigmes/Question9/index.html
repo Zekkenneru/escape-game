@@ -294,7 +294,6 @@
     <div class="bonus-grid" id="bonusLetters"></div>
   </div>
   <script>
-
     const motDePasse = "JOYEUXANNIVERSAIRECHOU<3".split("");
     const lettresRevelees = JSON.parse(localStorage.getItem("lettresRevelees") || "[]");
 
@@ -303,6 +302,7 @@
     }
 
     const hintLettersDiv = document.getElementById("hintLetters");
+    let lettreDejaReveleeDansSession = sessionStorage.getItem("reveleAujourdHui");
 
     function initialiserAffichage() {
       hintLettersDiv.innerHTML = "";
@@ -330,11 +330,17 @@
         .replace(/[\u0300-\u036f]/g, "");
 
       if (val.includes("celtics") || val.includes("boston")) {
+        if (lettreDejaReveleeDansSession === "1") {
+          document.getElementById("message").innerHTML = "Tu as déjà révélé une lettre pour cette question.";
+          return;
+        }
+
         const indexLettreFixe = choisirIndexAleatoire();
         if (indexLettreFixe !== null) {
           const lettre = motDePasse[indexLettreFixe];
           lettresRevelees[indexLettreFixe] = lettre;
           localStorage.setItem("lettresRevelees", JSON.stringify(lettresRevelees));
+          sessionStorage.setItem("reveleAujourdHui", "1");
           document.getElementById(`lettre-${indexLettreFixe}`).textContent = lettre;
           document.getElementById("message").innerHTML = "Bravo !";
           document.getElementById("code-fragment").innerHTML = `Voici ta partie de code : <code>${lettre}</code>`;
