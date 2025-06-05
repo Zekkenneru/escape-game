@@ -293,118 +293,119 @@
     <div class="bonus-letters" id="bonusLettersDisplay"></div>
     <div class="bonus-grid" id="bonusLetters"></div>
   </div>
-<script>
-  const motDePasse = "JOYEUXANNIVERSAIRECHOU<3".split("");
-  const lettresRevelees = JSON.parse(localStorage.getItem("lettresRevelees") || "[]");
+  <script>
 
-  while (lettresRevelees.length < motDePasse.length) {
-    lettresRevelees.push("_");
-  }
+    const motDePasse = "JOYEUXANNIVERSAIRECHOU<3".split("");
+    const lettresRevelees = JSON.parse(localStorage.getItem("lettresRevelees") || "[]");
 
-  const hintLettersDiv = document.getElementById("hintLetters");
-
-  function initialiserAffichage() {
-    hintLettersDiv.innerHTML = "";
-    lettresRevelees.forEach((lettre, i) => {
-      const span = document.createElement("span");
-      span.className = "letter-slot";
-      span.id = `lettre-${i}`;
-      span.textContent = lettre;
-      hintLettersDiv.appendChild(span);
-    });
-  }
-
-  initialiserAffichage();
-
-  function choisirIndexAleatoire() {
-    const indicesDisponibles = lettresRevelees
-      .map((val, idx) => (val === "_" ? idx : null))
-      .filter(idx => idx !== null);
-    if (indicesDisponibles.length === 0) return null;
-    return indicesDisponibles[Math.floor(Math.random() * indicesDisponibles.length)];
-  }
-
-  function verifierQuestionPrincipale() {
-    const val = document.getElementById("reponseInput").value
-      .toLowerCase()
-      .normalize("NFD")
-      .replace(/[\u0300-\u036f]/g, "");
-
-    if (val.includes("celtics") || val.includes("boston")) {
-      const indexLettreFixe = choisirIndexAleatoire();
-      if (indexLettreFixe !== null) {
-        const lettre = motDePasse[indexLettreFixe];
-        lettresRevelees[indexLettreFixe] = lettre;
-        localStorage.setItem("lettresRevelees", JSON.stringify(lettresRevelees));
-        document.getElementById(`lettre-${indexLettreFixe}`).textContent = lettre;
-        document.getElementById("message").innerHTML = "Bravo !";
-        document.getElementById("code-fragment").innerHTML = `Voici ta partie de code : <code>${lettre}</code>`;
-        document.getElementById("optionsButtons").style.display = "block";
-      } else {
-        document.getElementById("message").innerHTML = "Toutes les lettres ont déjà été révélées !";
-      }
-    } else {
-      document.getElementById("message").innerHTML = "Mauvaise réponse.";
+    while (lettresRevelees.length < motDePasse.length) {
+      lettresRevelees.push("_");
     }
-  }
 
-  function afficherBonus() {
-    document.getElementById("bonusSection").style.display = "block";
-    document.getElementById("questionBox").style.display = "none";
-    document.getElementById("questionImage").style.display = "none";
-    document.getElementById("bonusButton").style.display = "none";
-    document.getElementById("profContainer").style.display = "none";
-  }
+    const hintLettersDiv = document.getElementById("hintLetters");
 
-  function verifierQuestionBonus() {
-    const val = document.getElementById("bonusInput").value.toLowerCase();
-    if (val.includes("tatum")) {
-      document.getElementById("bonusMessage").innerHTML = "C'était bien Jayson Tatum !";
-      afficherMotDePasseBonus();
-    } else {
-      document.getElementById("bonusMessage").innerHTML = "Non, essaie encore !";
+    function initialiserAffichage() {
+      hintLettersDiv.innerHTML = "";
+      lettresRevelees.forEach((lettre, i) => {
+        const span = document.createElement("span");
+        span.className = "letter-slot";
+        span.id = `lettre-${i}`;
+        span.textContent = lettre;
+        hintLettersDiv.appendChild(span);
+      });
     }
-  }
 
-  const motDePasseBonus = "TIPLOUF";
-  const lettresAffichees = Array(motDePasseBonus.length).fill("_");
-  const bonusDisplay = document.getElementById("bonusLettersDisplay");
-  const bonusGrid = document.getElementById("bonusLetters");
+    function choisirIndexAleatoire() {
+      const indicesDisponibles = lettresRevelees
+        .map((val, idx) => (val === "_" ? idx : null))
+        .filter(idx => idx !== null);
+      if (indicesDisponibles.length === 0) return null;
+      return indicesDisponibles[Math.floor(Math.random() * indicesDisponibles.length)];
+    }
 
-  function renderAffichage() {
-    bonusDisplay.innerHTML = lettresAffichees.map(l => `<span class="bonus-slot">${l}</span>`).join("");
-  }
+    function verifierQuestionPrincipale() {
+      const val = document.getElementById("reponseInput").value
+        .toLowerCase()
+        .normalize("NFD")
+        .replace(/[\u0300-\u036f]/g, "");
 
-  function afficherMotDePasseBonus() {
-    document.getElementById("bonusReveal").style.display = "block";
-    lettresAffichees.fill("_");
-    renderAffichage();
-    bonusGrid.innerHTML = "";
-    const lettresPossibles = motDePasseBonus.split("");
-    const lettreAleatoire = lettresPossibles[Math.floor(Math.random() * lettresPossibles.length)];
-    const btn = document.createElement("button");
-    btn.className = "letter-button";
-    btn.textContent = lettreAleatoire;
-    btn.onclick = () => ajouterLettre(lettreAleatoire);
-    bonusGrid.appendChild(btn);
-  }
-
-  function ajouterLettre(l) {
-    const index = lettresAffichees.indexOf("_");
-    if (index === -1) return;
-    lettresAffichees[index] = l;
-    renderAffichage();
-    if (!lettresAffichees.includes("_")) {
-      const tentative = lettresAffichees.join("");
-      if (tentative !== motDePasseBonus) {
-        alert("Raté ! Essaie encore.");
-        lettresAffichees.fill("_");
-        renderAffichage();
+      if (val.includes("celtics") || val.includes("boston")) {
+        const indexLettreFixe = choisirIndexAleatoire();
+        if (indexLettreFixe !== null) {
+          const lettre = motDePasse[indexLettreFixe];
+          lettresRevelees[indexLettreFixe] = lettre;
+          localStorage.setItem("lettresRevelees", JSON.stringify(lettresRevelees));
+          document.getElementById(`lettre-${indexLettreFixe}`).textContent = lettre;
+          document.getElementById("message").innerHTML = "Bravo !";
+          document.getElementById("code-fragment").innerHTML = `Voici ta partie de code : <code>${lettre}</code>`;
+          document.getElementById("optionsButtons").style.display = "block";
+        } else {
+          document.getElementById("message").innerHTML = "Toutes les lettres ont déjà été révélées !";
+        }
       } else {
-        alert("Mot de passe bonus réussi !");
+        document.getElementById("message").innerHTML = "Mauvaise réponse.";
       }
     }
-  }
-</script>
+
+    function afficherBonus() {
+      document.getElementById("bonusSection").style.display = "block";
+      document.getElementById("questionBox").style.display = "none";
+      document.getElementById("questionImage").style.display = "none";
+      document.getElementById("bonusButton").style.display = "none";
+      document.getElementById("profContainer").style.display = "none";
+    }
+
+    function verifierQuestionBonus() {
+      const val = document.getElementById("bonusInput").value.toLowerCase();
+      if (val.includes("tatum")) {
+        document.getElementById("bonusMessage").innerHTML = "C'était bien Jayson Tatum !";
+        afficherMotDePasseBonus();
+      } else {
+        document.getElementById("bonusMessage").innerHTML = "Non, essaie encore !";
+      }
+    }
+
+    const motDePasseBonus = "TIPLOUF";
+    const lettresAffichees = Array(motDePasseBonus.length).fill("_");
+    const bonusDisplay = document.getElementById("bonusLettersDisplay");
+    const bonusGrid = document.getElementById("bonusLetters");
+
+    function renderAffichage() {
+      bonusDisplay.innerHTML = lettresAffichees.map(l => `<span class="bonus-slot">${l}</span>`).join("");
+    }
+
+    function afficherMotDePasseBonus() {
+      document.getElementById("bonusReveal").style.display = "block";
+      lettresAffichees.fill("_");
+      renderAffichage();
+      bonusGrid.innerHTML = "";
+      const lettresPossibles = motDePasseBonus.split("");
+      const lettreAleatoire = lettresPossibles[Math.floor(Math.random() * lettresPossibles.length)];
+      const btn = document.createElement("button");
+      btn.className = "letter-button";
+      btn.textContent = lettreAleatoire;
+      btn.onclick = () => ajouterLettre(lettreAleatoire);
+      bonusGrid.appendChild(btn);
+    }
+
+    function ajouterLettre(l) {
+      const index = lettresAffichees.indexOf("_");
+      if (index === -1) return;
+      lettresAffichees[index] = l;
+      renderAffichage();
+      if (!lettresAffichees.includes("_")) {
+        const tentative = lettresAffichees.join("");
+        if (tentative !== motDePasseBonus) {
+          alert("Raté ! Essaie encore.");
+          lettresAffichees.fill("_");
+          renderAffichage();
+        } else {
+          alert("Mot de passe bonus réussi !");
+        }
+      }
+    }
+
+    initialiserAffichage();
+  </script>
 </body>
 </html>
