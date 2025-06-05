@@ -361,15 +361,8 @@
       document.getElementById("profContainer").style.display = "none";
     }
 
-    function verifierQuestionBonus() {
-      const val = document.getElementById("bonusInput").value.toLowerCase();
-      if (val.includes("tatum")) {
-        document.getElementById("bonusMessage").innerHTML = "C'était bien Jayson Tatum !";
-        afficherMotDePasseBonus();
-      } else {
-        document.getElementById("bonusMessage").innerHTML = "Non, essaie encore !";
-      }
-    }
+    const dejaFaitBonusKey = "reveleeBonusQ9";
+    let bonusDejaAffiche = localStorage.getItem(dejaFaitBonusKey) === "1";
 
     const motDePasseBonus = "TIPLOUF";
     const lettresAffichees = Array(motDePasseBonus.length).fill("_");
@@ -378,6 +371,20 @@
 
     function renderAffichage() {
       bonusDisplay.innerHTML = lettresAffichees.map(l => `<span class="bonus-slot">${l}</span>`).join("");
+    }
+
+    function verifierQuestionBonus() {
+      const val = document.getElementById("bonusInput").value.toLowerCase();
+      if (val.includes("tatum")) {
+        document.getElementById("bonusMessage").innerHTML = "C'était bien Jayson Tatum !";
+        if (!bonusDejaAffiche) {
+          afficherMotDePasseBonus();
+          bonusDejaAffiche = true;
+          localStorage.setItem(dejaFaitBonusKey, "1");
+        }
+      } else {
+        document.getElementById("bonusMessage").innerHTML = "Non, essaie encore !";
+      }
     }
 
     function afficherMotDePasseBonus() {
@@ -390,25 +397,10 @@
       const btn = document.createElement("button");
       btn.className = "letter-button";
       btn.textContent = lettreAleatoire;
-      btn.onclick = () => ajouterLettre(lettreAleatoire);
-      bonusGrid.appendChild(btn);
-    }
-
-    function ajouterLettre(l) {
-      const index = lettresAffichees.indexOf("_");
-      if (index === -1) return;
-      lettresAffichees[index] = l;
+      btn.onclick = null;
+      lettresAffichees[0] = lettreAleatoire;
       renderAffichage();
-      if (!lettresAffichees.includes("_")) {
-        const tentative = lettresAffichees.join("");
-        if (tentative !== motDePasseBonus) {
-          alert("Raté ! Essaie encore.");
-          lettresAffichees.fill("_");
-          renderAffichage();
-        } else {
-          alert("Mot de passe bonus réussi !");
-        }
-      }
+      bonusGrid.appendChild(btn);
     }
 
     initialiserAffichage();
