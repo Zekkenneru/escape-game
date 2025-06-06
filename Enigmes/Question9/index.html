@@ -294,15 +294,17 @@
     <div class="bonus-grid" id="bonusLetters"></div>
   </div>
   <script>
-    const motDePasse = "JOYEUXANNIVERSAIRECHOU<3".split("");
-    const lettresRevelees = JSON.parse(localStorage.getItem("lettresRevelees") || "[]");
+const motDePasse = "JOYEUXANNIVERSAIRECHOU<3".split("");
+    const motDePasseBonus = "TIPLOUF";
+    const lettresRevelees = JSON.parse(localStorage.getItem("lettresRevelees") || JSON.stringify(Array(motDePasse.length).fill("_")));
     const dejaReveleeKey = "reveleeQ9";
-
-    while (lettresRevelees.length < motDePasse.length) {
-      lettresRevelees.push("_");
-    }
-
+    const lettresBonusKey = "lettresBonusQ9";
+    const dejaBonusKey = "reveleeBonusQ9";
     const hintLettersDiv = document.getElementById("hintLetters");
+    const bonusDisplay = document.getElementById("bonusLettersDisplay");
+    const bonusGrid = document.getElementById("bonusLetters");
+    let lettresBonus = JSON.parse(localStorage.getItem(lettresBonusKey) || JSON.stringify(Array(motDePasseBonus.length).fill("_")));
+    let bonusDejaFait = localStorage.getItem(dejaBonusKey) === "1";
 
     function initialiserAffichage() {
       hintLettersDiv.innerHTML = "";
@@ -315,104 +317,56 @@
       });
     }
 
-    function choisirIndexAleatoire() {
-      const indicesDisponibles = lettresRevelees
-        .map((val, idx) => (val === "_" ? idx : null))
-        .filter(idx => idx !== null);
-      if (indicesDisponibles.length === 0) return null;
-      return indicesDisponibles[Math.floor(Math.random() * indicesDisponibles.length)];
+    function renderAffichageBonus() {
+      bonusDisplay.innerHTML = lettresBonus.map((l, i) => `<span class="bonus-slot" id="bonus-slot-${i}">${l}</span>`).join("");
+    }
+
+    function choisirIndexAleatoire(liste) {
+      const indices = liste.map((l, i) => l === "_" ? i : null).filter(i => i !== null);
+      if (indices.length === 0) return null;
+      return indices[Math.floor(Math.random() * indices.length)];
     }
 
     function verifierQuestionPrincipale() {
-      const val = document.getElementById("reponseInput").value
-        .toLowerCase()
-        .normalize("NFD")
-        .replace(/[\u0300-\u036f]/g, "");
-
-      if (val.includes("celtics") || val.includes("boston")) {
-        if (localStorage.getItem(dejaReveleeKey) === "1") {
-          document.getElementById("message").innerHTML = "Tu as déjà révélé une lettre pour cette question.";
-          return;
-        }
-
-        const indexLettreFixe = choisirIndexAleatoire();
-        if (indexLettreFixe !== null) {
-          const lettre = motDePasse[indexLettreFixe];
-          lettresRevelees[indexLettreFixe] = lettre;
+      const val = prompt("À quelle équipe sportive appartient ce logo ?").toLowerCase().normalize("NFD").replace(/\p{Diacritic}/gu, "");
+      if ((val.includes("celtics") || val.includes("boston")) && localStorage.getItem(dejaReveleeKey) !== "1") {
+        const idx = choisirIndexAleatoire(lettresRevelees);
+        if (idx !== null) {
+          lettresRevelees[idx] = motDePasse[idx];
           localStorage.setItem("lettresRevelees", JSON.stringify(lettresRevelees));
           localStorage.setItem(dejaReveleeKey, "1");
-          document.getElementById(`lettre-${indexLettreFixe}`).textContent = lettre;
-          document.getElementById("message").innerHTML = "Bravo !";
-          document.getElementById("code-fragment").innerHTML = `Voici ta partie de code : <code>${lettre}</code>`;
-          document.getElementById("optionsButtons").style.display = "block";
-        } else {
-          document.getElementById("message").innerHTML = "Toutes les lettres ont déjà été révélées !";
+          alert("Bravo ! Voici ta lettre : " + motDePasse[idx]);
+          initialiserAffichage();
         }
       } else {
-        document.getElementById("message").innerHTML = "Mauvaise réponse.";
+        alert("Tu as déjà validé cette question ou la réponse est fausse.");
       }
-    }
-
-    function afficherBonus() {
-      document.getElementById("bonusSection").style.display = "block";
-      document.getElementById("questionBox").style.display = "none";
-      document.getElementById("questionImage").style.display = "none";
-      document.getElementById("bonusButton").style.display = "none";
-      document.getElementById("profContainer").style.display = "none";
-    }
-
-    const dejaFaitBonusKey = "reveleeBonusQ9";
-    const motDePasseBonus = "TIPLOUF";
-    let lettresAffichees = JSON.parse(localStorage.getItem("lettresBonusQ9") || JSON.stringify(Array(motDePasseBonus.length).fill("_")));
-    let bonusDejaAffiche = localStorage.getItem(dejaFaitBonusKey) === "1";
-
-    const bonusDisplay = document.getElementById("bonusLettersDisplay");
-    const bonusGrid = document.getElementById("bonusLetters");
-
-    function renderAffichage() {
-      bonusDisplay.innerHTML = lettresAffichees.map((l, i) => `<span class="bonus-slot" id="bonus-slot-${i}">${l}</span>`).join("");
     }
 
     function verifierQuestionBonus() {
-      const val = document.getElementById("bonusInput").value.toLowerCase();
-      if (val.includes("tatum")) {
-        document.getElementById("bonusMessage").innerHTML = "C'était bien Jayson Tatum !";
-        if (!bonusDejaAffiche) {
-          afficherMotDePasseBonus();
-          bonusDejaAffiche = true;
-          localStorage.setItem(dejaFaitBonusKey, "1");
+      const val = prompt("À quel joueur appartient ce logo ?").toLowerCase();
+      if (val.includes("tatum") && !bonusDejaFait) {
+        const idx = choisirIndexAleatoire(lettresBonus);
+        if (idx !== null) {
+          lettresBonus[idx] = motDePasseBonus[idx];
+          localStorage.setItem(lettresBonusKey, JSON.stringify(lettresBonus));
+          localStorage.setItem(dejaBonusKey, "1");
+          document.getElementById("bonusReveal").style.display = "block";
+          renderAffichageBonus();
+          const btn = document.createElement("button");
+          btn.className = "letter-button";
+          btn.textContent = motDePasseBonus[idx];
+          btn.disabled = true;
+          bonusGrid.innerHTML = "";
+          bonusGrid.appendChild(btn);
         }
       } else {
-        document.getElementById("bonusMessage").innerHTML = "Non, essaie encore !";
+        alert("Déjà validé ou mauvaise réponse.");
       }
     }
 
-    function afficherMotDePasseBonus() {
-      document.getElementById("bonusReveal").style.display = "block";
-      renderAffichage();
-      bonusGrid.innerHTML = "";
-
-      const indicesDisponibles = lettresAffichees
-        .map((val, idx) => (val === "_" ? idx : null))
-        .filter(idx => idx !== null);
-
-      if (indicesDisponibles.length === 0) return;
-
-      const randomIndex = indicesDisponibles[Math.floor(Math.random() * indicesDisponibles.length)];
-      const lettreAleatoire = motDePasseBonus[randomIndex];
-      lettresAffichees[randomIndex] = lettreAleatoire;
-      localStorage.setItem("lettresBonusQ9", JSON.stringify(lettresAffichees));
-      renderAffichage();
-
-      const btn = document.createElement("button");
-      btn.className = "letter-button";
-      btn.textContent = lettreAleatoire;
-      btn.disabled = true;
-      bonusGrid.appendChild(btn);
-    }
-
     initialiserAffichage();
-    renderAffichage();
+    renderAffichageBonus();
   </script>
 </body>
 </html>
