@@ -294,17 +294,16 @@
     <div class="bonus-grid" id="bonusLetters"></div>
   </div>
   <script>
-const motDePasse = "JOYEUXANNIVERSAIRECHOU<3".split("");
+  <script>
+    const motDePasse = "JOYEUXANNIVERSAIRECHOU<3".split("");
     const motDePasseBonus = "TIPLOUF";
+
     const lettresRevelees = JSON.parse(localStorage.getItem("lettresRevelees") || JSON.stringify(Array(motDePasse.length).fill("_")));
-    const dejaReveleeKey = "reveleeQ9";
-    const lettresBonusKey = "lettresBonusQ9";
-    const dejaBonusKey = "reveleeBonusQ9";
+    const lettresBonus = JSON.parse(localStorage.getItem("lettresBonus") || JSON.stringify(Array(motDePasseBonus.length).fill("_")));
+
     const hintLettersDiv = document.getElementById("hintLetters");
     const bonusDisplay = document.getElementById("bonusLettersDisplay");
     const bonusGrid = document.getElementById("bonusLetters");
-    let lettresBonus = JSON.parse(localStorage.getItem(lettresBonusKey) || JSON.stringify(Array(motDePasseBonus.length).fill("_")));
-    let bonusDejaFait = localStorage.getItem(dejaBonusKey) === "1";
 
     function initialiserAffichage() {
       hintLettersDiv.innerHTML = "";
@@ -318,23 +317,23 @@ const motDePasse = "JOYEUXANNIVERSAIRECHOU<3".split("");
     }
 
     function renderAffichageBonus() {
-      bonusDisplay.innerHTML = lettresBonus.map((l, i) => `<span class="bonus-slot" id="bonus-slot-${i}">${l}</span>`).join("");
+      bonusDisplay.innerHTML = lettresBonus.map((l, i) => `<span class="bonus-slot">${l}</span>`).join("");
     }
 
-    function choisirIndexAleatoire(liste) {
-      const indices = liste.map((l, i) => l === "_" ? i : null).filter(i => i !== null);
-      if (indices.length === 0) return null;
-      return indices[Math.floor(Math.random() * indices.length)];
+    function choisirIndexAleatoireVide(tableau) {
+      const indices = tableau.map((l, i) => l === "_" ? i : null).filter(i => i !== null);
+      return indices.length ? indices[Math.floor(Math.random() * indices.length)] : null;
     }
 
     function verifierQuestionPrincipale() {
+      const deja = localStorage.getItem("dejaQ9");
       const val = prompt("À quelle équipe sportive appartient ce logo ?").toLowerCase().normalize("NFD").replace(/\p{Diacritic}/gu, "");
-      if ((val.includes("celtics") || val.includes("boston")) && localStorage.getItem(dejaReveleeKey) !== "1") {
-        const idx = choisirIndexAleatoire(lettresRevelees);
+      if ((val.includes("celtics") || val.includes("boston")) && !deja) {
+        const idx = choisirIndexAleatoireVide(lettresRevelees);
         if (idx !== null) {
           lettresRevelees[idx] = motDePasse[idx];
           localStorage.setItem("lettresRevelees", JSON.stringify(lettresRevelees));
-          localStorage.setItem(dejaReveleeKey, "1");
+          localStorage.setItem("dejaQ9", "1");
           alert("Bravo ! Voici ta lettre : " + motDePasse[idx]);
           initialiserAffichage();
         }
@@ -344,13 +343,14 @@ const motDePasse = "JOYEUXANNIVERSAIRECHOU<3".split("");
     }
 
     function verifierQuestionBonus() {
+      const deja = localStorage.getItem("dejaBonusQ9");
       const val = prompt("À quel joueur appartient ce logo ?").toLowerCase();
-      if (val.includes("tatum") && !bonusDejaFait) {
-        const idx = choisirIndexAleatoire(lettresBonus);
+      if (val.includes("tatum") && !deja) {
+        const idx = choisirIndexAleatoireVide(lettresBonus);
         if (idx !== null) {
           lettresBonus[idx] = motDePasseBonus[idx];
-          localStorage.setItem(lettresBonusKey, JSON.stringify(lettresBonus));
-          localStorage.setItem(dejaBonusKey, "1");
+          localStorage.setItem("lettresBonus", JSON.stringify(lettresBonus));
+          localStorage.setItem("dejaBonusQ9", "1");
           document.getElementById("bonusReveal").style.display = "block";
           renderAffichageBonus();
           const btn = document.createElement("button");
