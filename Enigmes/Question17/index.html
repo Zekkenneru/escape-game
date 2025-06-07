@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Question 18 - 4 Kampé x Burna</title>
+  <link rel="stylesheet" href="../../global.css">
+  <style>
+    body {
+      background-color: #1a0d0f;
+      color: white;
+      font-family: Arial, sans-serif;
+      text-align: center;
+      margin: 0;
+      overflow-x: hidden;
+    }
+
+    .hint-image {
+      position: absolute;
+      top: 20px;
+      left: 20px;
+      width: 340px;
+      z-index: 2;
+    }
+
+    .hint-image img {
+      width: 100%;
+    }
+
+    .hint-letters {
+      position: absolute;
+      top: 44px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 88%;
+      display: grid;
+      grid-template-columns: repeat(12, 1fr);
+      row-gap: 6px;
+      justify-items: center;
+      font-family: monospace;
+      font-size: 1.4rem;
+      font-weight: bold;
+      color: #000;
+      z-index: 3;
+    }
+
+    .letter-slot {
+      width: 1.2rem;
+      text-align: center;
+    }
+
+    .image-wrapper {
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+      gap: 190px;
+      margin-top: 40px;
+      padding-left: 400px;
+    }
+
+    .question-image {
+      width: 300px;
+      border-radius: 6px;
+    }
+
+    .ronflex-bulle {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      width: 240px;
+    }
+
+    .bulle-texte {
+      margin-top: 6px;
+      background-color: #4b2b36;
+      border-radius: 12px;
+      padding: 8px 10px;
+      font-size: 0.85rem;
+      color: #ffcccc;
+      position: relative;
+    }
+
+    .bulle-texte::before {
+      content: '';
+      position: absolute;
+      bottom: -10px;
+      left: 30px;
+      width: 0;
+      height: 0;
+      border: 10px solid transparent;
+      border-top-color: #4b2b36;
+    }
+
+    .question-box {
+      max-width: 480px;
+      margin: 20px auto;
+      background-color: #2e1214;
+      padding: 20px;
+      border: 1px solid #8a2be2;
+      border-radius: 16px;
+      position: relative;
+    }
+
+    .input-text {
+      padding: 10px;
+      width: 100%;
+      max-width: 320px;
+      font-size: 1rem;
+      margin-top: 20px;
+    }
+
+    .reponse-btn, .indice-btn {
+      padding: 10px 16px;
+      background-color: purple;
+      border: none;
+      border-radius: 24px;
+      color: white;
+      font-weight: bold;
+      cursor: pointer;
+      margin: 10px;
+    }
+
+    .message {
+      margin-top: 30px;
+      font-size: 1.8rem;
+      color: #ffccff;
+    }
+
+    .code-fragment, .next-button {
+      margin-top: 20px;
+    }
+
+    .next-button a {
+      padding: 10px 20px;
+      background-color: red;
+      color: white;
+      text-decoration: none;
+      border-radius: 8px;
+      font-weight: bold;
+      display: inline-block;
+      margin: 5px;
+    }
+
+    .custom-audio {
+      width: 240px;
+      height: 12px;
+      background-color: #4b2b36;
+      border-radius: 12px;
+      overflow: hidden;
+      margin: 12px auto 4px;
+      border: 1px solid #ffcccc;
+    }
+
+    .progress-bar {
+      height: 100%;
+      width: 0%;
+      background-color: #ffccff;
+      transition: width 0.25s linear;
+    }
+
+    @media (max-width: 768px) {
+      .image-wrapper {
+        flex-direction: column;
+        align-items: center;
+        padding-left: 0;
+        gap: 20px;
+      }
+
+      .question-image,
+      .ronflex-bulle img {
+        width: 80%;
+        max-width: 300px;
+      }
+
+      .ronflex-bulle {
+        width: auto;
+      }
+
+      .hint-image {
+        position: static;
+        width: 90%;
+        max-width: 320px;
+        margin: 20px auto;
+      }
+
+      .hint-letters {
+        top: 50px;
+        width: 79%;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="hint-image">
+    <img src="pancarte_tiplouf.png" alt="Mot de passe à reconstituer">
+    <div class="hint-letters" id="hintLetters"></div>
+  </div>
+
+  <div class="image-wrapper">
+    <img class="question-image" src="ronflex.gif" alt="Image mystère">
+    <div class="ronflex-bulle">
+      <div class="bulle-texte">tiens la partie de burna qui l'évoque</div>
+      <div id="indiceContainer">
+        <button class="indice-btn" id="revealAudioBtn" onclick="revelerLecteur()">🔍 Voir l'indice audio</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="question-box">
+    <h2>Dans la version de <em>4 Kampé</em> avec Burna Boy dedans, un grade sportif y est mentionné lequel ?<br>
+      <small>Fun fact : c'est aussi le pseudo d'un catcheur</small></h2>
+    <input id="reponseInput" class="input-text" type="text" placeholder="Ta réponse">
+    <br>
+    <button class="reponse-btn" onclick="verifierQuestionPrincipale()">Valider</button>
+  </div>
+
+  <div class="message" id="message"></div>
+  <div class="code-fragment" id="code-fragment"></div>
+
+  <div class="next-button" id="optionsButtons" style="display: none;">
+    <a href="../Question19/index.html">Passer à la question suivante</a>
+  </div>
+
+  <audio id="successAudio" src="burnalong.mp3" preload="auto"></audio>
+</body>
+<script>
+  const motDePasse = "JOYEUXANNIVERSAIRECHOU<3".split("");
+  let lettresRevelees = JSON.parse(localStorage.getItem("lettresRevelees") || "[]");
+  while (lettresRevelees.length < motDePasse.length) lettresRevelees.push("_");
+
+  const questionId = "question18";
+  const hintLettersDiv = document.getElementById("hintLetters");
+  const successAudio = document.getElementById("successAudio");
+
+  function initialiserAffichage() {
+    hintLettersDiv.innerHTML = "";
+    lettresRevelees.forEach((lettre, i) => {
+      const span = document.createElement("span");
+      span.className = "letter-slot";
+      span.id = `lettre-${i}`;
+      span.textContent = lettre;
+      hintLettersDiv.appendChild(span);
+    });
+  }
+
+  initialiserAffichage();
+  if (localStorage.getItem(questionId) === "1") {
+    document.getElementById("optionsButtons").style.display = "block";
+  }
+
+  function choisirIndexAleatoire() {
+    const indices = lettresRevelees.map((val, i) => val === "_" ? i : null).filter(i => i !== null);
+    if (indices.length === 0) return null;
+    return indices[Math.floor(Math.random() * indices.length)];
+  }
+
+  function verifierQuestionPrincipale() {
+    const val = document.getElementById("reponseInput").value.trim().toLowerCase();
+    if (localStorage.getItem(questionId) === "1") {
+      document.getElementById("message").innerHTML = "Tu as déjà répondu à cette question.";
+      return;
+    }
+
+    if (val === "yokozuna") {
+      const index = choisirIndexAleatoire();
+      if (index !== null) {
+        const lettre = motDePasse[index];
+        lettresRevelees[index] = lettre;
+        localStorage.setItem("lettresRevelees", JSON.stringify(lettresRevelees));
+        localStorage.setItem(questionId, "1");
+        document.getElementById(`lettre-${index}`).textContent = lettre;
+        document.getElementById("message").innerHTML = "Bravo !";
+        document.getElementById("code-fragment").innerHTML = `Voici ta partie de code : <code style="font-size: 1.6rem">${lettre}</code>`;
+        document.getElementById("optionsButtons").style.display = "block";
+        successAudio.play();
+      } else {
+        document.getElementById("message").innerHTML = "Toutes les lettres ont déjà été révélées.";
+      }
+    } else {
+      document.getElementById("message").innerHTML = "Mauvaise réponse.";
+    }
+  }
+
+  function revelerLecteur() {
+    const container = document.getElementById("indiceContainer");
+    container.innerHTML = `
+      <button class="indice-btn" onclick="toggleAudio()">▶️ Écouter</button>
+      <div class="custom-audio"><div class="progress-bar" id="progressBar"></div></div>
+      <audio id="indiceAudio" preload="auto">
+        <source src="burna.mp3" type="audio/mp3">
+      </audio>
+    `;
+  }
+
+  function toggleAudio() {
+    const audio = document.getElementById("indiceAudio");
+    const progressBar = document.getElementById("progressBar");
+    const toggleBtn = document.querySelector("#indiceContainer .indice-btn");
+
+    if (audio.paused) {
+      audio.play();
+      toggleBtn.textContent = "⏸️ Pause";
+    } else {
+      audio.pause();
+      toggleBtn.textContent = "▶️ Écouter";
+    }
+
+    audio.addEventListener("timeupdate", () => {
+      const progress = (audio.currentTime / audio.duration) * 100;
+      progressBar.style.width = `${progress}%`;
+    });
+
+    audio.addEventListener("ended", () => {
+      toggleBtn.textContent = "▶️ Écouter";
+      progressBar.style.width = "0%";
+    });
+  }
+</script>
