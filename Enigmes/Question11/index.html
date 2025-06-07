@@ -1,10 +1,9 @@
-
 <!DOCTYPE html>
 <html lang="fr">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Question 11 - Bad Bunny</title>
+  <title>Question 11</title>
   <style>
 body {
   background-color: #1a0d0f;
@@ -228,7 +227,7 @@ body {
 
   .bonus-letters {
     position: absolute;
-    top: 1500px;
+    top: 688px;
     left: 65.5%;
     transform: translateX(-50%);
     display: flex;
@@ -244,197 +243,196 @@ body {
 }
   </style>
 </head>
-<body>
-<div class="hint-image">
-  <img src="pancarte_tiplouf.png" alt="Mot de passe à reconstituer">
-  <div class="hint-letters" id="hintLetters"></div>
-</div>
-
-<!-- Image principale (Mario), remplacée par Poképark.jpg au bonus -->
-<div class="image-wrapper" id="imageContainer">
-  <img src="Mario.jpg" alt="Parc Mario" class="question-image" id="questionImage">
-</div>
-
-<!-- Boîte question principale -->
-<div class="question-box" id="questionBox">
-  <h2>Dans quel pays peut-on trouver le parc d'attraction sous cette image ?</h2>
-  <input id="reponseInput" class="input-text" type="text" placeholder="Ta réponse">
-  <br>
-  <button class="reponse-btn" onclick="validerQuestion()">Valider</button>
-</div>
-
-<!-- Message validation -->
-<div class="message" id="message"></div>
-<div class="code-fragment" id="code-fragment"></div>
-
-<!-- Boutons navigation après bonne réponse -->
-<div class="next-button" id="nextButtons" style="display: none;">
-  <a href="#" onclick="passerBonus()">Faire la question bonus</a>
-</div>
-
-<!-- SECTION BONUS -->
-<div id="bonusSection" style="display: none;">
-  <div class="question-box">
-    <h2>Quel autre franchise très connue a un parc là-bas ?</h2>
-    <input id="reponseBonus" class="input-text" type="text" placeholder="Ta réponse">
-    <br>
-    <button class="reponse-btn" onclick="validerBonus()">Valider bonus</button>
+  <div class="hint-image">
+    <img src="pancarte_tiplouf.png" alt="Mot de passe à reconstituer">
+    <div class="hint-letters" id="hintLetters"></div>
   </div>
 
-  <div class="message" id="bonusMessage"></div>
-</div>
+  <!-- Image principale (Mario), remplacée plus tard -->
+  <div class="image-wrapper" id="imageContainer">
+    <img src="Mario.jpg" alt="Image Mario" class="question-image" id="questionImage">
+  </div>
 
-<!-- Affichage des lettres du mot de passe bonus -->
-<div class="bonus-wrapper" id="bonusReveal" style="display: none;">
-  <img src="bonus.png" alt="Pancarte bonus">
-  <div class="bonus-letters" id="bonusLettersDisplay"></div>
-  <div class="bonus-grid" id="bonusButtons"></div>
-</div>
+  <!-- Question principale -->
+  <div class="question-box" id="questionBox">
+    <h2 id="questionTexte">Dans quel pays peut-on trouver le parc d'attraction sous cette image ?</h2>
+    <input id="reponseInput" class="input-text" type="text" placeholder="Ta réponse">
+    <br>
+    <button class="reponse-btn" onclick="validerQuestion()">Valider</button>
+  </div>
 
-<!-- Bouton pour avancer même sans réussir la bonus -->
-<div class="next-button" id="bonusNext" style="display: none;">
-  <a href="../Question15/index.html">Passer à la question suivante</a>
-</div>
+  <!-- Message de validation -->
+  <div class="message" id="message"></div>
+  <div class="code-fragment" id="code-fragment"></div>
+
+  <!-- Boutons après validation -->
+  <div class="next-button" id="nextButtons" style="display: none;">
+    <a href="#" onclick="passerBonus()">Faire la question bonus</a>
+  </div>
+
+  <!-- Section Bonus -->
+  <div id="bonusSection" style="display: none;">
+    <div class="question-box">
+      <h2>Quel autre franchise très connue a un parc là-bas ?</h2>
+      <input id="reponseBonus" class="input-text" type="text" placeholder="Ta réponse">
+      <br>
+      <button class="reponse-btn" onclick="validerBonus()">Valider bonus</button>
+    </div>
+    <div class="message" id="bonusMessage"></div>
+  </div>
+
+  <!-- Pancarte bonus -->
+  <div class="bonus-wrapper" id="bonusReveal" style="display: none;">
+    <img src="bonus.png" alt="Pancarte bonus">
+    <div class="bonus-letters" id="bonusLettersDisplay"></div>
+    <div class="bonus-grid" id="bonusButtons"></div>
+  </div>
+
+  <!-- Bouton de suite -->
+  <div class="next-button" id="bonusNext" style="display: none;">
+    <a href="../Question15/index.html">Passer à la question suivante</a>
+  </div>
 <script>
-  const motDePasse = "JOYEUXANNIVERSAIRECHOU<3".split("");
-  const motDePasseBonus = "TIPLOUF".split("");
+const motDePasse = "JOYEUXANNIVERSAIRECHOU<3".split("");
+const motDePasseBonus = "TIPLOUF".split("");
 
-  let lettresRevelees = JSON.parse(localStorage.getItem("lettresRevelees") || "[]");
-  while (lettresRevelees.length < motDePasse.length) lettresRevelees.push("_");
+let lettresRevelees = JSON.parse(localStorage.getItem("lettresRevelees") || "[]");
+while (lettresRevelees.length < motDePasse.length) lettresRevelees.push("_");
 
-  let lettresBonus = JSON.parse(localStorage.getItem("lettresBonus") || "[]");
-  let lettresAffichees = Array(motDePasseBonus.length).fill("_");
+let lettresBonus = JSON.parse(localStorage.getItem("lettresBonus") || "[]");
+let lettresAffichees = Array(motDePasseBonus.length).fill("_");
 
-  const questionId = "question11";
-  const bonusId = "bonus14";
+const questionId = "question11";
+const bonusId = "bonus14";
 
-  const hintLettersDiv = document.getElementById("hintLetters");
-  const bonusDisplay = document.getElementById("bonusLettersDisplay");
-  const bonusGrid = document.getElementById("bonusButtons");
+const hintLettersDiv = document.getElementById("hintLetters");
+const bonusDisplay = document.getElementById("bonusLettersDisplay");
+const bonusGrid = document.getElementById("bonusButtons");
 
-  function initialiserAffichage() {
-    hintLettersDiv.innerHTML = "";
-    lettresRevelees.forEach((lettre, i) => {
-      const span = document.createElement("span");
-      span.className = "letter-slot";
-      span.id = "lettre-" + i;
-      span.textContent = lettre;
-      hintLettersDiv.appendChild(span);
-    });
+function initialiserAffichage() {
+  hintLettersDiv.innerHTML = "";
+  lettresRevelees.forEach((lettre, i) => {
+    const span = document.createElement("span");
+    span.className = "letter-slot";
+    span.id = "lettre-" + i;
+    span.textContent = lettre;
+    hintLettersDiv.appendChild(span);
+  });
+}
+
+function choisirIndexAleatoire() {
+  const indices = lettresRevelees.map((val, i) => val === "_" ? i : null).filter(i => i !== null);
+  if (indices.length === 0) return null;
+  return indices[Math.floor(Math.random() * indices.length)];
+}
+
+function validerQuestion() {
+  const val = document.getElementById("reponseInput").value.toLowerCase().trim();
+  if (localStorage.getItem(questionId)) {
+    document.getElementById("message").textContent = "Tu as déjà répondu à cette question.";
+    return;
   }
-
-  function choisirIndexAleatoire() {
-    const indices = lettresRevelees.map((val, i) => val === "_" ? i : null).filter(i => i !== null);
-    if (indices.length === 0) return null;
-    return indices[Math.floor(Math.random() * indices.length)];
-  }
-
-  function validerQuestion() {
-    const val = document.getElementById("reponseInput").value.toLowerCase().trim();
-    if (localStorage.getItem(questionId)) {
-      document.getElementById("message").textContent = "Tu as déjà répondu à cette question.";
-      return;
+  if (val === "japon") {
+    const index = choisirIndexAleatoire();
+    if (index !== null) {
+      const lettre = motDePasse[index];
+      lettresRevelees[index] = lettre;
+      localStorage.setItem("lettresRevelees", JSON.stringify(lettresRevelees));
+      localStorage.setItem(questionId, "1");
+      document.getElementById(`lettre-${index}`).textContent = lettre;
+      document.getElementById("message").innerHTML = "Bravo !";
+      document.getElementById("code-fragment").innerHTML = `Voici ta partie de code : <code style="font-size: 1.6rem">${lettre}</code>`;
+      document.getElementById("nextButtons").style.display = "block";
     }
-    if (val === "japon") {
-      const index = choisirIndexAleatoire();
-      if (index !== null) {
-        const lettre = motDePasse[index];
-        lettresRevelees[index] = lettre;
-        localStorage.setItem("lettresRevelees", JSON.stringify(lettresRevelees));
-        localStorage.setItem(questionId, "1");
-        document.getElementById(`lettre-${index}`).textContent = lettre;
-        document.getElementById("message").innerHTML = "Bravo !";
-        document.getElementById("code-fragment").innerHTML = `Voici ta partie de code : <code style="font-size: 1.6rem">${lettre}</code>`;
-        document.getElementById("nextButtons").style.display = "block";
-      }
-    } else {
-      document.getElementById("message").textContent = "Mauvaise réponse.";
-    }
+  } else {
+    document.getElementById("message").textContent = "Mauvaise réponse.";
   }
+}
 
-  function passerBonus() {
-    document.getElementById("bonusSection").style.display = "block";
-    document.getElementById("questionBox").style.display = "none";
-    document.getElementById("nextButtons").style.display = "none";
-    document.getElementById("questionImage").src = "pokepark.jpg";
-    document.getElementById("questionImage").alt = "Image Poképark";
+function passerBonus() {
+  document.getElementById("bonusSection").style.display = "block";
+  document.getElementById("questionBox").style.display = "none";
+  document.getElementById("nextButtons").style.display = "none";
 
-    // Affichage des lettres bonus déjà gagnées
-    renderAffichageBonus();
-    afficherBoutonsBonus();
-    if (lettresBonus.length > 0) {
-      document.getElementById("bonusReveal").style.display = "block";
-    }
-
-    // Toujours montrer le bouton "passer à la suivante"
-    document.getElementById("bonusNext").style.display = "block";
-  }
-
-  function validerBonus() {
-    const val = document.getElementById("reponseBonus").value.toLowerCase().trim();
-    if (localStorage.getItem(bonusId)) {
-      document.getElementById("bonusMessage").textContent = "Tu as déjà validé cette question bonus.";
-      return;
-    }
-    if (val === "pokémon" || val === "pokemon") {
-      document.getElementById("bonusMessage").textContent = "Bravo, c'était bien Pokémon !";
-      ajouterLettreBonus();
-      localStorage.setItem(bonusId, "1");
-    } else {
-      document.getElementById("bonusMessage").textContent = "Ce n'est pas la bonne réponse.";
-    }
-  }
-
-  function ajouterLettreBonus() {
-    const lettresRestantes = motDePasseBonus.filter(l => !lettresBonus.includes(l));
-    if (lettresRestantes.length === 0) return;
-    const nouvelleLettre = lettresRestantes[Math.floor(Math.random() * lettresRestantes.length)];
-    lettresBonus.push(nouvelleLettre);
-    localStorage.setItem("lettresBonus", JSON.stringify(lettresBonus));
-    document.getElementById("bonusReveal").style.display = "block";
-    afficherBoutonsBonus();
-    renderAffichageBonus();
-  }
-
-  function afficherBoutonsBonus() {
-    bonusGrid.innerHTML = "";
-    lettresBonus.forEach(lettre => {
-      const btn = document.createElement("button");
-      btn.className = "letter-button";
-      btn.textContent = lettre;
-      btn.onclick = () => ajouterLettreDansSlot(lettre);
-      bonusGrid.appendChild(btn);
-    });
-  }
-
-  function ajouterLettreDansSlot(lettre) {
-    const index = lettresAffichees.indexOf("_");
-    if (index === -1) return;
-    lettresAffichees[index] = lettre;
-    renderAffichageBonus();
-    if (!lettresAffichees.includes("_")) {
-      const tentative = lettresAffichees.join("");
-      if (tentative === motDePasseBonus.join("")) {
-        alert("Mot de passe bonus réussi !");
-      } else {
-        alert("Raté ! Essaie encore.");
-        lettresAffichees = Array(motDePasseBonus.length).fill("_");
-        renderAffichageBonus();
-      }
-    }
-  }
-
-  function renderAffichageBonus() {
-    bonusDisplay.innerHTML = lettresAffichees.map(l => `<span class="bonus-slot">${l}</span>`).join("");
-  }
-
-  // Initialisation
-  initialiserAffichage();
   renderAffichageBonus();
+  afficherBoutonsBonus();
+
   if (lettresBonus.length > 0) {
     document.getElementById("bonusReveal").style.display = "block";
-    afficherBoutonsBonus();
   }
+
+  document.getElementById("bonusNext").style.display = "block";
+}
+
+function validerBonus() {
+  const val = document.getElementById("reponseBonus").value.toLowerCase().trim();
+  if (localStorage.getItem(bonusId)) {
+    document.getElementById("bonusMessage").textContent = "Tu as déjà validé cette question bonus.";
+    return;
+  }
+
+  if (val === "pokemon" || val === "pokémon") {
+    document.getElementById("bonusMessage").textContent = "Félicitations !";
+    document.getElementById("questionImage").src = "pokepark.jpg";
+    document.getElementById("questionImage").alt = "Image Poképark";
+    document.getElementById("bonusSection").style.display = "none"; // <- AJOUT ICI
+
+    ajouterLettreBonus();
+    localStorage.setItem(bonusId, "1");
+  } else {
+    document.getElementById("bonusMessage").textContent = "Ce n’est pas la bonne réponse.";
+  }
+}
+function ajouterLettreBonus() {
+  const lettresRestantes = motDePasseBonus.filter(l => !lettresBonus.includes(l));
+  if (lettresRestantes.length === 0) return;
+  const nouvelleLettre = lettresRestantes[Math.floor(Math.random() * lettresRestantes.length)];
+  lettresBonus.push(nouvelleLettre);
+  localStorage.setItem("lettresBonus", JSON.stringify(lettresBonus));
+  document.getElementById("bonusReveal").style.display = "block";
+  afficherBoutonsBonus();
+  renderAffichageBonus();
+}
+
+function afficherBoutonsBonus() {
+  bonusGrid.innerHTML = "";
+  lettresBonus.forEach(lettre => {
+    const btn = document.createElement("button");
+    btn.className = "letter-button";
+    btn.textContent = lettre;
+    btn.onclick = () => ajouterLettreDansSlot(lettre);
+    bonusGrid.appendChild(btn);
+  });
+}
+
+function ajouterLettreDansSlot(lettre) {
+  const index = lettresAffichees.indexOf("_");
+  if (index === -1) return;
+  lettresAffichees[index] = lettre;
+  renderAffichageBonus();
+  if (!lettresAffichees.includes("_")) {
+    const tentative = lettresAffichees.join("");
+    if (tentative === motDePasseBonus.join("")) {
+      alert("Mot de passe bonus réussi !");
+    } else {
+      alert("Raté ! Essaie encore.");
+      lettresAffichees = Array(motDePasseBonus.length).fill("_");
+      renderAffichageBonus();
+    }
+  }
+}
+
+function renderAffichageBonus() {
+  bonusDisplay.innerHTML = lettresAffichees.map(l => `<span class="bonus-slot">${l}</span>`).join("");
+}
+
+// Initialisation
+initialiserAffichage();
+renderAffichageBonus();
+if (lettresBonus.length > 0) {
+  document.getElementById("bonusReveal").style.display = "block";
+  afficherBoutonsBonus();
+}
 </script>
 </body>
 </html>
