@@ -267,7 +267,7 @@ body {
 
   .hint-image,
   .bonus-wrapper {
-    position: static;
+    position: relative; /* ✅ Pour que .bonus-letters se cale dessus */
     width: 90%;
     max-width: 320px;
     margin: 20px auto;
@@ -290,8 +290,8 @@ body {
 
   .bonus-letters {
     position: absolute;
-    top: 1500px;
-    left: 65.5%;
+    top: 38%; /* ✅ Ajuste selon le rendu visuel sur bonus.png */
+    left: 50%;
     transform: translateX(-50%);
     display: flex;
     justify-content: center;
