@@ -163,48 +163,71 @@
   </div>
 
   <script>
-    const indexLettreFixe = 3;
-    const motDePasse = "JOYEUXANNIVERSAIRECHOU<3".split("");
-    const lettresRevelees = JSON.parse(localStorage.getItem("lettresRevelees") || "[]");
-    while (lettresRevelees.length < motDePasse.length) lettresRevelees.push("_");
+  const motDePasse = "JOYEUXANNIVERSAIRECHOU<3".split("");
+  let lettresRevelees = JSON.parse(localStorage.getItem("lettresRevelees") || "[]");
+  while (lettresRevelees.length < motDePasse.length) lettresRevelees.push("_");
 
-    const hintLettersDiv = document.getElementById("hintLetters");
+  const questionId = "question10";
+  const hintLettersDiv = document.getElementById("hintLetters");
 
-    function initialiserAffichage() {
-      hintLettersDiv.innerHTML = "";
-      lettresRevelees.forEach((lettre, i) => {
-        const span = document.createElement("span");
-        span.className = "letter-slot";
-        span.id = `lettre-${i}`;
-        span.textContent = lettre;
-        hintLettersDiv.appendChild(span);
-      });
+  function initialiserAffichage() {
+    hintLettersDiv.innerHTML = "";
+    lettresRevelees.forEach((lettre, i) => {
+      const span = document.createElement("span");
+      span.className = "letter-slot";
+      span.id = `lettre-${i}`;
+      span.textContent = lettre;
+      hintLettersDiv.appendChild(span);
+    });
+  }
+
+  initialiserAffichage();
+
+  if (localStorage.getItem(questionId) === "1") {
+    document.getElementById("optionsButtons").style.display = "block";
+  }
+
+  function choisirIndexAleatoire() {
+    const indicesDisponibles = lettresRevelees
+      .map((val, idx) => (val === "_" ? idx : null))
+      .filter(idx => idx !== null);
+    if (indicesDisponibles.length === 0) return null;
+    return indicesDisponibles[Math.floor(Math.random() * indicesDisponibles.length)];
+  }
+
+  function verifierQuestion() {
+    const val = document.getElementById("reponseInput").value
+      .toLowerCase()
+      .normalize("NFD")
+      .replace(/[\u0300-\u036f]/g, "");
+
+    if (localStorage.getItem(questionId) === "1") {
+      document.getElementById("message").innerHTML = "Tu as déjà répondu à cette question.";
+      return;
     }
 
-    initialiserAffichage();
-
-    function verifierQuestion() {
-      const val = document.getElementById("reponseInput").value
-        .toLowerCase()
-        .normalize("NFD")
-        .replace(/[\u0300-\u036f]/g, "");
-
-      if (
-        val.includes("temperance") ||
-        val.includes("la carte de la temperance")
-      ) {
+    if (
+      val.includes("temperance") ||
+      val.includes("la carte de la temperance")
+    ) {
+      const indexLettreFixe = choisirIndexAleatoire();
+      if (indexLettreFixe !== null) {
         const lettre = motDePasse[indexLettreFixe];
         lettresRevelees[indexLettreFixe] = lettre;
         localStorage.setItem("lettresRevelees", JSON.stringify(lettresRevelees));
+        localStorage.setItem(questionId, "1");
         document.getElementById(`lettre-${indexLettreFixe}`).textContent = lettre;
         document.getElementById("message").innerHTML = "Bravo !";
         document.getElementById("code-fragment").innerHTML = `Voici ta partie de code : <code>${lettre}</code>`;
         document.getElementById("optionsButtons").style.display = "block";
       } else {
-        document.getElementById("message").innerHTML = "Mauvaise réponse.";
+        document.getElementById("message").innerHTML = "Toutes les lettres ont déjà été révélées !";
       }
+    } else {
+      document.getElementById("message").innerHTML = "Mauvaise réponse.";
     }
-  </script>
+  }
+</script>
 </body>
 </html>
 
