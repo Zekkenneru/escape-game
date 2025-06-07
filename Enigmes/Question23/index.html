@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Question 23 - Classe pharmacologique</title>
+  <link rel="stylesheet" href="../../global.css">
+  <style>
+    body {
+      background-color: #1a0d0f;
+      color: white;
+      font-family: Arial, sans-serif;
+      text-align: center;
+      margin: 0;
+      overflow-x: hidden;
+    }
+    .hint-image {
+      position: absolute;
+      top: 20px;
+      left: 20px;
+      width: 340px;
+      z-index: 2;
+    }
+    .hint-image img {
+      width: 100%;
+    }
+    .hint-letters {
+      position: absolute;
+      top: 44px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 88%;
+      display: grid;
+      grid-template-columns: repeat(12, 1fr);
+      row-gap: 6px;
+      justify-items: center;
+      font-family: monospace;
+      font-size: 1.4rem;
+      font-weight: bold;
+      color: #000;
+      z-index: 3;
+    }
+    .letter-slot {
+      width: 1.2rem;
+      text-align: center;
+    }
+    .question-image {
+      width: 300px;
+      margin: 20px auto 20px;
+      display: block;
+    }
+    .question-box {
+      max-width: 500px;
+      margin: 20px auto;
+      background-color: #2e1214;
+      padding: 20px;
+      border: 1px solid #8a2be2;
+      border-radius: 16px;
+    }
+    .option {
+      background-color: #4b2b36;
+      padding: 10px;
+      margin: 10px auto;
+      border-radius: 10px;
+      cursor: pointer;
+      border: 2px solid transparent;
+      max-width: 500px;
+    }
+    .option.selected {
+      border-color: #ffccff;
+      background-color: #5e3242;
+    }
+    .reponse-btn {
+      padding: 10px 20px;
+      background-color: purple;
+      border: none;
+      border-radius: 24px;
+      color: white;
+      font-weight: bold;
+      cursor: pointer;
+      margin-top: 20px;
+    }
+    .message {
+      margin-top: 30px;
+      font-size: 1.8rem;
+      color: #ffccff;
+    }
+    .code-fragment, .next-button {
+      margin-top: 20px;
+    }
+    .next-button a {
+      padding: 10px 20px;
+      background-color: red;
+      color: white;
+      text-decoration: none;
+      border-radius: 8px;
+      font-weight: bold;
+      display: inline-block;
+      margin: 5px;
+    }
+    @media (max-width: 768px) {
+      .hint-image {
+        position: static;
+        width: 90%;
+        max-width: 320px;
+        margin: 20px auto;
+      }
+      .hint-letters {
+        position: static;
+        width: 100%;
+        margin-top: 10px;
+      }
+      .question-image {
+        width: 90%;
+        max-width: 300px;
+      }
+      .question-box, .option {
+        width: 90%;
+        margin: 10px auto;
+      }
+      .reponse-btn {
+        width: 80%;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="hint-image">
+    <img src="pancarte_tiplouf.png" alt="Mot de passe">
+    <div class="hint-letters" id="hintLetters"></div>
+  </div>
+  <img src="medicament2.png" alt="Médicament" class="question-image">
+  <div class="question-box">
+    <h2>Quelle est sa classe pharmacothérapeutique et son indication thérapeutique ?</h2>
+  </div>
+  <div class="option" onclick="selectionnerOption(this)">Analogue de l'insuline lente, diabète 2</div>
+  <div class="option" onclick="selectionnerOption(this)">Analogue de l'insuline lente, diabète 1</div>
+  <div class="option" onclick="selectionnerOption(this)">Analogue de l'insuline rapide, diabète 2</div>
+  <div class="option" onclick="selectionnerOption(this)">Analogue de l'insuline rapide, diabète 1</div>
+  <button class="reponse-btn" onclick="verifierQuestionPrincipale()">Valider</button>
+  <div class="message" id="message"></div>
+  <div class="code-fragment" id="code-fragment"></div>
+  <div class="next-button" id="optionsButtons" style="display: none;">
+    <a href="../Question20/index.html">Passer à la question suivante</a>
+  </div>
+<script>
+  const motDePasse = "JOYEUXANNIVERSAIRECHOU<3".split("");
+  let lettresRevelees = JSON.parse(localStorage.getItem("lettresRevelees") || "[]");
+  while (lettresRevelees.length < motDePasse.length) {
+    lettresRevelees.push("_");
+  }
+  const questionId = "question23";
+  const hintLettersDiv = document.getElementById("hintLetters");
+  function initialiserAffichage() {
+    hintLettersDiv.innerHTML = "";
+    lettresRevelees.forEach((lettre, i) => {
+      const span = document.createElement("span");
+      span.className = "letter-slot";
+      span.id = `lettre-${i}`;
+      span.textContent = lettre;
+      hintLettersDiv.appendChild(span);
+    });
+  }
+  initialiserAffichage();
+  if (localStorage.getItem(questionId) === "1") {
+    document.getElementById("optionsButtons").style.display = "block";
+  }
+  function choisirIndexAleatoire() {
+    const indicesDisponibles = lettresRevelees.map((val, idx) => val === "_" ? idx : null).filter(idx => idx !== null);
+    if (indicesDisponibles.length === 0) return null;
+    return indicesDisponibles[Math.floor(Math.random() * indicesDisponibles.length)];
+  }
+  let selectedOption = null;
+  function selectionnerOption(element) {
+    document.querySelectorAll('.option').forEach(opt => opt.classList.remove('selected'));
+    element.classList.add('selected');
+    selectedOption = element.textContent.trim();
+  }
+  function verifierQuestionPrincipale() {
+    if (localStorage.getItem(questionId) === "1") {
+      document.getElementById("message").innerHTML = "Tu as déjà répondu à cette question.";
+      return;
+    }
+    if (!selectedOption) {
+      document.getElementById("message").innerHTML = "Sélectionne une option.";
+      return;
+    }
+    const bonneReponse = "Analogue de l'insuline rapide, diabète 1";
+    if (selectedOption === bonneReponse) {
+      const indexLettreFixe = choisirIndexAleatoire();
+      if (indexLettreFixe !== null) {
+        const lettre = motDePasse[indexLettreFixe];
+        lettresRevelees[indexLettreFixe] = lettre;
+        localStorage.setItem("lettresRevelees", JSON.stringify(lettresRevelees));
+        localStorage.setItem(questionId, "1");
+        document.getElementById(`lettre-${indexLettreFixe}`).textContent = lettre;
+        document.getElementById("message").innerHTML = "Bravo !";
+        document.getElementById("code-fragment").innerHTML = `Voici ta partie de code : <code>${lettre}</code>`;
+        document.getElementById("optionsButtons").style.display = "block";
+      }
+    } else {
+      document.getElementById("message").innerHTML = "Mauvaise réponse.";
+    }
+  }
+</script>
+</body>
+</html>
