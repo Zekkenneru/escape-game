@@ -1,1 +1,275 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Question 14 - Baguettes</title>
+  <link rel="stylesheet" href="../../global.css">
+<style>
+  body {
+    background-color: #1a0d0f;
+    color: white;
+    font-family: Arial, sans-serif;
+    text-align: center;
+    margin: 0;
+    overflow-x: hidden;
+  }
 
+  .hint-image {
+    position: absolute;
+    top: 20px;
+    left: 20px;
+    width: 340px;
+    z-index: 2;
+  }
+
+  .hint-image img {
+    width: 100%;
+  }
+
+  .hint-letters {
+    position: absolute;
+    top: 44px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 88%;
+    display: grid;
+    grid-template-columns: repeat(12, 1fr); /* ✅ 12 colonnes */
+    row-gap: 6px;
+    justify-items: center;
+    font-family: monospace;
+    font-size: 1.4rem;
+    font-weight: bold;
+    color: #000;
+    z-index: 3;
+  }
+
+  .letter-slot {
+    width: 1.2rem;
+    text-align: center;
+  }
+
+  .image-wrapper {
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    gap: 190px;
+    margin-top: 40px;
+    padding-left: 430px;
+  }
+
+  .question-image {
+    width: 600px; 
+    border: 4px solid white;
+    border-radius: 6px;
+  }
+
+  .ronflex-bulle {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 240px;
+  }
+
+  .ronflex-bulle img {
+    width: 100%;
+    max-width: 240px;
+    border: 4px solid white;  
+    border-radius: 6px;
+  }
+
+  .bulle-texte {
+    margin-top: 6px;
+    background-color: #4b2b36;
+    border-radius: 12px;
+    padding: 8px 10px;
+    font-size: 0.85rem;
+    color: #ffcccc;
+    position: relative;
+  }
+
+  .bulle-texte::before {
+    content: '';
+    position: absolute;
+    bottom: -10px;
+    left: 30px;
+    width: 0;
+    height: 0;
+    border: 10px solid transparent;
+    border-top-color: #4b2b36;
+  }
+
+  .question-box {
+    max-width: 480px;
+    margin: 20px auto;
+    background-color: #2e1214;
+    padding: 20px;
+    border: 1px solid #8a2be2;
+    border-radius: 16px;
+    position: relative;
+  }
+
+  .input-text {
+    padding: 10px;
+    width: 100%;
+    max-width: 320px;
+    font-size: 1rem;
+    margin-top: 20px;
+  }
+
+  .reponse-btn {
+    padding: 10px 16px;
+    background-color: purple;
+    border: none;
+    border-radius: 24px;
+    color: white;
+    font-weight: bold;
+    cursor: pointer;
+    margin: 10px;
+  }
+
+  .message {
+    margin-top: 30px;
+    font-size: 1.8rem;
+    color: #ffccff;
+  }
+
+  .code-fragment, .next-button {
+    margin-top: 20px;
+  }
+
+  .next-button a {
+    padding: 10px 20px;
+    background-color: red;
+    color: white;
+    text-decoration: none;
+    border-radius: 8px;
+    font-weight: bold;
+    display: inline-block;
+    margin: 5px;
+  }
+
+  @media (max-width: 768px) {
+    .image-wrapper {
+      flex-direction: column;
+      align-items: center;
+      padding-left: 0;
+      gap: 20px;
+    }
+
+    .question-image,
+    .ronflex-bulle img {
+      width: 80%;
+      max-width: 300px;
+    }
+
+    .ronflex-bulle {
+      width: auto;
+    }
+
+    .hint-image {
+      position: static;
+      width: 90%;
+      max-width: 320px;
+      margin: 20px auto;
+    }
+
+    .hint-letters {
+      top: 50px;
+      width: 79%;
+    }
+  }
+</style>
+</head>
+<body>
+  <div class="hint-image">
+    <img src="pancarte_tiplouf.png" alt="Mot de passe à reconstituer">
+    <div class="hint-letters" id="hintLetters"></div>
+  </div>
+
+  <div class="image-wrapper" id="imageWrapper">
+    <img class="question-image" src="hermione.gif" alt="Image mystère">
+    <div class="ronflex-bulle" id="profContainer">
+      <img src="potion.png" alt="Indice">
+      <div class="bulle-texte">je te rappelle pas un truc ?</div>
+    </div>
+  </div>
+
+  <div class="question-box" id="questionBox">
+    <h2>Combien de baguettes différentes Harry utilise-t-il tout au long de la saga Harry Potter ?</h2>
+    <input id="reponseInput" class="input-text" type="text" placeholder="Ta réponse">
+    <br>
+    <button class="reponse-btn" onclick="verifierQuestionPrincipale()">Valider</button>
+  </div>
+
+  <div class="message" id="message"></div>
+  <div class="code-fragment" id="code-fragment"></div>
+
+  <div class="next-button" id="optionsButtons" style="display: none;">
+    <a href="../Question13/index.html">Passer à la question suivante</a>
+  </div>
+<script>
+  const motDePasse = "JOYEUXANNIVERSAIRECHOU<3".split("");
+  let lettresRevelees = JSON.parse(localStorage.getItem("lettresRevelees") || "[]");
+  while (lettresRevelees.length < motDePasse.length) {
+    lettresRevelees.push("_");
+  }
+
+  const questionId = "question14"; // Nouveau nom
+  const hintLettersDiv = document.getElementById("hintLetters");
+
+  function initialiserAffichage() {
+    hintLettersDiv.innerHTML = "";
+    lettresRevelees.forEach((lettre, i) => {
+      const span = document.createElement("span");
+      span.className = "letter-slot";
+      span.id = `lettre-${i}`;
+      span.textContent = lettre;
+      hintLettersDiv.appendChild(span);
+    });
+  }
+
+  initialiserAffichage();
+
+  // Affichage du bouton suivant si déjà réussi
+  if (localStorage.getItem(questionId) === "1") {
+    document.getElementById("optionsButtons").style.display = "block";
+  }
+
+  function choisirIndexAleatoire() {
+    const indicesDisponibles = lettresRevelees
+      .map((val, idx) => (val === "_" ? idx : null))
+      .filter(idx => idx !== null);
+    if (indicesDisponibles.length === 0) return null;
+    return indicesDisponibles[Math.floor(Math.random() * indicesDisponibles.length)];
+  }
+
+  function verifierQuestionPrincipale() {
+    const val = document.getElementById("reponseInput").value.trim();
+    if (localStorage.getItem(questionId) === "1") {
+      document.getElementById("message").innerHTML = "Tu as déjà répondu à cette question.";
+      return;
+    }
+
+    if (val === "6") {
+      const indexLettreFixe = choisirIndexAleatoire();
+      if (indexLettreFixe !== null) {
+        const lettre = motDePasse[indexLettreFixe];
+        lettresRevelees[indexLettreFixe] = lettre;
+        localStorage.setItem("lettresRevelees", JSON.stringify(lettresRevelees));
+        localStorage.setItem(questionId, "1");
+        document.getElementById(`lettre-${indexLettreFixe}`).textContent = lettre;
+        document.getElementById("message").innerHTML = "Bravo !";
+        document.getElementById("code-fragment").innerHTML =
+          `Voici ta partie de code : <code style="font-size: 1.6rem">${lettre}</code>`;
+        document.getElementById("optionsButtons").style.display = "block";
+      } else {
+        document.getElementById("message").innerHTML = "Toutes les lettres ont déjà été révélées !";
+      }
+    } else {
+      document.getElementById("message").innerHTML = "Mauvaise réponse.";
+    }
+  }
+</script>
+</body>
+</html>
