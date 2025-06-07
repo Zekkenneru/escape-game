@@ -1,1 +1,304 @@
 
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>final</title>
+  <style>
+body {
+  background-color: #1a0d0f;
+  color: white;
+  font-family: Arial, sans-serif;
+  margin: 0;
+  padding: 0;
+  overflow-x: hidden;
+  text-align: center;
+}
+
+.hint-image, .bonus-wrapper {
+  position: absolute;
+  width: 340px;
+  z-index: 2;
+}
+.hint-image {
+  top: 20px;
+  left: 20px;
+}
+.bonus-wrapper {
+  top: 490px;
+  left: 40px;
+}
+.hint-image img, .bonus-wrapper img {
+  width: 100%;
+}
+
+.hint-letters {
+  position: absolute;
+  top: 44px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 88%;
+  display: grid;
+  grid-template-columns: repeat(12, 1fr);
+  justify-items: center;
+  font-family: monospace;
+  font-size: 1.4rem;
+  font-weight: bold;
+  color: #000;
+}
+.letter-slot {
+  width: 1.2rem;
+  text-align: center;
+}
+
+.bonus-letters {
+  position: absolute;
+  top: 38px;
+  left: 75.5%;
+  transform: translateX(-50%);
+  display: flex;
+  justify-content: center;
+  gap: 4px;
+  font-family: monospace;
+  font-size: 1.4rem;
+  font-weight: bold;
+  color: #000;
+  width: 100px;
+  pointer-events: none;
+}
+.bonus-grid {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  margin-top: 12px;
+  margin-bottom: 20px;
+}
+.letter-button {
+  width: 40px;
+  height: 40px;
+  margin: 5px;
+  font-size: 1.2rem;
+  font-weight: bold;
+  border-radius: 8px;
+  border: 2px solid #fff;
+  background-color: #2e1214;
+  color: #fff;
+  cursor: pointer;
+}
+.bonus-slot {
+  width: 0.9rem;
+  text-align: center;
+}
+
+.cadre-final {
+  margin-top: 100px;
+  margin-bottom: 20px;
+}
+.cadre-final img {
+  width: 600px;
+  max-width: 90%;
+  border-radius: 16px;
+  border: 2px solid white;
+}
+
+.commentaire {
+  font-size: 0.9rem;
+  color: #ccc;
+  margin-top: 12px;
+  margin-bottom: 30px;
+  font-style: italic;
+  white-space: pre-line;
+}
+
+.texte-final {
+  max-width: 600px;
+  margin: 0 auto;
+  font-size: 1.2rem;
+  line-height: 1.8;
+  padding: 0 20px;
+  text-align: left;
+  white-space: pre-line;
+}
+
+.texte-final .coeur {
+  font-size: 1.6rem;
+  display: inline-block;
+  margin-top: 16px;
+}
+@media (max-width: 768px) {
+  .image-wrapper,
+  .bonus-flex-wrapper {
+    flex-direction: column;
+    align-items: center;
+    padding-left: 0;
+    gap: 20px;
+  }
+
+  .image-wrapper > .question-image {
+    order: -2;
+  }
+
+  .image-wrapper > .ronflex-bulle {
+    order: 2;
+  }
+
+  .bonus-flex-wrapper > img {
+    order: -2;
+  }
+
+  .basket-bulle {
+    order: 2;
+  }
+
+  .question-image,
+  .ronflex-bulle img,
+  .basket-bulle img {
+    width: 80%;
+    max-width: 300px;
+  }
+
+  .ronflex-bulle,
+  .basket-bulle {
+    width: auto;
+  }
+
+  .hint-image,
+  .bonus-wrapper {
+    position: static;
+    width: 90%;
+    max-width: 320px;
+    margin: 20px auto;
+  }
+
+  .hint-letters {
+    top: 50px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 50%;
+    display: grid;
+    grid-template-columns: repeat(12, 1fr);
+    row-gap: 6px;
+    justify-items: center;
+    font-family: monospace;
+    font-size: 1.4rem;
+    font-weight: bold;
+    color: #000;
+  }
+
+  .bonus-letters {
+    position: absolute;
+    top: 688px;
+    left: 65.5%;
+    transform: translateX(-50%);
+    display: flex;
+    justify-content: center;
+    gap: 4px;
+    font-family: monospace;
+    font-size: 1.4rem;
+    font-weight: bold;
+    color: #000;
+    width: 100px;
+    pointer-events: none;
+  }
+}
+  </style>
+</head>
+ <body>
+  <!-- Pancarte mot de passe principal -->
+  <div class="hint-image">
+    <img src="pancarte_tiplouf.png" alt="Mot de passe final">
+    <div class="hint-letters" id="hintLetters"></div>
+  </div>
+
+  <!-- Pancarte mot de passe bonus -->
+  <div class="bonus-wrapper" id="bonusReveal">
+    <img src="bonus.png" alt="Pancarte bonus">
+    <div class="bonus-letters" id="bonusLettersDisplay"></div>
+    <div class="bonus-grid" id="bonusButtons"></div>
+  </div>
+
+  <!-- Image finale cadre-nous + commentaire -->
+  <div class="cadre-final">
+    <img src="cadre-nous.png" alt="Cadre nous deux">
+    <div class="commentaire">
+      🥲 Je suis désolé, c'est la seule photo de nous deux que j'ai. J'ai pas trouvé mieux.<br>
+      PS : Oui, Tiplouf il a un framboisier, Ronflex un tiramisu, et alors ? 😋
+    </div>
+  </div>
+
+  <!-- Message final -->
+  <div class="texte-final">
+    Voilà Chou, j’espère que ce quiz t’a plu, que tu as rigolé, kiffé…
+    J’ai fait ça parce que je sais que tu vas aimer. T’es quelqu’un qui aime bien relever les défis.
+    Donc voilà… Si t’as trouvé le mot de passe bonus, n’hésite pas à m’envoyer un message pour que je te montre quel est le cadeau du mot de passe bonus.
+    Je sais que je ne suis pas parfait, j'ai cette peur d'être oublié et de ce fait je fais le con à vouloir attirer l'attention par tous les moyens, mais malgrés ça je connais mes défauts ( même si quand on me les mets en face je veux pas l'admettre ) mais je sais que mes intentions ne sont pas mauvaises malgré tout. Je suis juste l’homme le plus maladroit du monde, malgré tous les avertissements que tu me donnes.
+    J’espère en tout cas que ça te fera plaisir, encore une fois. Un gros joyeux anniversaire car c’est quand même un jour important où il faut danser, ahah ( sur du bad bunny sinon je vais m'énerver ) . T’es une personne intelligente, motivée, gentille, direct, avec un grand cœur.
+    Tu vas peut-être me dire "comment tu peux savoir", mais avec l’ensemble de nos interactions, c’est ça que je vois. C’est l’impression que j’ai de toi en tout cas, et je ne crois pas me tromper en disant ça.
+    Je cherche qu’une chose : faire en sorte que tu sois la femme la plus heureuse du monde. J’espère y arriver… si l’occasion m’est offerte.
+    Encore une fois : Joyeux anniversaire et profite bien ❤️
+  </div>
+
+  <!-- Script -->
+  <script>
+    const motDePasse = "JOYEUXANNIVERSAIRECHOU<3".split("");
+    const motDePasseBonus = "TIPLOUF".split("");
+    let lettresRevelees = JSON.parse(localStorage.getItem("lettresRevelees") || "[]");
+    while (lettresRevelees.length < motDePasse.length) lettresRevelees.push("_");
+    let lettresBonus = JSON.parse(localStorage.getItem("lettresBonus") || "[]");
+    let lettresAffichees = Array(motDePasseBonus.length).fill("_");
+
+    const hintLettersDiv = document.getElementById("hintLetters");
+    const bonusDisplay = document.getElementById("bonusLettersDisplay");
+    const bonusGrid = document.getElementById("bonusButtons");
+
+    function initialiserAffichage() {
+      hintLettersDiv.innerHTML = "";
+      lettresRevelees.forEach((lettre, i) => {
+        const span = document.createElement("span");
+        span.className = "letter-slot";
+        span.id = "lettre-" + i;
+        span.textContent = lettre;
+        hintLettersDiv.appendChild(span);
+      });
+    }
+
+    function renderAffichageBonus() {
+      bonusDisplay.innerHTML = lettresAffichees.map(l => `<span class="bonus-slot">${l}</span>`).join("");
+    }
+
+    function afficherBoutonsBonus() {
+      bonusGrid.innerHTML = "";
+      lettresBonus.forEach(lettre => {
+        const btn = document.createElement("button");
+        btn.className = "letter-button";
+        btn.textContent = lettre;
+        btn.onclick = () => ajouterLettreDansSlot(lettre);
+        bonusGrid.appendChild(btn);
+      });
+    }
+
+    function ajouterLettreDansSlot(lettre) {
+      const index = lettresAffichees.indexOf("_");
+      if (index === -1) return;
+      lettresAffichees[index] = lettre;
+      renderAffichageBonus();
+
+      if (!lettresAffichees.includes("_")) {
+        const tentative = lettresAffichees.join("");
+        if (tentative === motDePasseBonus.join("")) {
+          alert("Mot de passe bonus réussi !");
+        } else {
+          alert("Raté ! Essaie encore.");
+          lettresAffichees = Array(motDePasseBonus.length).fill("_");
+          renderAffichageBonus();
+        }
+      }
+    }
+
+    initialiserAffichage();
+    renderAffichageBonus();
+    afficherBoutonsBonus();
+  </script>
+</body>
+</html>
