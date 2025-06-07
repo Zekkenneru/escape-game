@@ -1,0 +1,485 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Question 23</title>
+  <style>
+body {
+  background-color: #1a0d0f;
+  color: white;
+  font-family: Arial, sans-serif;
+  text-align: center;
+  margin: 0;
+  overflow-x: hidden;
+}
+
+.hint-image {
+  position: absolute;
+  top: 20px;
+  left: 20px;
+  width: 340px;
+  z-index: 2;
+}
+.hint-image img {
+  width: 100%;
+}
+
+.hint-letters {
+  position: absolute;
+  top: 44px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 88%;
+  display: grid;
+  grid-template-columns: repeat(12, 1fr);
+  row-gap: 6px;
+  justify-items: center;
+  font-family: monospace;
+  font-size: 1.4rem;
+  font-weight: bold;
+  color: #000;
+  z-index: 3;
+}
+.letter-slot {
+  width: 1.2rem;
+  text-align: center;
+}
+
+.rebus-emoji {
+  font-size: 4rem;
+  margin-top: 140px;
+  margin-bottom: 20px;
+}
+
+.question-box {
+  max-width: 480px;
+  margin: 20px auto;
+  background-color: #2e1214;
+  padding: 20px;
+  border: 1px solid #8a2be2;
+  border-radius: 16px;
+  position: relative;
+  z-index: 1;
+}
+
+.input-text {
+  padding: 10px;
+  width: 100%;
+  max-width: 320px;
+  font-size: 1rem;
+  margin-top: 20px;
+}
+
+.reponse-btn, .indice-btn {
+  padding: 10px 16px;
+  background-color: purple;
+  border: none;
+  border-radius: 24px;
+  color: white;
+  font-weight: bold;
+  cursor: pointer;
+  margin: 10px auto;
+  display: block;
+}
+
+.message {
+  margin-top: 30px;
+  font-size: 1.8rem;
+  color: #ffccff;
+}
+
+.code-fragment,
+.next-button {
+  margin-top: 20px;
+}
+.next-button a {
+  padding: 10px 20px;
+  background-color: red;
+  color: white;
+  text-decoration: none;
+  border-radius: 8px;
+  font-weight: bold;
+  display: inline-block;
+  margin: 5px;
+}
+
+.bonus-wrapper {
+  position: absolute;
+  top: 490px;
+  left: 40px;
+  width: 340px;
+}
+.bonus-wrapper img {
+  width: 100%;
+}
+.bonus-letters {
+  position: absolute;
+  top: 38px;
+  left: 75.5%;
+  transform: translateX(-50%);
+  display: flex;
+  justify-content: center;
+  gap: 4px;
+  font-family: monospace;
+  font-size: 1.4rem;
+  font-weight: bold;
+  color: #000;
+  width: 100px;
+  pointer-events: none;
+}
+.bonus-grid {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  margin-top: 12px;
+}
+.letter-button {
+  width: 40px;
+  height: 40px;
+  margin: 5px;
+  font-size: 1.2rem;
+  font-weight: bold;
+  border-radius: 8px;
+  border: 2px solid #fff;
+  background-color: #2e1214;
+  color: #fff;
+  cursor: pointer;
+}
+.bonus-slot {
+  width: 0.9rem;
+  text-align: center;
+}
+
+.audio-container {
+  margin-top: 40px;
+}
+.custom-audio {
+  width: 300px;
+  height: 14px;
+  background-color: #4b2b36;
+  border-radius: 12px;
+  overflow: hidden;
+  margin: 12px auto 4px;
+  border: 1px solid #ffcccc;
+}
+.progress-bar {
+  height: 100%;
+  width: 0%;
+  background-color: #ffccff;
+  transition: width 0.25s linear;
+}
+@media (max-width: 768px) {
+  .image-wrapper,
+  .bonus-flex-wrapper {
+    flex-direction: column;
+    align-items: center;
+    padding-left: 0;
+    gap: 20px;
+  }
+
+  .image-wrapper > .question-image {
+    order: -2;
+  }
+
+  .image-wrapper > .ronflex-bulle {
+    order: 2;
+  }
+
+  .bonus-flex-wrapper > img {
+    order: -2;
+  }
+
+  .basket-bulle {
+    order: 2;
+  }
+
+  .question-image,
+  .ronflex-bulle img,
+  .basket-bulle img {
+    width: 80%;
+    max-width: 300px;
+  }
+
+  .ronflex-bulle,
+  .basket-bulle {
+    width: auto;
+  }
+
+  .hint-image,
+  .bonus-wrapper {
+    position: static;
+    width: 90%;
+    max-width: 320px;
+    margin: 20px auto;
+  }
+
+  .hint-letters {
+    top: 50px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 50%;
+    display: grid;
+    grid-template-columns: repeat(12, 1fr);
+    row-gap: 6px;
+    justify-items: center;
+    font-family: monospace;
+    font-size: 1.4rem;
+    font-weight: bold;
+    color: #000;
+  }
+
+  .bonus-letters {
+    position: absolute;
+    top: 688px;
+    left: 65.5%;
+    transform: translateX(-50%);
+    display: flex;
+    justify-content: center;
+    gap: 4px;
+    font-family: monospace;
+    font-size: 1.4rem;
+    font-weight: bold;
+    color: #000;
+    width: 100px;
+    pointer-events: none;
+  }
+}
+  </style>
+</head>
+  <div class="hint-image">
+    <img src="pancarte_tiplouf.png" alt="Mot de passe à reconstituer">
+    <div class="hint-letters" id="hintLetters"></div>
+  </div>
+
+  <!-- Émojis rébus -->
+  <div id="emojiRebus" class="rebus-emoji">🐱 🐼 🍃 ☂️ 🚌</div>
+
+  <!-- Boîte question principale -->
+  <div class="question-box" id="questionBox">
+    <h2>Trouver le personnage d'animation qui se cache derrière ce rébus</h2>
+    <input id="reponseInput" class="input-text" type="text" placeholder="Ta réponse">
+    <button class="reponse-btn" onclick="validerQuestion()">Valider</button>
+  </div>
+
+  <div class="message" id="message"></div>
+  <div class="code-fragment" id="code-fragment"></div>
+
+  <!-- Bouton pour passer à la question bonus -->
+  <div class="next-button" id="nextButtons" style="display: none;">
+    <a href="#" onclick="passerBonus()">Faire la question bonus</a>
+  </div>
+
+<div id="bonusSection" style="display: none;">
+  <div class="audio-container" id="audioContainer">
+    <button class="indice-btn" id="audioBtn">▶️ Écouter</button>
+    <div class="custom-audio"><div class="progress-bar" id="progressBar"></div></div>
+    <audio id="indiceAudio" preload="auto">
+      <source src="ghilbi.mp3" type="audio/mp3">
+    </audio>
+  </div>
+
+  <div class="question-box">
+    <h2>De quel film provient cette OST ?</h2>
+    <input id="reponseBonus" class="input-text" type="text" placeholder="Ta réponse">
+    <button class="reponse-btn" onclick="validerBonus()">Valider</button>
+  </div>
+
+  <div class="message" id="bonusMessage"></div>
+</div>
+
+<!-- Écran de succès bonus (vide au départ, rempli dynamiquement si bonne réponse) -->
+<div id="bonusSuccessScreen"></div>
+
+<!-- Affichage du mot de passe bonus -->
+<div class="bonus-wrapper" id="bonusReveal" style="display: none;">
+  <img src="bonus.png" alt="Pancarte bonus">
+  <div class="bonus-letters" id="bonusLettersDisplay"></div>
+  <div class="bonus-grid" id="bonusButtons"></div>
+</div>
+
+<!-- Lien pour passer à la question suivante -->
+<div class="next-button" id="bonusNext" style="display: none;">
+  <a href="../Question21/index.html">Passer à la question suivante</a>
+</div>
+<script>
+const motDePasse = "JOYEUXANNIVERSAIRECHOU<3".split("");
+const motDePasseBonus = "TIPLOUF".split("");
+const questionId = "question20";
+const bonusId = "bonus20";
+
+let lettresRevelees = JSON.parse(localStorage.getItem("lettresRevelees") || "[]");
+while (lettresRevelees.length < motDePasse.length) lettresRevelees.push("_");
+
+let lettresBonus = JSON.parse(localStorage.getItem("lettresBonus") || "[]");
+let lettresAffichees = Array(motDePasseBonus.length).fill("_");
+
+const hintLettersDiv = document.getElementById("hintLetters");
+const bonusDisplay = document.getElementById("bonusLettersDisplay");
+const bonusGrid = document.getElementById("bonusButtons");
+
+function initialiserAffichage() {
+  hintLettersDiv.innerHTML = "";
+  lettresRevelees.forEach((lettre, i) => {
+    const span = document.createElement("span");
+    span.className = "letter-slot";
+    span.id = "lettre-" + i;
+    span.textContent = lettre;
+    hintLettersDiv.appendChild(span);
+  });
+}
+
+function validerQuestion() {
+  const val = document.getElementById("reponseInput").value.trim().toLowerCase();
+  if (localStorage.getItem(questionId)) {
+    document.getElementById("message").textContent = "Tu as déjà répondu à cette question.";
+    return;
+  }
+
+  if (val === "totoro") {
+    const indices = lettresRevelees.map((l, i) => l === "_" ? i : null).filter(i => i !== null);
+    const index = indices[Math.floor(Math.random() * indices.length)];
+    const lettre = motDePasse[index];
+    lettresRevelees[index] = lettre;
+    localStorage.setItem("lettresRevelees", JSON.stringify(lettresRevelees));
+    localStorage.setItem(questionId, "1");
+    document.getElementById("lettre-" + index).textContent = lettre;
+    document.getElementById("message").textContent = "Bravo !";
+    document.getElementById("code-fragment").innerHTML = `Voici ta partie de code : <code style="font-size:1.6rem">${lettre}</code>`;
+    document.getElementById("nextButtons").style.display = "block";
+  } else {
+    document.getElementById("message").textContent = "Mauvaise réponse.";
+  }
+}
+
+function passerBonus() {
+  document.getElementById("questionBox").style.display = "none";
+  document.getElementById("emojiRebus").style.display = "none";
+  document.getElementById("nextButtons").style.display = "none";
+  document.getElementById("bonusSection").style.display = "block";
+  document.getElementById("audioContainer").style.display = "block";
+  document.getElementById("bonusReveal").style.display = "block";
+  document.getElementById("bonusNext").style.display = "block";
+
+  afficherBoutonsBonus();
+  renderAffichageBonus();
+}
+
+function validerBonus() {
+  let val = document.getElementById("reponseBonus").value.trim().toLowerCase();
+  val = val.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+
+  const bonnesReponses = ["le chateau ambulant", "chateau ambulant"];
+  if (localStorage.getItem(bonusId)) {
+    document.getElementById("bonusMessage").textContent = "Tu as déjà validé cette question bonus.";
+    return;
+  }
+
+  if (bonnesReponses.includes(val)) {
+    document.getElementById("bonusMessage").textContent = "Bravo, c'était bien Le Château ambulant !";
+    localStorage.setItem(bonusId, "1");
+    ajouterLettreBonus();
+
+    // Masquer les éléments de la question bonus
+    document.getElementById("bonusSection").style.display = "none";
+    document.getElementById("audioContainer").style.display = "none";
+
+ const successScreen = document.getElementById("bonusSuccessScreen");
+successScreen.innerHTML = ""; // vide au cas où
+
+const imageChateau = document.createElement("img");
+imageChateau.src = "chateau.jpg";
+imageChateau.alt = "Château ambulant";
+imageChateau.style.width = "600px";
+imageChateau.style.margin = "20px auto";
+imageChateau.style.border = "2px solid white";
+imageChateau.style.borderRadius = "12px";
+imageChateau.style.display = "block";
+
+successScreen.appendChild(imageChateau);
+    const messageDiv = document.getElementById("bonusMessage");
+    messageDiv.parentNode.insertBefore(imageChateau, document.getElementById("bonusNext"));
+  } else {
+    document.getElementById("bonusMessage").textContent = "Ce n'est pas la bonne réponse.";
+  }
+}
+
+function ajouterLettreBonus() {
+  const restantes = motDePasseBonus.filter(l => !lettresBonus.includes(l));
+  if (restantes.length === 0) return;
+  const lettre = restantes[Math.floor(Math.random() * restantes.length)];
+  lettresBonus.push(lettre);
+  localStorage.setItem("lettresBonus", JSON.stringify(lettresBonus));
+  afficherBoutonsBonus();
+  renderAffichageBonus();
+}
+
+function afficherBoutonsBonus() {
+  bonusGrid.innerHTML = "";
+  lettresBonus.forEach(lettre => {
+    const btn = document.createElement("button");
+    btn.className = "letter-button";
+    btn.textContent = lettre;
+    btn.onclick = () => ajouterLettreDansSlot(lettre);
+    bonusGrid.appendChild(btn);
+  });
+}
+
+function ajouterLettreDansSlot(lettre) {
+  const index = lettresAffichees.indexOf("_");
+  if (index === -1) return;
+  lettresAffichees[index] = lettre;
+  renderAffichageBonus();
+
+  if (!lettresAffichees.includes("_")) {
+    const tentative = lettresAffichees.join("");
+    if (tentative === motDePasseBonus.join("")) {
+      alert("Mot de passe bonus réussi !");
+    } else {
+      alert("Raté ! Essaie encore.");
+      lettresAffichees = Array(motDePasseBonus.length).fill("_");
+      renderAffichageBonus();
+    }
+  }
+}
+
+function renderAffichageBonus() {
+  bonusDisplay.innerHTML = lettresAffichees.map(l => `<span class="bonus-slot">${l}</span>`).join("");
+}
+
+// Gestion audio
+const audio = document.getElementById("indiceAudio");
+const progressBar = document.getElementById("progressBar");
+const toggleBtn = document.getElementById("audioBtn");
+
+toggleBtn.addEventListener("click", () => {
+  if (audio.paused) {
+    audio.play();
+    toggleBtn.textContent = "⏸️ Pause";
+  } else {
+    audio.pause();
+    toggleBtn.textContent = "▶️ Écouter";
+  }
+});
+
+audio.addEventListener("timeupdate", () => {
+  const progress = (audio.currentTime / audio.duration) * 100;
+  progressBar.style.width = `${progress}%`;
+});
+
+audio.addEventListener("ended", () => {
+  toggleBtn.textContent = "▶️ Écouter";
+  progressBar.style.width = "0%";
+});
+
+// Lancement
+initialiserAffichage();
+renderAffichageBonus();
+if (lettresBonus.length > 0) {
+  document.getElementById("bonusReveal").style.display = "block";
+  afficherBoutonsBonus();
+}
+</script>
+</body>
+</html>
+
