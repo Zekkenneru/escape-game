@@ -280,8 +280,6 @@
 <script>
   const motDePasse = "JOYEUXANNIVERSAIRECHOU<3".split("");
   const motDePasseBonus = "TIPLOUF".split("");
-
-  const indexLettreFixe = 0;
   const questionId = "question5";
   const bonusId = "bonus5";
 
@@ -314,11 +312,22 @@
     }
 
     if (val === 6) {
-      const lettre = motDePasse[indexLettreFixe];
-      lettresRevelees[indexLettreFixe] = lettre;
+      const indicesDispo = lettresRevelees
+        .map((lettre, i) => (lettre === "_" ? i : null))
+        .filter(i => i !== null);
+
+      if (indicesDispo.length === 0) {
+        alert("Toutes les lettres ont déjà été trouvées !");
+        return;
+      }
+
+      const indexLettre = indicesDispo[Math.floor(Math.random() * indicesDispo.length)];
+      const lettre = motDePasse[indexLettre];
+      lettresRevelees[indexLettre] = lettre;
+
       localStorage.setItem("lettresRevelees", JSON.stringify(lettresRevelees));
-      localStorage.setItem(questionId, "1");
-      document.getElementById(`lettre-${indexLettreFixe}`).textContent = lettre;
+      localStorage.setItem(questionId, indexLettre); // Stocke l'index pour réaffichage
+      document.getElementById(`lettre-${indexLettre}`).textContent = lettre;
       document.getElementById("message").textContent = "Bravo !";
       document.getElementById("code-fragment").innerHTML = `Voici ta partie de code : <code>${lettre}</code>`;
       document.getElementById("optionsButtons").style.display = "block";
@@ -397,12 +406,21 @@
     }
   }
 
-  // Init au chargement
+  // Initialisation
   initialiserAffichage();
   renderAffichageBonus();
   if (lettresBonus.length > 0) {
     document.getElementById("bonusReveal").style.display = "block";
     afficherBoutonsBonus();
+  }
+
+  // Recharge lettre trouvée (si existante)
+  const indexTrouve = parseInt(localStorage.getItem(questionId));
+  if (!isNaN(indexTrouve)) {
+    document.getElementById(`lettre-${indexTrouve}`).textContent = motDePasse[indexTrouve];
+    document.getElementById("message").textContent = "Tu as déjà répondu à cette question.";
+    document.getElementById("code-fragment").innerHTML = `Voici ta partie de code : <code>${motDePasse[indexTrouve]}</code>`;
+    document.getElementById("optionsButtons").style.display = "block";
   }
 </script>
 </body>
