@@ -29,14 +29,15 @@
       text-align: center;
     }
 
-    .ronflex-bulle {
-      position: absolute;
-      top: 260px;
-      left: calc(50% + 170px);
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-    }
+	.ronflex-bulle {
+	  position: absolute;
+	  top: 200px;
+	  left: calc(50% + 170px);
+	  display: flex;
+	  flex-direction: column;
+	  align-items: center;
+	  padding-left: 15%;
+	}
 
     .ronflex-bulle img {
       width: 220px;
@@ -193,87 +194,110 @@
   <div class="code-fragment" id="code-fragment"></div>
   <div class="next-button" id="next"></div>
 
-  <script>
-    const indexLettreFixe = 1;
-    const motDePasse = "JOYEUXANNIVERSAIRECHOU<3".split("");
-    const lettresRevelees = JSON.parse(localStorage.getItem("lettresRevelees") || "[]");
-    while (lettresRevelees.length < motDePasse.length) lettresRevelees.push("_");
+<script>
+  const motDePasse = "JOYEUXANNIVERSAIRECHOU<3".split("");
+  const bonnesReponses = [
+    "Œuf", "Viande", "Sauce Soja", "Pâtes de riz", "Ciboulette", "Cacahuètes"
+  ];
 
-    const hintLettersDiv = document.getElementById("hintLetters");
-    let questionValidee = localStorage.getItem("question2_validee") === "true";
-    const bonnesReponses = ["Œuf", "Viande", "Sauce Soja", "Pâtes de riz", "Ciboulette", "Cacahuètes"];
-    const clicsValides = new Set();
+  const lettresRevelees = JSON.parse(localStorage.getItem("lettresRevelees") || "[]");
+  while (lettresRevelees.length < motDePasse.length) lettresRevelees.push("_");
 
-    function initialiserAffichage() {
-      hintLettersDiv.innerHTML = "";
-      lettresRevelees.forEach((lettre, i) => {
-        const span = document.createElement("span");
-        span.className = "letter-slot";
-        span.id = `lettre-${i}`;
-        span.textContent = lettre;
-        hintLettersDiv.appendChild(span);
-      });
-    }
+  const hintLettersDiv = document.getElementById("hintLetters");
+  const animImage = document.getElementById("animImage");
+  const message = document.getElementById("message");
+  const codeFragment = document.getElementById("code-fragment");
+  const nextDiv = document.getElementById("next");
+  const cookBtn = document.getElementById("cookBtn");
+  const title = document.getElementById("titreQuestion");
+  const ronflex = document.getElementById("ronflex");
+  const box = document.getElementById("questionBox");
 
-    initialiserAffichage();
-    if (questionValidee) afficherSucces();
+  function renderMotDePasse() {
+    hintLettersDiv.innerHTML = "";
+    lettresRevelees.forEach((lettre, i) => {
+      const span = document.createElement("span");
+      span.className = "letter-slot";
+      span.id = "lettre-" + i;
+      span.textContent = lettre;
+      hintLettersDiv.appendChild(span);
+    });
+  }
 
-    const animImage = document.getElementById("animImage");
-    const buttons = document.querySelectorAll(".ingredient-btn");
-    buttons.forEach(btn => {
-      btn.addEventListener("click", () => {
-        const frames = JSON.parse(btn.dataset.frames || "[]");
-        const nom = btn.alt;
-        if (nom === "Pousses de soja") {
-          clicsValides.clear();
-          buttons.forEach(b => b.classList.remove("selected"));
-          return;
-        }
-        if (bonnesReponses.includes(nom)) {
-          btn.classList.add("selected");
-          clicsValides.add(nom);
-        }
-        if (frames.length === 0) return;
+  renderMotDePasse();
+
+  let questionValidee = localStorage.getItem("question2_validee") === "true";
+  const clicsValides = new Set();
+
+  if (questionValidee) {
+    afficherSucces();
+  }
+
+  const buttons = document.querySelectorAll(".ingredient-btn");
+
+  buttons.forEach(btn => {
+    btn.addEventListener("click", () => {
+      const frames = JSON.parse(btn.dataset.frames || "[]");
+      const nom = btn.alt;
+
+      if (nom === "Pousses de soja") {
+        clicsValides.clear();
+        buttons.forEach(b => b.classList.remove("selected"));
+        return;
+      }
+
+      if (bonnesReponses.includes(nom)) {
+        btn.classList.add("selected");
+        clicsValides.add(nom);
+      }
+
+      if (frames.length > 0) {
         let i = 0;
-        const frameDuration = 250;
-        function showNextFrame() {
+        const delay = 250;
+        function jouerFrame() {
           animImage.src = frames[i];
           i++;
-          if (i < frames.length) {
-            setTimeout(showNextFrame, frameDuration);
-          }
+          if (i < frames.length) setTimeout(jouerFrame, delay);
         }
-        showNextFrame();
-      });
-    });
-
-    document.getElementById("cookBtn").addEventListener("click", () => {
-      if (!questionValidee && clicsValides.size === bonnesReponses.length) {
-        validerQuestion();
+        jouerFrame();
       }
     });
+  });
 
-    function validerQuestion() {
-      questionValidee = true;
-      const lettre = motDePasse[indexLettreFixe];
-      lettresRevelees[indexLettreFixe] = lettre;
-      localStorage.setItem("lettresRevelees", JSON.stringify(lettresRevelees));
-      localStorage.setItem("question2_validee", "true");
-      afficherSucces();
+  cookBtn.addEventListener("click", () => {
+    if (questionValidee) return;
+    if (clicsValides.size === bonnesReponses.length) {
+      validerQuestion();
+    } else {
+      message.textContent = "Hmm... Tu as peut-être oublié un ingrédient ? 🍜";
     }
+  });
 
-    function afficherSucces() {
-      const lettre = motDePasse[indexLettreFixe];
-      document.getElementById(`lettre-${indexLettreFixe}`).textContent = lettre;
-      document.getElementById("message").innerHTML = "<strong style='color:#ff66cc;'>🍜 Bon appétit !</strong>";
-      document.getElementById("code-fragment").innerHTML = `<br>Voici ta partie de code : <code>${lettre}</code>`;
-      document.getElementById("next").innerHTML = "<a href='../Question3/index.html'>Passer à la question suivante</a>";
-      document.getElementById("animImage").src = "padthai.png";
-      document.getElementById("animImage").style.width = "340px";
-      document.getElementById("questionBox").style.display = "none";
-      document.getElementById("ronflex").style.display = "none";
-      document.getElementById("titreQuestion").style.display = "none";
-    }
-  </script>
+  function validerQuestion() {
+    const indicesDispo = lettresRevelees.map((l, i) => l === "_" ? i : null).filter(i => i !== null);
+    const index = indicesDispo[Math.floor(Math.random() * indicesDispo.length)];
+    const lettre = motDePasse[index];
+    lettresRevelees[index] = lettre;
+
+    localStorage.setItem("lettresRevelees", JSON.stringify(lettresRevelees));
+    localStorage.setItem("question2_validee", "true");
+    document.getElementById("lettre-" + index).textContent = lettre;
+    afficherSucces(lettre);
+  }
+
+  function afficherSucces(lettre) {
+    message.innerHTML = "<strong style='color:#ff66cc;'>🍜 Bon appétit !</strong>";
+    const index = lettresRevelees.findIndex((l, i) => document.getElementById("lettre-" + i).textContent === lettre);
+    document.getElementById("lettre-" + index).textContent = lettre;
+    codeFragment.innerHTML = `<br>Voici ta partie de code : <code>${lettre}</code>`;
+    nextDiv.innerHTML = `<a href='../Question3/index.html'>Passer à la question suivante</a>`;
+
+    document.getElementById("animImage").src = "padthai.png";
+    document.getElementById("animImage").style.width = "340px";
+    box.style.display = "none";
+    ronflex.style.display = "none";
+    title.style.display = "none";
+  }
+</script>
 </body>
 </html>
