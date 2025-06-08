@@ -163,63 +163,69 @@
   <div class="gif-container" id="gif"></div>
   <div class="next-button" id="next"></div>
 
-  <script>
-    const indexLettreFixe = 3; // Lettre n°4 du mot de passe = "Y"
-    const motDePasse = "JOYEUXANNIVERSAIRECHOU<3".split("");
-    const lettresRevelees = JSON.parse(localStorage.getItem("lettresRevelees") || "[]");
+<script>
+  const motDePasse = "JOYEUXANNIVERSAIRECHOU<3".split("");
+  const lettresRevelees = JSON.parse(localStorage.getItem("lettresRevelees") || "[]");
+  while (lettresRevelees.length < motDePasse.length) {
+    lettresRevelees.push("_");
+  }
 
-    while (lettresRevelees.length < motDePasse.length) {
-      lettresRevelees.push("_");
-    }
+  const hintLettersDiv = document.getElementById("hintLetters");
+  lettresRevelees.forEach((lettre, i) => {
+    const span = document.createElement("span");
+    span.className = "letter-slot";
+    span.id = `lettre-${i}`;
+    span.textContent = lettre;
+    hintLettersDiv.appendChild(span);
+  });
 
-    const hintLettersDiv = document.getElementById("hintLetters");
-    let questionValidee = lettresRevelees[indexLettreFixe] !== "_";
+  let questionValidee = localStorage.getItem("question3_validee") === "true";
+  let indexLettre = parseInt(localStorage.getItem("question3_index") || "-1");
 
-    function initialiserAffichage() {
-      hintLettersDiv.innerHTML = "";
-      lettresRevelees.forEach((lettre, i) => {
-        const span = document.createElement("span");
-        span.className = "letter-slot";
-        span.id = `lettre-${i}`;
-        span.textContent = lettre;
-        hintLettersDiv.appendChild(span);
-      });
-    }
+  if (questionValidee && indexLettre >= 0) {
+    afficherSucces();
+  }
 
-    initialiserAffichage();
+  function verifierReponse() {
+    if (questionValidee) return;
 
-    function afficherSucces() {
-      const lettre = motDePasse[indexLettreFixe];
-      document.getElementById(`lettre-${indexLettreFixe}`).textContent = lettre;
-      document.getElementById("message").innerHTML = "<strong style='color:#ff66cc;'>Bravo !</strong> Tu as déjà trouvé la bonne réponse.";
-      document.getElementById("code-fragment").innerHTML = `<br>Voici ta partie de code : <code>${lettre}</code>`;
-      document.getElementById("gif").innerHTML = "<img src='chef.gif' alt='GIF Chef'>";
-      document.getElementById("next").innerHTML = "<a href='../Question4/index.html'>Passer à la question suivante</a>";
-    }
+    const rep = document.getElementById("reponse").value.toLowerCase().trim();
+    if (rep.includes("carbonara") || rep.includes("pâtes à la carbonara")) {
+      const indicesDispo = lettresRevelees
+        .map((lettre, i) => (lettre === "_" ? i : null))
+        .filter(i => i !== null);
 
-    if (questionValidee) {
-      afficherSucces();
-    }
-
-    function verifierReponse() {
-      if (questionValidee) return;
-
-      const rep = document.getElementById("reponse").value.toLowerCase().trim();
-      if (rep.includes("carbonara") || rep.includes("pâtes à la carbonara")) {
-        questionValidee = true;
-        const lettre = motDePasse[indexLettreFixe];
-        lettresRevelees[indexLettreFixe] = lettre;
-        localStorage.setItem("lettresRevelees", JSON.stringify(lettresRevelees));
-        afficherSucces();
-      } else {
-        document.getElementById("message").innerHTML = "Mauvaise réponse... essaie encore !";
-        document.getElementById("code-fragment").innerHTML = "";
-        document.getElementById("gif").innerHTML = "";
-        document.getElementById("next").innerHTML = "";
+      if (indicesDispo.length === 0) {
+        alert("Toutes les lettres ont déjà été trouvées !");
+        return;
       }
 
-      document.getElementById("reponse").value = "";
+      indexLettre = indicesDispo[Math.floor(Math.random() * indicesDispo.length)];
+      const lettre = motDePasse[indexLettre];
+      lettresRevelees[indexLettre] = lettre;
+
+      localStorage.setItem("lettresRevelees", JSON.stringify(lettresRevelees));
+      localStorage.setItem("question3_validee", "true");
+      localStorage.setItem("question3_index", indexLettre);
+      afficherSucces();
+    } else {
+      document.getElementById("message").innerHTML = "Mauvaise réponse... essaie encore !";
+      document.getElementById("code-fragment").innerHTML = "";
+      document.getElementById("gif").innerHTML = "";
+      document.getElementById("next").innerHTML = "";
     }
-  </script>
+
+    document.getElementById("reponse").value = "";
+  }
+
+  function afficherSucces() {
+    const lettre = motDePasse[indexLettre];
+    document.getElementById(`lettre-${indexLettre}`).textContent = lettre;
+    document.getElementById("message").innerHTML = "<strong style='color:#ff66cc;'>Bravo !</strong> Tu as trouvé la bonne réponse.";
+    document.getElementById("code-fragment").innerHTML = `<br>Voici ta partie de code : <code>${lettre}</code>`;
+    document.getElementById("gif").innerHTML = "<img src='chef.gif' alt='GIF Chef'>";
+    document.getElementById("next").innerHTML = "<a href='../Question4/index.html'>Passer à la question suivante</a>";
+  }
+</script>
 </body>
 </html>
