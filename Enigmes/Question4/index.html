@@ -164,60 +164,66 @@
   <div class="code-fragment" id="code-fragment"></div>
   <div class="next-button" id="next"></div>
 
-  <script>
-    const indexLettreFixe = 13;
-    const motDePasse = "JOYEUXANNIVERSAIRECHOU<3".split("");
-    const lettresRevelees = JSON.parse(localStorage.getItem("lettresRevelees") || "[]");
-    while (lettresRevelees.length < motDePasse.length) lettresRevelees.push("_");
+<script>
+  const motDePasse = "JOYEUXANNIVERSAIRECHOU<3".split("");
+  const lettresRevelees = JSON.parse(localStorage.getItem("lettresRevelees") || "[]");
+  while (lettresRevelees.length < motDePasse.length) lettresRevelees.push("_");
 
-    const hintLettersDiv = document.getElementById("hintLetters");
-    let questionValidee = localStorage.getItem("question4_validee") === "true";
+  const hintLettersDiv = document.getElementById("hintLetters");
+  lettresRevelees.forEach((lettre, i) => {
+    const span = document.createElement("span");
+    span.className = "letter-slot";
+    span.id = `lettre-${i}`;
+    span.textContent = lettre;
+    hintLettersDiv.appendChild(span);
+  });
 
-    function initialiserAffichage() {
-      hintLettersDiv.innerHTML = "";
-      lettresRevelees.forEach((lettre, i) => {
-        const span = document.createElement("span");
-        span.className = "letter-slot";
-        span.id = `lettre-${i}`;
-        span.textContent = lettre;
-        hintLettersDiv.appendChild(span);
-      });
-    }
+  let questionValidee = localStorage.getItem("question4_validee") === "true";
+  let indexLettre = parseInt(localStorage.getItem("question4_index") || "-1");
 
-    initialiserAffichage();
-    if (questionValidee) afficherSucces();
+  if (questionValidee && indexLettre >= 0) {
+    afficherSucces();
+  }
 
-    function verifierReponseLibre() {
-      if (questionValidee) return;
-      const val = document.getElementById("reponseInput").value.trim().toLowerCase();
-      if (val.includes("ernesto")) {
-        validerQuestion();
-      } else {
-        document.getElementById("message").innerHTML = "Non, ce n’est pas la bonne réponse… essaie encore !";
+  function verifierReponseLibre() {
+    if (questionValidee) return;
+    const val = document.getElementById("reponseInput").value.trim().toLowerCase();
+    if (val.includes("ernesto")) {
+      const indicesDispo = lettresRevelees
+        .map((lettre, i) => (lettre === "_" ? i : null))
+        .filter(i => i !== null);
+
+      if (indicesDispo.length === 0) {
+        alert("Toutes les lettres ont déjà été trouvées !");
+        return;
       }
-    }
 
-    function validerQuestion() {
-      questionValidee = true;
-      const lettre = motDePasse[indexLettreFixe];
-      lettresRevelees[indexLettreFixe] = lettre;
+      indexLettre = indicesDispo[Math.floor(Math.random() * indicesDispo.length)];
+      const lettre = motDePasse[indexLettre];
+      lettresRevelees[indexLettre] = lettre;
+
       localStorage.setItem("lettresRevelees", JSON.stringify(lettresRevelees));
       localStorage.setItem("question4_validee", "true");
-      afficherSucces();
-    }
+      localStorage.setItem("question4_index", indexLettre);
 
-    function afficherSucces() {
-      const lettre = motDePasse[indexLettreFixe];
-      document.getElementById(`lettre-${indexLettreFixe}`).textContent = lettre;
-      const questionImage = document.getElementById("questionImage");
-      questionImage.src = "ronflexguit.png";
-      questionImage.style.width = "350px";
-      document.getElementById("ronflex").style.display = "none";
-      document.getElementById("questionBox").style.display = "none";
-      document.getElementById("message").innerHTML = "<strong style='color:#ff66cc;'>Bravo ! C'était bien Ernesto de la Cruz 🎸</strong>";
-      document.getElementById("code-fragment").innerHTML = `<br>Voici ta partie de code : <code>${lettre}</code>`;
-      document.getElementById("next").innerHTML = "<a href='../Question5/index.html'>Passer à la question suivante</a>";
+      afficherSucces();
+    } else {
+      document.getElementById("message").innerHTML = "Non, ce n’est pas la bonne réponse… essaie encore !";
     }
-  </script>
+  }
+
+  function afficherSucces() {
+    const lettre = motDePasse[indexLettre];
+    document.getElementById(`lettre-${indexLettre}`).textContent = lettre;
+    const questionImage = document.getElementById("questionImage");
+    questionImage.src = "ronflexguit.png";
+    questionImage.style.width = "350px";
+    document.getElementById("ronflex").style.display = "none";
+    document.getElementById("questionBox").style.display = "none";
+    document.getElementById("message").innerHTML = "<strong style='color:#ff66cc;'>Bravo ! C'était bien Ernesto de la Cruz 🎸</strong>";
+    document.getElementById("code-fragment").innerHTML = `<br>Voici ta partie de code : <code>${lettre}</code>`;
+    document.getElementById("next").innerHTML = "<a href='../Question5/index.html'>Passer à la question suivante</a>";
+  }
+</script>
 </body>
 </html>
