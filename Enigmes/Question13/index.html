@@ -447,11 +447,12 @@ body {
       document.getElementById("bonusMessage").textContent = "Ce n’est pas une des reliques.";
     }
 
-    if (reliquesTrouvees.length === 3) {
-      document.getElementById("bonusMessage").innerHTML = "Parfait, tu as trouvé toutes les reliques de la mort !";
-      ajouterLettreBonus();
-      localStorage.setItem(bonusId, "1");
-    }
+if (reliquesTrouvees.length === 3) {
+  document.getElementById("bonusMessage").innerHTML = "Parfait, tu as trouvé toutes les reliques de la mort !";
+  ajouterLettreBonus();
+  localStorage.setItem(bonusId, "1");
+  document.getElementById("bonusNext").style.display = "block";
+}
   }
 
   function ajouterLettreBonus() {
