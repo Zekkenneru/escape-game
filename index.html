@@ -3,112 +3,95 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Énigme 1 - Paroles de chanson</title>
+  <title>Bienvenue</title>
   <style>
     body {
-      margin: 0;
-      padding: 0;
-      background: radial-gradient(#1a0000, #000000);
-      font-family: 'Playfair Display', serif;
-      color: #ffffff;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
-      min-height: 100vh;
-      text-align: center;
-    }
-    h1 {
-      font-size: 3rem;
-      margin-bottom: 1rem;
-    }
-    blockquote {
-      font-size: 1.6rem;
-      font-style: italic;
-      line-height: 1.5;
-      border-left: 4px solid #b30000;
-      padding-left: 20px;
-      max-width: 700px;
-      margin: 2rem auto;
-    }
-    .input-container {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      margin-top: 2rem;
-    }
-    input[type="text"] {
-      padding: 15px;
-      font-size: 1.2rem;
-      border-radius: 50px;
-      border: none;
-      width: 80%;
-      max-width: 400px;
-      background: #ffffff;
-      color: #000000;
-      margin-bottom: 1rem;
-      text-align: center;
-    }
-    button {
-      padding: 12px 30px;
-      font-size: 1.1rem;
-      background-color: #8e44ad;
+      background-color: #1a0d0f;
       color: white;
+      font-family: Arial, sans-serif;
+      text-align: center;
+      padding: 40px 20px;
+    }
+
+    h1 {
+      font-size: 2.6rem;
+      color: #ffccff;
+      margin-bottom: 10px;
+    }
+
+    img {
+      width: 320px;
+      max-width: 90%;
+      margin: 20px auto;
+      display: block;
+      border-radius: 12px;
+      border: 2px solid #fff;
+    }
+
+    .intro-box {
+      max-width: 700px;
+      margin: 0 auto;
+      background-color: #2e1214;
+      border: 1px solid #8a2be2;
+      border-radius: 20px;
+      padding: 30px 24px;
+      font-size: 1.1rem;
+      line-height: 1.6;
+    }
+
+    .intro-box p {
+      margin-bottom: 1.2rem;
+    }
+
+    .start-btn {
+      margin-top: 30px;
+      background-color: purple;
       border: none;
-      border-radius: 50px;
+      color: white;
+      font-size: 1.2rem;
+      padding: 14px 30px;
+      border-radius: 30px;
+      font-weight: bold;
       cursor: pointer;
       transition: background-color 0.3s ease;
     }
-    button:hover {
+
+    .start-btn:hover {
       background-color: #a86bd1;
     }
-    .message {
-      margin-top: 2rem;
-      font-size: 1.2rem;
+
+    .sound-warning {
+      margin-top: 20px;
+      font-size: 0.95rem;
       color: #ffcccc;
-    }
-    .message strong {
-      color: #ff6699;
-    }
-    .message a {
-      display: inline-block;
-      margin-top: 1rem;
-      padding: 12px 24px;
-      background-color: #b30000;
-      color: white;
-      border-radius: 30px;
-      text-decoration: none;
-      font-weight: bold;
-      transition: background-color 0.3s ease;
-    }
-    .message a:hover {
-      background-color: #d32f2f;
+      font-style: italic;
     }
   </style>
 </head>
 <body>
-  <h1>Énigme 1 - Paroles de chanson</h1>
-  <blockquote>
-    "I've told a million lies but now I tell a single truth,<br>
-    There's you in everything I do"
-  </blockquote>
-  <div class="input-container">
-    <input type="text" id="reponse" placeholder="Titre de la chanson">
-    <button onclick="verifierReponse()">Valider</button>
+
+  <h1>Joyeux anniversaire Chou 🎉</h1>
+
+  <img src="sarah.jpg" alt="Image d'introduction">
+
+  <div class="intro-box">
+    <p>Bienvenue dans ce petit quiz concocté juste pour toi !</p>
+    <p>Tu vas devoir répondre à <strong>24 questions</strong>, et si tu le souhaites, à <strong>7 questions bonus</strong>. Ces dernières sont facultatives, parfois plus corsées, parfois plus rigolotes.</p>
+    <p>Chaque bonne réponse principale te donnera une lettre à assembler pour un code final. Les bonus, eux, te donneront accès à un autre code que tu devras me fournir</p>
+    <p>⚠️ Ce quiz contient des <strong>indices visuels et sonores</strong>. Regarde bien les détails et active le son quand c’est demandé !</p>
+    <p>💻 Si possible, fais-le sur un ordinateur, c’est plus agréable (version mobile un peu capricieuse... sorry 😅).</p>
+    <p>J’espère que tu vas kiffer, rigoler, galérer un peu (ou pas), et surtout passer un bon moment ❤️</p>
+
+    <p class="sound-warning">🔊 N’oublie pas d’activer le son !</p>
+
+    <button class="start-btn" onclick="startQuiz()">Commencer le quiz</button>
   </div>
-  <div class="message" id="message"></div>
 
   <script>
-    function verifierReponse() {
-      const reponse = document.getElementById('reponse').value.trim().toLowerCase();
-      const bonneReponse = "i bet my life";
-      const message = document.getElementById('message');
-
-      if (reponse === bonneReponse) {
-        message.innerHTML = "<strong>Bravo !</strong> Tu as trouvé la bonne réponse.<br>Voici ta partie de code : <code>HB</code><br><a href='rebus.html'>Passer à l'étape suivante</a>";
-      } else {
-        message.textContent = "Mauvaise réponse... essaie encore !";
-      }
+    function startQuiz() {
+      const dummy = document.createElement('audio');
+      dummy.play().catch(() => {});
+      window.location.href = "Question1/index.html";
     }
   </script>
 </body>
