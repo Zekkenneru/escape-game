@@ -318,7 +318,21 @@
         document.getElementById("message").innerHTML = "Bravo !";
         document.getElementById("code-fragment").innerHTML = `Voici ta partie de code : <code style="font-size: 1.6rem">${lettre}</code>`;
         document.getElementById("optionsButtons").style.display = "block";
-        successAudio.play();
+		const indiceAudio = document.getElementById("indiceAudio");
+if (indiceAudio) {
+  indiceAudio.pause();
+  indiceAudio.currentTime = 0;
+
+  // Réinitialiser l’affichage du bouton
+  const toggleBtn = document.querySelector("#indiceContainer .indice-btn");
+  if (toggleBtn) toggleBtn.textContent = "▶️ Écouter";
+
+  // Vider la barre de progression
+  const progressBar = document.getElementById("progressBar");
+  if (progressBar) progressBar.style.width = "0%";
+}
+// Puis on joue burnalong.mp3
+successAudio.play();
       } else {
         document.getElementById("message").innerHTML = "Toutes les lettres ont déjà été révélées.";
       }
