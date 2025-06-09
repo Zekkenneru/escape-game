@@ -5,6 +5,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>final</title>
+   <link rel="stylesheet" href="../../global.css">
   <style>
 body {
   background-color: #1a0d0f;
@@ -92,7 +93,7 @@ body {
 }
 
 .cadre-final {
-  margin-top: 100px;
+  margin-top: 30px;
   margin-bottom: 20px;
 }
 .cadre-final img {
@@ -138,7 +139,13 @@ body {
   border-radius: 16px;
   border: 2px solid white;
 }
-
+.sound-warning {
+  font-size: 0.95rem;
+  color: #ffcccc;
+  font-style: italic;
+  text-align: center;
+  margin: 14px auto;
+}
 @media (max-width: 768px) {
   .image-wrapper,
   .bonus-flex-wrapper {
@@ -218,6 +225,10 @@ body {
   </style>
 </head>
  <body>
+ <audio id="musiqueFond" loop>
+  <source src="leo.mp3" type="audio/mpeg">
+</audio>
+<p class="sound-warning">🔊 Cette page contient une musique ! Clique dans la page si tu ne l'entends pas.</p>
   <!-- Pancarte mot de passe principal -->
   <div class="hint-image">
     <img src="pancarte_tiplouf.png" alt="Mot de passe final">
@@ -319,6 +330,18 @@ body {
     initialiserAffichage();
     renderAffichageBonus();
     afficherBoutonsBonus();
+	 const musiqueFond = document.getElementById("musiqueFond");
+  let musiqueDemarree = false;
+
+  document.addEventListener("click", () => {
+    if (!musiqueDemarree) {
+      musiqueFond.play().then(() => {
+        musiqueDemarree = true;
+      }).catch(err => {
+        console.warn("Lecture bloquée :", err);
+      });
+    }
+  }, { once: true });
   </script>
 </body>
 </html>
