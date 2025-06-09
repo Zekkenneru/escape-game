@@ -85,7 +85,7 @@
     <p>Bienvenue dans ce petit quiz concocté juste pour toi !</p>
     <p>Tu vas devoir répondre à <strong>24 questions</strong>, et si tu le souhaites, à <strong>7 questions bonus</strong>. Ces dernières sont facultatives, parfois plus corsées, parfois plus rigolotes.</p>
     <p>Chaque bonne réponse principale te donnera une lettre à assembler pour un code final. Les bonus, eux, te donneront accès à un autre code que tu devras me fournir</p>
-    <p>⚠️ Ce quiz contient des <strong>indices visuels et sonores</strong>. Regarde bien les détails et active le son quand c’est demandé !</p>
+    <p>⚠️ Ce quiz contient des <strong>indices visuels et sonores</strong>. Pour les activer sur Chrome clique n'importe où sur la page!</p>
     <p>💻 Si possible, fais-le sur un ordinateur, c’est plus agréable (version mobile un peu capricieuse... sorry 😅).</p>
     <p>J’espère que tu vas kiffer, rigoler, galérer un peu (ou pas), et surtout passer un bon moment ❤️</p>
 
@@ -100,15 +100,32 @@
   <!-- Bouton invisible pour forcer le déclenchement -->
   <button id="autoPlayBtn" onclick="document.getElementById('bg-music').play()"></button>
 
-  <script>
-    // Dès que la page est chargée, on déclenche le bouton invisible
-    window.addEventListener('DOMContentLoaded', () => {
-      document.getElementById('autoPlayBtn').click();
-    });
+<script>
+  const music = document.getElementById("bg-music");
+  let musicStarted = false;
 
-    function startQuiz() {
-      window.location.href = "Enigmes/Question1/index.html";
+  function tryPlayMusic() {
+    if (!musicStarted) {
+      music.play().then(() => {
+        musicStarted = true;
+        console.log("Musique de fond lancée !");
+      }).catch((err) => {
+        console.warn("Lecture de la musique bloquée :", err);
+      });
     }
-  </script>
+  }
+
+  // Dès que la personne clique N’IMPORTE OÙ
+  document.addEventListener("click", tryPlayMusic, { once: true });
+
+  // Quand elle clique sur “Commencer le quiz”, on stoppe la musique proprement
+  function startQuiz() {
+    if (!music.paused) {
+      music.pause();
+      music.currentTime = 0;
+    }
+    window.location.href = "Enigmes/Question1/index.html";
+  }
+</script>
 </body>
 </html>
