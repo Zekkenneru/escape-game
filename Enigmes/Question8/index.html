@@ -135,6 +135,12 @@
       font-weight: bold;
       display: inline-block;
     }
+	.sound-warning {
+  font-size: 0.9rem;
+  color: #ffcccc;
+  font-style: italic;
+  margin-top: 8px;
+}
 @media (max-width: 768px) {
   .image-wrapper,
   .bonus-flex-wrapper {
@@ -218,13 +224,14 @@
     <img src="pancarte_tiplouf.png" alt="Mot de passe à reconstituer">
     <div class="hint-letters" id="hintLetters"></div>
   </div>
-<audio id="musiqueFond" autoplay loop>
+<audio id="musiqueFond" loop>
   <source src="cynthia.mp3" type="audio/mpeg">
 </audio>
   <img src="pingoleon.png" alt="Pingoléon" class="question-image" id="pingoleonImage">
 
   <div class="question-box" id="questionBox">
     <h2> Oh non ! Le dresseur légendaire Angelo envoie son Pingoléon... cible toutes ses faiblesses pour le vaincre !</h2>
+	 <p class="sound-warning">🔊 Cette question contient une musique ! Clique dans la page si tu ne l’entends pas.</p>
   </div>
 
   <div class="types-container" id="typesContainer"></div>
@@ -312,6 +319,18 @@
         document.getElementById("message").innerHTML = "Ce n'est pas très efficace...";
       }
     }
+ const musiqueFond = document.getElementById("musiqueFond");
+  let musiqueDemarree = false;
+
+  document.addEventListener("click", () => {
+    if (!musiqueDemarree) {
+      musiqueFond.play().then(() => {
+        musiqueDemarree = true;
+      }).catch((err) => {
+        console.warn("Musique bloquée :", err);
+      });
+    }
+  }, { once: true });
   </script>
 </body>
 </html>
