@@ -66,6 +66,13 @@
       color: #ffcccc;
       font-style: italic;
     }
+
+    /* Bouton invisible pour déclenchement audio */
+    #autoPlayBtn {
+      position: absolute;
+      opacity: 0;
+      pointer-events: none;
+    }
   </style>
 </head>
 <body>
@@ -87,10 +94,19 @@
     <button class="start-btn" onclick="startQuiz()">Commencer le quiz</button>
   </div>
 
+  <!-- Audio -->
+  <audio id="bg-music" src="cafeconron.mp3" loop></audio>
+
+  <!-- Bouton invisible pour forcer le déclenchement -->
+  <button id="autoPlayBtn" onclick="document.getElementById('bg-music').play()"></button>
+
   <script>
+    // Dès que la page est chargée, on déclenche le bouton invisible
+    window.addEventListener('DOMContentLoaded', () => {
+      document.getElementById('autoPlayBtn').click();
+    });
+
     function startQuiz() {
-      const dummy = document.createElement('audio');
-      dummy.play().catch(() => {});
       window.location.href = "Enigmes/Question1/index.html";
     }
   </script>
